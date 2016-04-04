@@ -61,8 +61,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         // login activity
-     //   Intent intent = new Intent(this, LoginActivity.class);
-     //   startActivity(intent);
+//        Intent intent = new Intent(this, LoginActivity.class);
+//       startActivity(intent);
 
 
         // Setup the viewPager
