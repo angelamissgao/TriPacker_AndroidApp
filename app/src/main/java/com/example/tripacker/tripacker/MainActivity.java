@@ -2,6 +2,8 @@ package com.example.tripacker.tripacker;
 
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.view.ViewPager;
@@ -25,21 +27,27 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
+
     private TabLayout mTabLayout;
 
+    //bottom navigation
     private int[] mTabsIcons = {
-            R.drawable.ic_recents_selector,
+            R.drawable.ic_main_selector,
             R.drawable.ic_favorite_selector,
-            R.drawable.ic_place_selector};
+            R.drawable.ic_trip_selector,
+            R.drawable.ic_place_selector,
+            R.drawable.ic_profile_selector};
 
     private int[] mTabsSelectedIcons = {
-            R.drawable.ic_recents_selected_24dp,
+            R.drawable.ic_main_selected_24dp,
             R.drawable.ic_favorite_selected_24dp,
-            R.drawable.ic_place_selected_24dp};
+            R.drawable.ic_trip_selected_24dp,
+            R.drawable.ic_place_selected_24dp,
+            R.drawable.ic_profile_selected_24dp};
 
 
 
-    //drawer
+    //menu drawer
     private ListView mDrawerList;
     private DrawerLayout mDrawerLayout;
     private ArrayAdapter<String> mAdapter;
@@ -52,13 +60,11 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.e("Main Activity -> ", "Here!");
+        // login activity
+     //   Intent intent = new Intent(this, LoginActivity.class);
+     //   startActivity(intent);
 
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
 
-
-        Log.e("Main Activity -> ", "After!!!");
         // Setup the viewPager
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
@@ -74,19 +80,21 @@ public class MainActivity extends ActionBarActivity {
 
         mTabLayout.getTabAt(0).getCustomView().setSelected(true);
 
-        mDrawerList = (ListView)findViewById(R.id.navList);mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
         addDrawerItems();
         setupDrawer();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
 
     }
 
+    // menu drawer
     private void addDrawerItems() {
-        String[] osArray = { "Android", "iOS", "Windows", "OS X", "Linux" };
+        String[] osArray = { "Profile", "My Spot", "My Trip", "Bookmark", "Logout" };
         mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
         mDrawerList.setAdapter(mAdapter);
 
@@ -104,7 +112,7 @@ public class MainActivity extends ActionBarActivity {
             /** Called when a drawer has settled in a completely open state. */
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                getSupportActionBar().setTitle("Navigation!");
+//                getSupportActionBar().setTitle("Navigation");
                 invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
             }
 
@@ -162,9 +170,9 @@ public class MainActivity extends ActionBarActivity {
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
 
-        public final int PAGE_COUNT = 3;
+        public final int PAGE_COUNT = 5;
 
-        private final String[] mTabsTitle = {"Recents", "Favorites", "Nearby"};
+        private final String[] mTabsTitle = {"Explore", "Favorites", "Trip", "Spot", "Profile"};
 
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
@@ -191,6 +199,10 @@ public class MainActivity extends ActionBarActivity {
                     return PageFragment.newInstance(2);
                 case 2:
                     return PageFragment.newInstance(3);
+                case 3:
+                    return PageFragment.newInstance(4);
+                case 4:
+                    return PageFragment.newInstance(5);
 
             }
             return null;
