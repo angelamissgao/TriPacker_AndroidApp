@@ -17,12 +17,20 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    useLibrary 'org.apache.http.legacy'
 }
-
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
     compile 'com.jakewharton:butterknife:6.1.0'
+    // ActiveAndroid for simple persistence with an ORM
+    // ActiveAndroid for simple persistence with an ORM
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
+    compile files('libs/activeandroid-3.0.jar')
 }

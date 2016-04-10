@@ -1,8 +1,10 @@
 package com.example.tripacker.tripacker;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +39,12 @@ public class PofilePageFragment extends Fragment {
 
         view = inflater.inflate(R.layout.profile_fragment, container, false);
 
+        SharedPreferences pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
+
+
+        TextView username_view = (TextView) view.findViewById(R.id.user_name);
+        username_view.setText(pref.getString("name", null));
+        Log.e("From Session", "-------> "+pref.getString("name", null));
 
         // Construct the data source
         ArrayList<Trip> arrayOfTrips = new ArrayList<Trip>();

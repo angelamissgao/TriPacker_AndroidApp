@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
+    // Runner IO for calling external APIs
 
     private TabLayout mTabLayout;
 
@@ -60,12 +61,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // login activity
-     //   Intent intent = new Intent(this, LoginActivity.class);
-      // startActivity(intent);
+        // start login activity
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
 
-        // Setup the viewPager
+        // Setup the viewPager for bottom navigation
         ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
         MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
@@ -77,9 +78,11 @@ public class MainActivity extends ActionBarActivity {
             TabLayout.Tab tab = mTabLayout.getTabAt(i);
             tab.setCustomView(pagerAdapter.getTabView(i));
         }
+        // Setup the landing fragment to profile fragment
+        mTabLayout.getTabAt(4).getCustomView().setSelected(true);
 
-        mTabLayout.getTabAt(0).getCustomView().setSelected(true);
 
+        // Setup the menu bar
         mDrawerList = (ListView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();

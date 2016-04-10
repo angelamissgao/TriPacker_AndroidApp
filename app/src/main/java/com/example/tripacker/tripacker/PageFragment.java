@@ -33,14 +33,10 @@ public class PageFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        if(mPageNo == 5){
-            view = inflater.inflate(R.layout.profile_fragment, container, false);
-        }else{
-       //     view = inflater.inflate(R.layout.fragment_page, container, false);
+
             TextView textView = (TextView) view;
             textView.setText("Fragment #" + mPageNo);
-        }
-//        View view = inflater.inflate(R.layout.fragment_page, container, false);
+
 
         return view;
     }
