@@ -61,8 +61,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         // login activity
-//        Intent intent = new Intent(this, LoginActivity.class);
-//       startActivity(intent);
+     //   Intent intent = new Intent(this, LoginActivity.class);
+      // startActivity(intent);
 
 
         // Setup the viewPager
@@ -174,6 +174,7 @@ public class MainActivity extends ActionBarActivity {
 
         private final String[] mTabsTitle = {"Explore", "Favorites", "Trip", "Spot", "Profile"};
 
+        private PofilePageFragment profile_fragment = new PofilePageFragment();
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -194,7 +195,6 @@ public class MainActivity extends ActionBarActivity {
 
                 case 0:
                     return PageFragment.newInstance(1);
-
                 case 1:
                     return PageFragment.newInstance(2);
                 case 2:
@@ -202,7 +202,7 @@ public class MainActivity extends ActionBarActivity {
                 case 3:
                     return PageFragment.newInstance(4);
                 case 4:
-                    return PageFragment.newInstance(5);
+                    return profile_fragment;
 
             }
             return null;
