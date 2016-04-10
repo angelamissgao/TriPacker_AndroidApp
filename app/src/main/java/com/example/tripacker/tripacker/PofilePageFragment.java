@@ -15,6 +15,9 @@ import android.widget.TextView;
 import com.example.tripacker.tripacker.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.model.Trip;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,14 +58,44 @@ public class PofilePageFragment extends Fragment {
         listView.setAdapter(adapter);
 
         // Add item to adapter
-        Trip newTrip = new Trip("San Diego Trip","04/10/2015",  "San Diego, CA");
-        adapter.add(newTrip);
-        Trip newTrip1 = new Trip("SFMA", "06/12/2015", "San Fancisco, CA");
-        adapter.add(newTrip1);
-        Trip newTrip2 = new Trip("Stanford University", "08/12/2015", "Palo Alto, CA");
-        adapter.add(newTrip2);
-        Trip newTrip3 = new Trip("NASA Research Park", "12/12/2015", "Mountain View, CA");
-        adapter.add(newTrip3);
+       /*
+        try {
+
+           JSONObject js_trip1 = new JSONObject();
+            js_trip1.put("id", "1");
+            js_trip1.put("name", "San Diego Trip");
+            js_trip1.put("gmt_create", "04/10/2015");
+            Trip newTrip1 = new Trip(js_trip1);
+            adapter.add(newTrip1);
+
+            JSONObject js_trip2 = new JSONObject();
+            js_trip2.put("id", "1");
+            js_trip2.put("name", "SFMA");
+            js_trip2.put("gmt_create", "06/12/2015");
+            Trip newTrip2 = new Trip(js_trip2);
+            adapter.add(newTrip2);
+
+            JSONObject js_trip3 = new JSONObject();
+            js_trip3.put("id", "1");
+            js_trip3.put("name", "Stanford University");
+            js_trip3.put("gmt_create", "08/12/2015");
+            Trip newTrip3 = new Trip(js_trip3);
+            adapter.add(newTrip3);
+
+            JSONObject js_trip4 = new JSONObject();
+            js_trip4.put("id", "1");
+            js_trip4.put("name", "NASA Research Park");
+            js_trip4.put("gmt_create", "12/12/2015");
+            Trip newTrip4 = new Trip(js_trip4);
+            adapter.add(newTrip4);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        */
+
+
+
         // Or even append an entire new collection
         // Fetching some data, data has now returned
         // If data was JSON, convert to ArrayList of User objects.
