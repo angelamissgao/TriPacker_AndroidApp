@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.activeandroid.Configuration;
 import com.example.tripacker.tripacker.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.model.Trip;
 
@@ -38,9 +39,8 @@ public class PofilePageFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thiscontext = container.getContext();
-        View view = inflater.inflate(R.layout.fragment_page, container, false);
 
-        view = inflater.inflate(R.layout.profile_fragment, container, false);
+        View view = inflater.inflate(R.layout.profile_fragment, container, false);
 
         SharedPreferences pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
@@ -57,33 +57,36 @@ public class PofilePageFragment extends Fragment {
         ListView listView = (ListView) view.findViewById(R.id.triplistview);
         listView.setAdapter(adapter);
 
+
+
+
+
+
+
+
         // Add item to adapter
-       /*
+
         try {
 
            JSONObject js_trip1 = new JSONObject();
-            js_trip1.put("id", "1");
             js_trip1.put("name", "San Diego Trip");
             js_trip1.put("gmt_create", "04/10/2015");
             Trip newTrip1 = new Trip(js_trip1);
             adapter.add(newTrip1);
 
             JSONObject js_trip2 = new JSONObject();
-            js_trip2.put("id", "1");
             js_trip2.put("name", "SFMA");
             js_trip2.put("gmt_create", "06/12/2015");
             Trip newTrip2 = new Trip(js_trip2);
             adapter.add(newTrip2);
 
             JSONObject js_trip3 = new JSONObject();
-            js_trip3.put("id", "1");
             js_trip3.put("name", "Stanford University");
             js_trip3.put("gmt_create", "08/12/2015");
             Trip newTrip3 = new Trip(js_trip3);
             adapter.add(newTrip3);
 
             JSONObject js_trip4 = new JSONObject();
-            js_trip4.put("id", "1");
             js_trip4.put("name", "NASA Research Park");
             js_trip4.put("gmt_create", "12/12/2015");
             Trip newTrip4 = new Trip(js_trip4);
@@ -92,7 +95,7 @@ public class PofilePageFragment extends Fragment {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        */
+
 
 
 

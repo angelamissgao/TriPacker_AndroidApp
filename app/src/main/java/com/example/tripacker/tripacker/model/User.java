@@ -11,8 +11,7 @@ import com.activeandroid.query.Select;
 @Table(name = "Members")
 public class User extends Model {
     // Define database columns and associated fields
-    @Column(name = "id")
-    String id;
+
     @Column(name = "username")
     String username;
     @Column(name = "email")
@@ -40,7 +39,6 @@ public class User extends Model {
         super();
 
         try {
-            this.id = object.getString("id");
             this.username = object.getString("username");
             this.email = object.getString("email");
             this.tel = object.getString("tel");
@@ -55,9 +53,6 @@ public class User extends Model {
     }
 
     // Getters
-    public String getID() {
-        return id;
-    }
     public String getUsername() {
         return username;
     }

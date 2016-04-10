@@ -24,8 +24,7 @@ import java.util.List;
 @Table(name = "Trips")
 public class Trip extends Model {
     // Define database columns and associated fields
-    @Column(name = "id")
-    String id;
+
     @Column(name = "name")
     String name;
     @Column(name = "owner")
@@ -52,7 +51,6 @@ public class Trip extends Model {
         super();
 
         try {
-            this.id = object.getString("id");
             this.name = object.getString("name");
             this.owner = object.getString("owner");
             this.tip = object.getString("tip");
@@ -86,9 +84,6 @@ public class Trip extends Model {
     }
 
     // Getters
-    public String getID() {
-        return id;
-    }
     public String getName() {
         return name;
     }
@@ -110,6 +105,15 @@ public class Trip extends Model {
     public String getGmt_modified() {
         return gmt_modified;
     }
+
+    // Setters
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void SetGmt_create(String gmt_create) {
+        this.gmt_create = gmt_create;
+    }
+
 
     // Record Finders
     public static Trip byId(long id) {

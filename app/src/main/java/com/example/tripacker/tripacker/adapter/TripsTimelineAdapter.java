@@ -22,7 +22,7 @@ public class TripsTimelineAdapter extends ArrayAdapter<Trip> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-    /*
+
         // Get the data item for this position
         Trip trip = (Trip) getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
@@ -32,11 +32,11 @@ public class TripsTimelineAdapter extends ArrayAdapter<Trip> {
         // Lookup view for data population
         TextView tripDate = (TextView) convertView.findViewById(R.id.trip_date);
         TextView tripName = (TextView) convertView.findViewById(R.id.trip_name);
-        // Populate the data into the template view using the data object
-        tripDate.setText(trip.getDate());
+    //    // Populate the data into the template view using the data object
+        tripDate.setText(trip.getGmt_create());
         tripName.setText(trip.getName());
         // Return the completed view to render on screen
-        */
+
         return convertView;
     }
 }

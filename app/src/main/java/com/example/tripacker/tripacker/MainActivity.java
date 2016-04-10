@@ -26,6 +26,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.activeandroid.ActiveAndroid;
+import com.example.tripacker.tripacker.model.Trip;
+import com.example.tripacker.tripacker.model.User;
+
 public class MainActivity extends ActionBarActivity {
     // Runner IO for calling external APIs
 
@@ -92,6 +96,16 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
+
+
+
+        // Register models to ActiveAndroid
+        com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this);
+        configurationBuilder.addModelClass(Trip.class);
+        configurationBuilder.addModelClass(User.class);
+        ActiveAndroid.initialize(configurationBuilder.create());
+
+
 
     }
 

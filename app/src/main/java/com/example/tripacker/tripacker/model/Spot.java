@@ -15,8 +15,7 @@ import java.util.List;
 @Table(name = "Spots")
 public class Spot extends Model {
     // Define database columns and associated fields
-    @Column(name = "id")
-    String id;
+
     @Column(name = "name")
     String name;
     @Column(name = "category_id")
@@ -52,7 +51,6 @@ public class Spot extends Model {
         super();
 
         try {
-            this.id = object.getString("id");
             this.name = object.getString("name");
             this.category_id = object.getString("category_id");
             this.city_id = object.getString("city_id");
@@ -91,9 +89,6 @@ public class Spot extends Model {
     }
 
     // Getters
-    public String getID() {
-        return id;
-    }
     public String getName() {
         return name;
     }
