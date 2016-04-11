@@ -65,9 +65,9 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // start login activity
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+//        // start login activity
+//        Intent intent = new Intent(this, LoginActivity.class);
+//        startActivity(intent);
 
 
         // Setup the viewPager for bottom navigation
@@ -196,6 +196,11 @@ public class MainActivity extends ActionBarActivity {
             super(fm);
         }
 
+        //spot fragment
+        private SpotFragment spot_fragment = new SpotFragment();
+
+
+
         public View getTabView(int position) {
             // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
             View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab, null);
@@ -217,7 +222,7 @@ public class MainActivity extends ActionBarActivity {
                 case 2:
                     return PageFragment.newInstance(3);
                 case 3:
-                    return PageFragment.newInstance(4);
+                    return spot_fragment;
                 case 4:
                     return profile_fragment;
 
