@@ -1,12 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Hello Spot"
-        android:id="@+id/textView" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_weight="0.40"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/img1"
+                android:layout_margin="5dp"
+                android:background="@color/monsoon"/>
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/img2"
+                android:layout_margin="5dp"
+                android:background="@color/monsoon"/>
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/img3"
+                android:layout_margin="5dp"
+                android:background="@color/monsoon"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="3"
+            android:layout_weight="0.40">
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:id="@+id/img4"
+                android:baselineAlignBottom="false"
+                android:layout_margin="5dp"
+                android:background="@color/monsoon"/>
+
+            <ImageView
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:id="@+id/img5"
+                android:layout_margin="5dp"
+                android:background="@color/monsoon"/>
+        </LinearLayout>
+    </LinearLayout>
+
 </LinearLayout>
