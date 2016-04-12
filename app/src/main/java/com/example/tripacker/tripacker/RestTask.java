@@ -52,8 +52,10 @@ public class RestTask extends AsyncTask<HttpUriRequest, Void, String> {
     {
         try
         {
+            Log.e("--> doInBackground: ", "start...");
             HttpUriRequest request = params[0];
             HttpResponse serverResponse = mClient.execute(request);
+            serverResponse.getHeaders("Cookie");
             BasicResponseHandler handler = new BasicResponseHandler();
             return handler.handleResponse(serverResponse);
         }

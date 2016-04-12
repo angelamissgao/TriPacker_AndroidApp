@@ -16,13 +16,28 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripacker.tripacker.async.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.async.WebServices;
+import com.example.tripacker.tripacker.async.AsyncCaller;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import java.net.URI;
-import org.apache.http.client.methods.HttpGet;
+import java.util.ArrayList;
+import java.util.List;
 
-public class LoginActivity extends AppCompatActivity {
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
@@ -37,9 +52,9 @@ public class LoginActivity extends AppCompatActivity {
 
 
     // Configuration for calling a REST service
-    private static final String TEST_URL                   = "http://47.88.12.177/api/backdoor/login";
+    private static final String TEST_URL                   = "http://47.88.12.177/api/member/login/dologin";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
-    ProgressDialog progress;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +95,7 @@ public class LoginActivity extends AppCompatActivity {
 
         _loginButton.setEnabled(false);
 
-        final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
+        progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
@@ -91,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
         Log.e("User Authentication", "-------> Starting");
         // TODO: Implement your own authentication logic here.
         getContent();  //starts the RestTask
+
         if(username.equals("eileenwei") && password.equals("800105")){
             // Creating user login session
             session.createUserLoginSession("Eileen Wei", "eileenwei0105@gmail.com");
@@ -104,18 +120,7 @@ public class LoginActivity extends AppCompatActivity {
             isAuthenticated = false;
         }
 
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onLoginSuccess or onLoginFailed
-                        if(isAuthenticated)
-                            onLoginSuccess();
-                        else
-                            onLoginFailed();
 
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
     }
 
 
@@ -156,7 +161,6 @@ public class LoginActivity extends AppCompatActivity {
 
         //if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
         if (username.isEmpty()) {
-
             _usernameText.setError("enter a valid username");
             valid = false;
         } else {
@@ -177,10 +181,32 @@ public class LoginActivity extends AppCompatActivity {
     private void getContent(){
         // the request
         try{
-            HttpGet httpGet = new HttpGet(new URI(TEST_URL));
+        /*    HttpPost httpPost = new HttpPost(new URI(TEST_URL));
+            // Add your data
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("username", "eileen"));
+            nameValuePairs.add(new BasicNameValuePair("password", "111111"));
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
             RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
-            task.execute(httpGet); //doInBackground runs
-            progress = ProgressDialog.show(this, "Getting Data ...", "Waiting For Results...", true);
+            task.execute(httpPost); //doInBackground runs*/
+
+
+            WebServices.setURL(TEST_URL);
+            HttpPost httpPost = new HttpPost(new URI(TEST_URL));
+            AsyncJsonPostTask postTask = new AsyncJsonPostTask(this);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("username", "eileen"));
+            nameValuePairs.add(new BasicNameValuePair("password", "111111"));
+            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+
+            postTask.execute(httpPost, "");
+
+
+
+
+
+
         }
         catch (Exception e)
         {
@@ -212,18 +238,48 @@ public class LoginActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent)
         {
             // clear the progress indicator
-            if (progress != null)
+            if (progressDialog != null)
             {
-                progress.dismiss();
+                progressDialog.dismiss();
             }
             String response = intent.getStringExtra(RestTask.HTTP_RESPONSE);
             Toast.makeText(getApplicationContext(),
                     "Response is ready: "+response,
                     Toast.LENGTH_LONG).show();
             Log.i(TAG, "RESPONSE = " + response);
+
             //
             // my old json code was here. this is where you will parse it.
             //
+
+            JSONTokener tokener = new JSONTokener(response);
+            try {
+                JSONObject finalResult = new JSONObject(tokener);
+                Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
     };
+
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) {
+        // clear the progress indicator
+        if (progressDialog != null)
+        {
+            progressDialog.dismiss();
+        }
+
+        Toast.makeText(getApplicationContext(),
+                "Response is ready: "+result.toString(),
+                Toast.LENGTH_LONG).show();
+        Log.i(TAG, "RESPONSE = " + result.toString());
+        Log.i(TAG, "RESPONSE type= " + result.getClass());
+        onLoginSuccess();
+        //
+        // my old json code was here. this is where you will parse it.
+        //
+
+
+    }
 }
