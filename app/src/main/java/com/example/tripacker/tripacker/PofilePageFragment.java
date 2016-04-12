@@ -63,7 +63,6 @@ public class PofilePageFragment extends Fragment {
 
 
 
-
         // Add item to adapter
 
         try {
