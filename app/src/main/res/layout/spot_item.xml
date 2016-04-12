@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/spot_item"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -86,7 +88,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
             android:src="@drawable/ic_add_white_24dp"
-            />
+            app:backgroundTint="@color/primary" />
     </LinearLayout>
 </LinearLayout>
 

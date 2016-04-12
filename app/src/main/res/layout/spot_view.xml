@@ -9,6 +9,12 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="200dp">-->
     <!--</com.google.android.gms.maps.MapView>-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:id="@+id/imageView"
+        android:background="#6d6a6a" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -26,20 +32,13 @@
 
 
         <TextView
-            android:layout_width="50dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="San Francisco"
             android:textAlignment="center"
             android:gravity="center_horizontal"
             android:id="@+id/spotName_show" />
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Input text"
-            android:id="@+id/spotNameInput"
-            android:layout_weight="1" />
 
 
     </LinearLayout>

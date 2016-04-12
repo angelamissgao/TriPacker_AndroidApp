@@ -1,11 +1,14 @@
 package com.example.tripacker.tripacker;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +20,11 @@ import android.widget.ImageView;
 public class SpotFragment extends Fragment {
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+
+    public static SpotFragment newInstance(SpotPageFragmentListener listener) {
+        SpotFragment f = new SpotFragment();
+        return f;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,7 +41,15 @@ public class SpotFragment extends Fragment {
         img1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // replace fragment
+//                Log.e("Startfragmenent", "----> Starting");
+//                Fragment fragment = new SpotProfileFragment();
+//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//                fragmentTransaction.replace(R.id.spot_item, fragment);
+//                fragmentTransaction.addToBackStack(null);
+//                fragmentTransaction.commit();
+//
                 Intent mainInten = new Intent(getActivity(), SpotProfileActivity.class);
                 startActivity(mainInten);
 
@@ -45,8 +61,10 @@ public class SpotFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Snackbar.make(v, "Hello Snackbar!",
-                        Snackbar.LENGTH_LONG).show();
+
+                Intent mainInten = new Intent(getActivity(), SpotEdit.class);
+                startActivity(mainInten);
+
             }
         });
 

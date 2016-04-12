@@ -98,7 +98,6 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
 
 
-
         // Register models to ActiveAndroid
         com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this);
         configurationBuilder.addModelClass(Trip.class);
@@ -186,6 +185,23 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
+        public final FragmentManager mFragmentManager;
+
+//        // replace fragment in viewpager
+        private final class SpotPageListener implements SpotPageFragmentListener {
+            @Override
+            public void onSwitchToNextFragment() {
+                mFragmentManager.beginTransaction().remove(spot_fragment).commit();
+                if(spot_fragment instanceof SpotFragment) {
+                    spot_fragment = SpotProfileFragment.newInstance(listner);
+                } else {
+                    spot_fragment = SpotFragment.newInstance(listner);
+                }
+                notifyDataSetChanged();
+            }
+        }
+
+        SpotPageListener listner = new SpotPageListener();
 
         public final int PAGE_COUNT = 5;
 
@@ -194,10 +210,11 @@ public class MainActivity extends ActionBarActivity {
         private PofilePageFragment profile_fragment = new PofilePageFragment();
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
+            mFragmentManager = fm;
         }
 
         //spot fragment
-        private SpotFragment spot_fragment = new SpotFragment();
+        private Fragment spot_fragment ;
 
 
 
@@ -216,13 +233,17 @@ public class MainActivity extends ActionBarActivity {
             switch (pos) {
 
                 case 0:
-                    return PageFragment.newInstance(1);
+                    return new ExploreFragment();
                 case 1:
-                    return PageFragment.newInstance(2);
+                    return new FavoritesFragment();
                 case 2:
-                    return PageFragment.newInstance(3);
-                case 3:
+                    return new TripFragment();
+                case 3:{
+                    if(spot_fragment == null) {
+                        spot_fragment = SpotFragment.newInstance(listner);
+                    }
                     return spot_fragment;
+                }
                 case 4:
                     return profile_fragment;
 
@@ -240,6 +261,7 @@ public class MainActivity extends ActionBarActivity {
             return mTabsTitle[position];
         }
     }
+
 
     private class TabViewHolder {
         public ImageView mIcon;

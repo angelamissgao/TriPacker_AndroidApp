@@ -7,11 +7,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.tripacker.tripacker.model.Spot;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -34,7 +31,7 @@ public class SpotProfileActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.spot_sample);
+        setContentView(R.layout.spot_view);
 
 //
 //        //TODO: 4/11/16 send more attribut to spot
