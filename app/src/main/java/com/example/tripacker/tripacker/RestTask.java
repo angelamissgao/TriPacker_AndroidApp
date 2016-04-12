@@ -41,8 +41,6 @@ public class RestTask extends AsyncTask<HttpUriRequest, Void, String> {
         mClient = client;
     }
 
-
-
     /*
     * the worker method that gets called on the background thread
     * when execute() is invoked on an instance of AysncTask

@@ -58,11 +58,6 @@ public class PofilePageFragment extends Fragment {
         listView.setAdapter(adapter);
 
 
-
-
-
-
-
         // Add item to adapter
 
         try {

@@ -118,6 +118,9 @@ public class Spot extends Model {
         return gmt_approved;
     }
 
+    //Setters
+    public void setName(String name) { this.name = name; }
+
     // Record Finders
     public static Spot byId(long id) {
         return new Select().from(Spot.class).where("id = ?", id).executeSingle();
