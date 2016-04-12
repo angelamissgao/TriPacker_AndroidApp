@@ -10,12 +10,22 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripacker.tripacker.async.AsyncJsonGetTask;
+import com.example.tripacker.tripacker.async.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.async.WebServices;
+
 import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by angelagao on 4/11/16.
@@ -44,21 +54,29 @@ public class SpotProfileActivity extends AppCompatActivity {
 //        Spot showSpot = new Spot();
 //        getContent();
 
-
     }
 
     private void getContent() {
-        HttpResponse spot;
-        JSONObject json = new JSONObject();
-        try{
-            HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
+//        HttpResponse spot;
+//        JSONObject json = new JSONObject();
+//        try{
+//            HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
+//
+//            RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
+//             //doInBackground runs
+//            progress = ProgressDialog.show(this, "Getting Spot Data ...", "Waiting For Results...", true);
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
 
-            RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
-             //doInBackground runs
-            progress = ProgressDialog.show(this, "Getting Spot Data ...", "Waiting For Results...", true);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+//        WebServices.setURL(GetSpot_URL);
+//        HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
+//        AsyncJsonGetTask getTask = new AsyncJsonGetTask(this);
+//        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+//        nameValuePairs.add(new BasicNameValuePair("spotname", "thailand"));
+////        httpGet.setHeader();
+//
+//        getTask.execute(httpGet, "");
     }
 
     private void sendContent() {
