@@ -5,6 +5,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
 
 /**
@@ -14,7 +15,6 @@ import org.apache.http.client.methods.HttpUriRequest;
  * the class of Java object that the result is to be converted to (optional).
  * The result is parsed from Json and returned to the calling activity through the onBackgroundTaskCompleted()
  * method defined in the AsyncCaller interface.
- * @author Saad Farooq
  *
  */
 public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
@@ -53,10 +53,11 @@ public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
 	
 	@Override
 	protected Object doInBackground(Object... params) {
-		
-		String response = WebServices.httpPost((HttpUriRequest)params[0], (String)params[1]);
-	
-		if (params.length == 3) {
+
+		HttpResponse response = WebServices.httpPost((HttpUriRequest)params[0], (String)params[1]);
+		return response;
+		/*
+		if (params.length ==3) {
 			JsonParser parser = new JsonParser();
 			JsonObject jsonObject = (JsonObject) parser.parse(response);
 			jsonObject = jsonObject.get("d").getAsJsonObject();
@@ -66,7 +67,7 @@ public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
 			return result;
 		} else {
 			return response;
-		}
+		}*/
 		
 	}
 	

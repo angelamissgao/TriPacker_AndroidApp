@@ -14,11 +14,20 @@ import android.widget.TextView;
 
 import com.activeandroid.Configuration;
 import com.example.tripacker.tripacker.adapter.TripsTimelineAdapter;
+import com.example.tripacker.tripacker.async.AsyncCaller;
+import com.example.tripacker.tripacker.async.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.async.WebServices;
 import com.example.tripacker.tripacker.model.Trip;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +36,8 @@ import java.util.List;
  * @author Waleed Sarwar
  * @since March 30, 2016 12:34 PM
  */
-public class PofilePageFragment extends Fragment {
+public class PofilePageFragment extends Fragment implements AsyncCaller {
+    private static final String TAG = "PofilePageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
 
@@ -105,5 +115,26 @@ public class PofilePageFragment extends Fragment {
         return view;
     }
 
+    private void getContent(){
+        // the request
+        try{
+            HttpGet httpGet = new HttpGet(new URI(WebServices.getBaseUrl()+"/member/profile/getprofile"));
+            AsyncJsonPostTask postTask = new AsyncJsonPostTask(this);
 
+
+            postTask.execute(httpGet, "");
+
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) {
+
+    }
 }

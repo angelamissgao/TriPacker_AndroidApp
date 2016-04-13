@@ -2,6 +2,7 @@ package com.example.tripacker.tripacker.async;
 
 import java.util.List;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
@@ -35,10 +36,11 @@ public class WebServices {
 	static final int SOCKET_TIMOUT = 2000;
 	static DefaultHttpClient client = getThreadSafeClient(); 
 
+	public static String getBaseUrl(){ return BASE_URL;}
 	public static void setURL(String url) {
 		BASE_URL = url;
 	}
-	
+
 	public static void setURL(String url, boolean debug) {
 		BASE_URL = url;
 		DEBUG = debug;
@@ -111,7 +113,7 @@ public class WebServices {
 	}
 
 
-	public static String httpPost(HttpUriRequest requestPost, String payLoad) {
+	public static HttpResponse httpPost(HttpUriRequest requestPost, String payLoad) {
 		HttpParams httpParams = new BasicHttpParams();
         HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
         HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMOUT);
@@ -126,7 +128,8 @@ public class WebServices {
         	request.setHeader("Authorization","Basic "+Base64.encodeToString((WS_USERNAME+":"+WS_PASSWORD).getBytes(),Base64.URL_SAFE|Base64.NO_WRAP));
         }
         
-        String jsonResponse = null;
+//        String jsonResponse = null;
+		HttpResponse jsonResponse = null;
         Log.d(TAG, "HttpPost URL: "+ requestPost.getURI());
         
         try {
@@ -134,7 +137,8 @@ public class WebServices {
         	request.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
         	BasicResponseHandler handler = new BasicResponseHandler();
         //	if (DEBUG) Log.d(TAG, "Executing post request with payload "+payLoad);
-            jsonResponse = client.execute(request, handler);
+        //    jsonResponse = client.execute(request, handler);
+			jsonResponse = client.execute(request);
         } catch (Exception e) {
         	Log.e(TAG, e.getMessage(),e);
         }

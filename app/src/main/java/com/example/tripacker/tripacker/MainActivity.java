@@ -27,6 +27,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.example.tripacker.tripacker.async.WebServices;
 import com.example.tripacker.tripacker.model.Trip;
 import com.example.tripacker.tripacker.model.User;
 
@@ -59,6 +60,10 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
+    // Configuration for calling a REST service
+    private static final String TEST_URL                   = "http://47.88.12.177/api";
+    private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +71,8 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
 //        // start login activity
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
 
         // Setup the viewPager for bottom navigation
@@ -104,6 +109,10 @@ public class MainActivity extends ActionBarActivity {
         configurationBuilder.addModelClass(Trip.class);
         configurationBuilder.addModelClass(User.class);
         ActiveAndroid.initialize(configurationBuilder.create());
+
+
+        //
+        WebServices.setURL(TEST_URL);
 
 
 

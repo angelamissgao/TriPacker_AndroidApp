@@ -3,10 +3,12 @@ package com.example.tripacker.tripacker;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 
 import android.content.Intent;
@@ -20,35 +22,50 @@ import com.example.tripacker.tripacker.async.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.async.WebServices;
 import com.example.tripacker.tripacker.async.AsyncCaller;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
+//import butterknife.ButterKnife;
+//import butterknife.InjectView;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import android.support.design.widget.TextInputEditText;
+
 public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-    @InjectView(R.id.input_username) EditText _usernameText;
+/*  @InjectView(R.id.input_username) EditText _usernameText;
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.btn_login) Button _loginButton;
     @InjectView(R.id.link_signup) TextView _signupLink;
+*/
+
+
+//    private TextInputEditText usernameText;
+//    private TextInputEditText passwordText;
+    private EditText usernameText;
+    private EditText passwordText;
+    private Button loginButton;
+    private TextView signupLink;
 
     // User Session Manager Class
     private UserSessionManager session;
-    private boolean isAuthenticated = false;
 
 
     // Configuration for calling a REST service
@@ -61,12 +78,23 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+        // Setup view elements
+//        usernameText = (TextInputEditText) findViewById(R.id.input_username);
+//        passwordText = (TextInputEditText) findViewById(R.id.input_password);
+        usernameText = (EditText) findViewById(R.id.input_username);
+        passwordText = (EditText) findViewById(R.id.input_password);
+        loginButton = (Button) findViewById(R.id.btn_login);
+        signupLink = (TextView) findViewById(R.id.link_signup);
+
+
+
         // User Session Manager
         session = new UserSessionManager(getApplicationContext());
 
-        ButterKnife.inject(this);
+//        ButterKnife.inject(this);
 
-        _loginButton.setOnClickListener(new View.OnClickListener() {
+        loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -74,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             }
         });
 
-        _signupLink.setOnClickListener(new View.OnClickListener() {
+        signupLink.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -93,7 +121,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             return;
         }
 
-        _loginButton.setEnabled(false);
+        loginButton.setEnabled(false);
 
         progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -101,24 +129,11 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String username = _usernameText.getText().toString();
-        String password = _passwordText.getText().toString();
+
         Log.e("User Authentication", "-------> Starting");
         // TODO: Implement your own authentication logic here.
         getContent();  //starts the RestTask
 
-        if(username.equals("eileenwei") && password.equals("800105")){
-            // Creating user login session
-            session.createUserLoginSession("Eileen Wei", "eileenwei0105@gmail.com");
-            Log.e("User Authentication", "-------> success!");
-            isAuthenticated = true;
-        }else{
-            // username / password doesn't match&
-            Toast.makeText(getApplicationContext(),
-                    "Username/Password is incorrect",
-                    Toast.LENGTH_LONG).show();
-            isAuthenticated = false;
-        }
 
 
     }
@@ -143,42 +158,46 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     }
 
     public void onLoginSuccess() {
-        _loginButton.setEnabled(true);
+        // Creating user login session
+        session.createUserLoginSession("Eileen Wei", "eileenwei0105@gmail.com");
+        loginButton.setEnabled(true);
         finish();
     }
 
     public void onLoginFailed() {
         Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
 
-        _loginButton.setEnabled(true);
+        loginButton.setEnabled(true);
     }
 
     public boolean validate() {
         boolean valid = true;
 
-        String username = _usernameText.getText().toString();
-        String password = _passwordText.getText().toString();
+        String username = usernameText.getText().toString();
+        String password = passwordText.getText().toString();
 
         //if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
         if (username.isEmpty()) {
-            _usernameText.setError("enter a valid username");
+            usernameText.setError("enter a valid username");
             valid = false;
         } else {
-            _usernameText.setError(null);
+            usernameText.setError(null);
 
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
+            passwordText.setError("between 4 and 10 alphanumeric characters");
             valid = false;
         } else {
-            _passwordText.setError(null);
+            passwordText.setError(null);
         }
 
         return valid;
     }
 
     private void getContent(){
+        String username = usernameText.getText().toString();
+        String password = passwordText.getText().toString();
         // the request
         try{
         /*    HttpPost httpPost = new HttpPost(new URI(TEST_URL));
@@ -192,20 +211,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             task.execute(httpPost); //doInBackground runs*/
 
 
-            WebServices.setURL(TEST_URL);
-            HttpPost httpPost = new HttpPost(new URI(TEST_URL));
+            HttpPost httpPost = new HttpPost(new URI(WebServices.getBaseUrl()+"/member/login/dologin"));
             AsyncJsonPostTask postTask = new AsyncJsonPostTask(this);
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("username", "eileen"));
-            nameValuePairs.add(new BasicNameValuePair("password", "111111"));
+            nameValuePairs.add(new BasicNameValuePair("username", username));
+            nameValuePairs.add(new BasicNameValuePair("password", password));
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
             postTask.execute(httpPost, "");
-
-
-
-
-
 
         }
         catch (Exception e)
@@ -265,20 +278,38 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
         // clear the progress indicator
-        if (progressDialog != null)
-        {
+        if (progressDialog != null){
             progressDialog.dismiss();
         }
 
-        Toast.makeText(getApplicationContext(),
-                "Response is ready: "+result.toString(),
-                Toast.LENGTH_LONG).show();
-        Log.i(TAG, "RESPONSE = " + result.toString());
-        Log.i(TAG, "RESPONSE type= " + result.getClass());
-        onLoginSuccess();
-        //
-        // my old json code was here. this is where you will parse it.
-        //
+        HttpResponse  response = (HttpResponse) result;
+        int code = response.getStatusLine().getStatusCode();
+        Log.i(TAG, "RESPONSE CODE= " + code);
+        if(code == 200){
+            onLoginSuccess();
+
+            // Get cookie
+            Header[] cookie = response.getHeaders("Set-Cookie");
+            for (int i=0; i < cookie.length; i++) {
+                Header h = cookie[i];
+                Log.i(TAG, "Cookie Header names: "+h.getName());
+                Log.i(TAG, "Cookie Header Value: "+h.getValue());
+            }
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+            String responseBody = "";
+            // Response Body
+            try {
+                responseBody = responseHandler.handleResponse(response);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.i(TAG, "RESPONSE BODY= " + responseBody);
+            // Parse user json object
+        }else{
+            onLoginFailed();
+        }
+
 
 
     }

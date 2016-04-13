@@ -17,7 +17,6 @@ import com.google.gson.JsonParser;
  * the class of Java object that the result is to be converted to which is use by Gson.
  * The result is parsed as Json and returned to the calling activity through the onBackgroundTaskCompleted()
  * method defined in the AsyncCaller interface.
- * @author Saad Farooq (sfarooq@andrew.cmu.edu)
  *
  */
 public class AsyncJsonGetTask extends AsyncTask<Object, Void, Object> {
