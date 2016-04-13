@@ -1,11 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/lightgrey">
+
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:text="TriPacker Community"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Favorites"
+        android:gravity="center"
+        android:background="@drawable/profile_cover"
+        android:textColor="@color/abc_primary_text_material_dark"
         android:id="@+id/textView" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:background="#ffffff">
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/trip1_img"
+            android:background="#c0baba" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Angela Gao"
+                android:layout_gravity="left"
+                android:padding="5dp"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/trip1_name" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Trip in Sanfrancisco"
+                android:layout_gravity="left"
+                android:padding="5dp"
+                android:id="@+id/trip1_description" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5dp"
+                android:layout_marginTop="5dp" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="2015-12-01s"
+                    android:id="@+id/textView6"
+                    android:textSize="@dimen/abc_text_size_small_material" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView12"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="80dp"
+                    android:src="@drawable/ic_favorite_selected_24dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="123"
+                    android:id="@+id/textView3" />
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:paddingTop="3dp"
+        android:background="#000000" />
 </LinearLayout>

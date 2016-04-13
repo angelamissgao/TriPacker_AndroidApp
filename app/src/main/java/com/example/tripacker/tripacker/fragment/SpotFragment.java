@@ -96,7 +96,7 @@ public class SpotFragment extends Fragment {
 
 
         // Floating button
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_spot);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
