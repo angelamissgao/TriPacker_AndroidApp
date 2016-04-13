@@ -100,8 +100,16 @@ public class SpotFragment extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent mainInten = new Intent(getActivity(), SpotEdit.class);
+
+                // bundle data to the spot view activity
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("user_id");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("user_id", spot_info);
+
+                mainInten.putExtras(bundle);
                 startActivity(mainInten);
 
             }
