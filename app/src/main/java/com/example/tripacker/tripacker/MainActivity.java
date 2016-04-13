@@ -10,7 +10,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,7 +26,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
-import com.example.tripacker.tripacker.async.WebServices;
+
+import com.example.tripacker.tripacker.ws.WebServices;
+import com.example.tripacker.tripacker.fragment.ExploreFragment;
+import com.example.tripacker.tripacker.fragment.FavoritesFragment;
+import com.example.tripacker.tripacker.fragment.PofilePageFragment;
+import com.example.tripacker.tripacker.fragment.SpotFragment;
+import com.example.tripacker.tripacker.fragment.TripFragment;
 import com.example.tripacker.tripacker.model.Trip;
 import com.example.tripacker.tripacker.model.User;
 
@@ -101,7 +106,6 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
-
 
 
         // Register models to ActiveAndroid
@@ -195,6 +199,23 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private class MyPagerAdapter extends FragmentPagerAdapter {
+        public final FragmentManager mFragmentManager;
+
+//        // replace fragment in viewpager
+        private final class SpotPageListener implements SpotPageFragmentListener {
+            @Override
+            public void onSwitchToNextFragment() {
+                mFragmentManager.beginTransaction().remove(spot_fragment).commit();
+                if(spot_fragment instanceof SpotFragment) {
+                    spot_fragment = SpotProfileFragment.newInstance(listner);
+                } else {
+                    spot_fragment = SpotFragment.newInstance(listner);
+                }
+                notifyDataSetChanged();
+            }
+        }
+
+        SpotPageListener listner = new SpotPageListener();
 
         public final int PAGE_COUNT = 5;
 
@@ -203,10 +224,11 @@ public class MainActivity extends ActionBarActivity {
         private PofilePageFragment profile_fragment = new PofilePageFragment();
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
+            mFragmentManager = fm;
         }
 
         //spot fragment
-        private SpotFragment spot_fragment = new SpotFragment();
+        private Fragment spot_fragment ;
 
 
 
@@ -225,13 +247,17 @@ public class MainActivity extends ActionBarActivity {
             switch (pos) {
 
                 case 0:
-                    return PageFragment.newInstance(1);
+                    return new ExploreFragment();
                 case 1:
-                    return PageFragment.newInstance(2);
+                    return new FavoritesFragment();
                 case 2:
-                    return PageFragment.newInstance(3);
-                case 3:
+                    return new TripFragment();
+                case 3:{
+                    if(spot_fragment == null) {
+                        spot_fragment = SpotFragment.newInstance(listner);
+                    }
                     return spot_fragment;
+                }
                 case 4:
                     return profile_fragment;
 
@@ -249,6 +275,7 @@ public class MainActivity extends ActionBarActivity {
             return mTabsTitle[position];
         }
     }
+
 
     private class TabViewHolder {
         public ImageView mIcon;

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
+        android:text="America"
+        android:background="@drawable/profile_cover"
+        android:id="@+id/tv1"
+        android:textColor="@color/abc_primary_text_material_dark" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
+        android:text="New Zealand"
+        android:background="@drawable/new_zealand"
+        android:id="@+id/tv2"
+        android:textColor="@color/abc_primary_text_material_dark" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
+        android:text="Thailand"
+        android:background="@drawable/thai_temple"
+        android:id="@+id/tv3"
+        android:textColor="@color/abc_primary_text_material_dark" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="5dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:gravity="center"
+        android:text="Europe"
+        android:background="@drawable/paris"
+        android:id="@+id/tv4"
+        android:textColor="@color/abc_primary_text_material_dark" />
+</LinearLayout>

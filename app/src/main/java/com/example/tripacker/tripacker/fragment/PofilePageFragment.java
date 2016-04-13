@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,10 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.activeandroid.Configuration;
+import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.adapter.TripsTimelineAdapter;
-import com.example.tripacker.tripacker.async.AsyncCaller;
-import com.example.tripacker.tripacker.async.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.async.WebServices;
+import com.example.tripacker.tripacker.ws.AsyncCaller;
+import com.example.tripacker.tripacker.ws.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.ws.WebServices;
 import com.example.tripacker.tripacker.model.Trip;
 
 import org.apache.http.NameValuePair;

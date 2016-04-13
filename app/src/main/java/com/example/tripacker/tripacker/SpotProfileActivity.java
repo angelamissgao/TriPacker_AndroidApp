@@ -7,15 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripacker.tripacker.model.Spot;
-
-import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
-import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -34,7 +29,7 @@ public class SpotProfileActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.spot_sample);
+        setContentView(R.layout.spot_view);
 
 //
 //        //TODO: 4/11/16 send more attribut to spot
@@ -47,21 +42,29 @@ public class SpotProfileActivity extends AppCompatActivity {
 //        Spot showSpot = new Spot();
 //        getContent();
 
-
     }
 
     private void getContent() {
-        HttpResponse spot;
-        JSONObject json = new JSONObject();
-        try{
-            HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
+//        HttpResponse spot;
+//        JSONObject json = new JSONObject();
+//        try{
+//            HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
+//
+//            RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
+//             //doInBackground runs
+//            progress = ProgressDialog.show(this, "Getting Spot Data ...", "Waiting For Results...", true);
+//        } catch (URISyntaxException e) {
+//            e.printStackTrace();
+//        }
 
-            RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
-             //doInBackground runs
-            progress = ProgressDialog.show(this, "Getting Spot Data ...", "Waiting For Results...", true);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
+//        WebServices.setURL(GetSpot_URL);
+//        HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
+//        AsyncJsonGetTask getTask = new AsyncJsonGetTask(this);
+//        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+//        nameValuePairs.add(new BasicNameValuePair("spotname", "thailand"));
+////        httpGet.setHeader();
+//
+//        getTask.execute(httpGet, "");
     }
 
     private void sendContent() {

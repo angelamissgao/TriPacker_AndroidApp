@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--<com.google.android.gms.maps.MapView-->
+    <!--android:id="@+id/mapview"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="200dp">-->
+    <!--</com.google.android.gms.maps.MapView>-->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:id="@+id/imageView"
+        android:background="#6d6a6a" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingTop="40dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_spot"
+            android:gravity="center"
+            android:id="@+id/imageView2" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Place here..."
+            android:id="@+id/spotNameInput"
+            android:gravity="center_horizontal"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingTop="40dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_tel"
+            android:gravity="center"
+            android:id="@+id/imageView3" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Place here..."
+            android:gravity="center_horizontal"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingTop="40dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_email"
+            android:gravity="center"
+            android:id="@+id/imageView4" />
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Edit Place here..."
+            android:gravity="center_horizontal"
+            android:layout_weight="1" />
+
+    </LinearLayout>
+
+
+</LinearLayout>
+

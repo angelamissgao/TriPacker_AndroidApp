@@ -2,13 +2,22 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/lightgrey">
 
     <!--<com.google.android.gms.maps.MapView-->
         <!--android:id="@+id/mapview"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="200dp">-->
     <!--</com.google.android.gms.maps.MapView>-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:gravity="center"
+        android:text="Thai Temple"
+        android:id="@+id/imageView"
+        android:textColor="@color/abc_primary_text_material_dark"
+        android:background="@drawable/thai_temple" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -26,20 +35,13 @@
 
 
         <TextView
-            android:layout_width="50dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="San Francisco"
             android:textAlignment="center"
             android:gravity="center_horizontal"
             android:id="@+id/spotName_show" />
-
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="Input text"
-            android:id="@+id/spotNameInput"
-            android:layout_weight="1" />
 
 
     </LinearLayout>
