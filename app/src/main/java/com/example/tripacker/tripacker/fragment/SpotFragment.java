@@ -14,7 +14,6 @@ import android.widget.SearchView;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.SpotEdit;
-import com.example.tripacker.tripacker.SpotPageFragmentListener;
 import com.example.tripacker.tripacker.SpotProfileActivity;
 import com.example.tripacker.tripacker.adapter.SpotsTimelineAdapter;
 import com.example.tripacker.tripacker.model.Spot;
@@ -30,7 +29,7 @@ public class SpotFragment extends Fragment {
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
 
-    public static SpotFragment newInstance(SpotPageFragmentListener listener) {
+    public static SpotFragment newInstance() {
         SpotFragment f = new SpotFragment();
         return f;
     }
@@ -70,15 +69,7 @@ public class SpotFragment extends Fragment {
         img1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // replace fragment
-//                Log.e("Startfragmenent", "----> Starting");
-//                Fragment fragment = new SpotProfileFragment();
-//                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                fragmentTransaction.replace(R.id.spot_item, fragment);
-//                fragmentTransaction.addToBackStack(null);
-//                fragmentTransaction.commit();
-//
+
                 Intent mainInten = new Intent(getActivity(), SpotProfileActivity.class);
 
                 // bundle data to the spot view activity

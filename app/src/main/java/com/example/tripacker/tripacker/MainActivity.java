@@ -201,36 +201,18 @@ public class MainActivity extends ActionBarActivity {
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public final FragmentManager mFragmentManager;
 
-//        // replace fragment in viewpager
-        private final class SpotPageListener implements SpotPageFragmentListener {
-            @Override
-            public void onSwitchToNextFragment() {
-                mFragmentManager.beginTransaction().remove(spot_fragment).commit();
-                if(spot_fragment instanceof SpotFragment) {
-                    spot_fragment = SpotProfileFragment.newInstance(listner);
-                } else {
-                    spot_fragment = SpotFragment.newInstance(listner);
-                }
-                notifyDataSetChanged();
-            }
-        }
-
-        SpotPageListener listner = new SpotPageListener();
-
         public final int PAGE_COUNT = 5;
 
         private final String[] mTabsTitle = {"Explore", "Favorites", "Trip", "Spot", "Profile"};
 
         private PofilePageFragment profile_fragment = new PofilePageFragment();
+        private Fragment spot_fragment = new SpotFragment();
+        private TripFragment trip_fragment = new TripFragment();
+
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
             mFragmentManager = fm;
         }
-
-        //spot fragment
-        private Fragment spot_fragment ;
-
-
 
         public View getTabView(int position) {
             // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
@@ -251,16 +233,12 @@ public class MainActivity extends ActionBarActivity {
                 case 1:
                     return new FavoritesFragment();
                 case 2:
-                    return new TripFragment();
+                    return trip_fragment;
                 case 3:{
-                    if(spot_fragment == null) {
-                        spot_fragment = SpotFragment.newInstance(listner);
-                    }
                     return spot_fragment;
                 }
                 case 4:
                     return profile_fragment;
-
             }
             return null;
         }
