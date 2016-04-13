@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.async;
+package com.example.tripacker.tripacker.ws;
 
 import java.util.List;
 

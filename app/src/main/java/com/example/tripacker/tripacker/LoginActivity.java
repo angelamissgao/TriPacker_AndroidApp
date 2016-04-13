@@ -6,7 +6,6 @@ import android.content.IntentFilter;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import android.content.Intent;
@@ -16,9 +15,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripacker.tripacker.async.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.async.WebServices;
-import com.example.tripacker.tripacker.async.AsyncCaller;
+import com.example.tripacker.tripacker.ws.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.ws.WebServices;
+import com.example.tripacker.tripacker.ws.AsyncCaller;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,10 +28,8 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;

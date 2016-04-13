@@ -1,6 +1,5 @@
 package com.example.tripacker.tripacker;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,7 +9,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +25,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
+import com.example.tripacker.tripacker.fragment.ExploreFragment;
+import com.example.tripacker.tripacker.fragment.FavoritesFragment;
+import com.example.tripacker.tripacker.fragment.PofilePageFragment;
+import com.example.tripacker.tripacker.fragment.SpotFragment;
+import com.example.tripacker.tripacker.fragment.TripFragment;
 import com.example.tripacker.tripacker.model.Trip;
 import com.example.tripacker.tripacker.model.User;
 

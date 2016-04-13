@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.activeandroid.Configuration;
+import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.model.Trip;
 
