@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.fragment;
+package com.example.tripacker.tripacker.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +15,9 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.SpotEditActivity;
-import com.example.tripacker.tripacker.SpotViewActivity;
-import com.example.tripacker.tripacker.adapter.SpotsTimelineAdapter;
+import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
+import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
+import com.example.tripacker.tripacker.view.adapter.SpotsTimelineAdapter;
 import com.example.tripacker.tripacker.entity.Spot;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonGetTask;

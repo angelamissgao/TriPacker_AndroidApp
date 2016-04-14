@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view;
 
 import android.content.Context;
 

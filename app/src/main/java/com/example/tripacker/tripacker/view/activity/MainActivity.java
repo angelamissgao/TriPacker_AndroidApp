@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.activity;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -22,15 +22,17 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 
+import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
+import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
 
-import com.example.tripacker.tripacker.fragment.ExploreFragment;
-import com.example.tripacker.tripacker.fragment.FavoritesFragment;
-import com.example.tripacker.tripacker.fragment.ProfilePageFragment;
-import com.example.tripacker.tripacker.fragment.SpotFragment;
-import com.example.tripacker.tripacker.fragment.TripFragment;
+import com.example.tripacker.tripacker.view.fragment.ExploreFragment;
+import com.example.tripacker.tripacker.view.fragment.FavoritesFragment;
+import com.example.tripacker.tripacker.view.fragment.ProfilePageFragment;
+import com.example.tripacker.tripacker.view.fragment.SpotFragment;
+import com.example.tripacker.tripacker.view.fragment.TripFragment;
 import com.example.tripacker.tripacker.entity.Trip;
 import com.example.tripacker.tripacker.entity.User;
 

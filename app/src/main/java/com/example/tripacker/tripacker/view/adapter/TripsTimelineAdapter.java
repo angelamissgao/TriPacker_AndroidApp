@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.adapter;
+package com.example.tripacker.tripacker.view.adapter;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.Trip;

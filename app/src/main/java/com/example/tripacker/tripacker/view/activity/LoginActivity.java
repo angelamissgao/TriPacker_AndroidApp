@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.RestTask;
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;

@@ -1,8 +1,11 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
+import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.RestTask;
 
 import org.apache.http.client.methods.HttpGet;
 

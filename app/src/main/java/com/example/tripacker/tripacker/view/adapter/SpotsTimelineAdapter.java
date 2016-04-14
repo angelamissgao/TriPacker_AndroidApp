@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.adapter;
+package com.example.tripacker.tripacker.view.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

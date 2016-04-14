@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.activity;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -9,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.RestTask;
 
 import org.apache.http.client.methods.HttpGet;
 
