@@ -16,7 +16,7 @@ import com.example.tripacker.tripacker.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
-import com.example.tripacker.tripacker.model.Trip;
+import com.example.tripacker.tripacker.entity.Trip;
 
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONException;
@@ -29,7 +29,7 @@ import java.util.ArrayList;
  * @author Waleed Sarwar
  * @since March 30, 2016 12:34 PM
  */
-public class PofilePageFragment extends Fragment implements AsyncCaller {
+public class ProfilePageFragment extends Fragment implements AsyncCaller {
     private static final String TAG = "PofilePageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";

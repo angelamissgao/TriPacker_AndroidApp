@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.model;
+package com.example.tripacker.tripacker.entity;
 
 import android.util.Log;
 

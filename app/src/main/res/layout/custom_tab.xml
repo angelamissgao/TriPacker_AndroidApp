@@ -6,8 +6,8 @@
     android:background="?attr/selectableItemBackground"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingBottom="10dp"
-    android:paddingTop="8dp">
+    android:paddingBottom="15dp"
+    android:paddingTop="15dp">
 
     <ImageView
         android:id="@+id/icon"
@@ -15,9 +15,10 @@
         android:layout_height="24dp"
         android:scaleType="centerInside"
         android:textColor="@color/primary"
-        android:src="@drawable/ic_profile_selector" />
+        android:src="@drawable/ic_profile_selector"
+        android:layout_gravity="center" />
 
-    <TextView
+    <!--TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,5 +27,5 @@
         android:textAllCaps="false"
         android:textColor="@color/monsoon"
         android:textSize="10sp"
-        tools:text="Recents" />
+        tools:text="Recents" /-->
 </LinearLayout>

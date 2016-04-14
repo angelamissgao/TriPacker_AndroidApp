@@ -9,31 +9,32 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 
 import com.example.tripacker.tripacker.ws.remote.WebServices;
+
+import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
+
 import com.example.tripacker.tripacker.fragment.ExploreFragment;
 import com.example.tripacker.tripacker.fragment.FavoritesFragment;
-import com.example.tripacker.tripacker.fragment.PofilePageFragment;
+import com.example.tripacker.tripacker.fragment.ProfilePageFragment;
 import com.example.tripacker.tripacker.fragment.SpotFragment;
 import com.example.tripacker.tripacker.fragment.TripFragment;
-import com.example.tripacker.tripacker.model.Trip;
-import com.example.tripacker.tripacker.model.User;
+import com.example.tripacker.tripacker.entity.Trip;
+import com.example.tripacker.tripacker.entity.User;
+
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
     // Runner IO for calling external APIs
@@ -64,6 +65,16 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
+
+    //new added
+    private SlidingTabLayout slidingTabLayout;
+    private ViewPager viewPager;
+    private ArrayList<Fragment> fragments;
+    private ActionTabsViewPagerAdapter myViewPageAdapter;
+
+
+
+
     // Configuration for calling a REST service
     private static final String TEST_URL                   = "http://47.88.12.177/api";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
@@ -74,25 +85,45 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-////      // start login activity
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
+//        // start login activity
+  //      Intent intent = new Intent(this, LoginActivity.class);
+  //      startActivity(intent);
 
 
-        // Setup the viewPager for bottom navigation
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
+        // Define SlidingTabLayout (shown at top)
+        // and ViewPager (shown at bottom) in the layout.
+        // Get their instances.
+        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.tab);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        mTabLayout.setupWithViewPager(viewPager);
 
-        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = mTabLayout.getTabAt(i);
-            tab.setCustomView(pagerAdapter.getTabView(i));
-        }
-        // Setup the landing fragment to profile fragment
-        mTabLayout.getTabAt(4).getCustomView().setSelected(true);
+        // create a fragment list in order.
+        fragments = new ArrayList<Fragment>();
+        ProfilePageFragment profile_frag = new ProfilePageFragment();
+        SpotFragment spot_frag = new SpotFragment();
+        TripFragment trip_frag = new TripFragment();
+        ExploreFragment explore_frag = new ExploreFragment();
+        FavoritesFragment fav_frag = new FavoritesFragment();
+
+
+        fragments.add(explore_frag);
+        fragments.add(fav_frag);
+        fragments.add(trip_frag);
+        fragments.add(spot_frag);
+        fragments.add(profile_frag);
+
+
+
+        // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
+        // and ViewPager (different pages of fragment) together.
+        myViewPageAdapter =new ActionTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
+        viewPager.setAdapter(myViewPageAdapter);
+        slidingTabLayout.setCustomTabView(R.layout.custom_tab, R.id.title, R.id.icon);
+        // make sure the tabs are equally spaced.
+        slidingTabLayout.setDistributeEvenly(true);
+        slidingTabLayout.setViewPager(viewPager);
+
+
 
 
         // Setup the menu bar
@@ -105,7 +136,7 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
-
+        getSupportActionBar().setElevation(0);
 
         // Register models to ActiveAndroid
         com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this);
@@ -195,62 +226,6 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class MyPagerAdapter extends FragmentPagerAdapter {
-        public final FragmentManager mFragmentManager;
-
-        public final int PAGE_COUNT = 5;
-
-        private final String[] mTabsTitle = {"Explore", "Favorites", "Trip", "Spot", "Profile"};
-
-        private PofilePageFragment profile_fragment = new PofilePageFragment();
-        private Fragment spot_fragment = new SpotFragment();
-        private TripFragment trip_fragment = new TripFragment();
-
-        public MyPagerAdapter(FragmentManager fm) {
-            super(fm);
-            mFragmentManager = fm;
-        }
-
-        public View getTabView(int position) {
-            // Given you have a custom layout in `res/layout/custom_tab.xml` with a TextView and ImageView
-            View view = LayoutInflater.from(MainActivity.this).inflate(R.layout.custom_tab, null);
-            TextView title = (TextView) view.findViewById(R.id.title);
-            title.setText(mTabsTitle[position]);
-            ImageView icon = (ImageView) view.findViewById(R.id.icon);
-            icon.setImageResource(mTabsIcons[position]);
-            return view;
-        }
-
-        @Override
-        public Fragment getItem(int pos) {
-            switch (pos) {
-
-                case 0:
-                    return new ExploreFragment();
-                case 1:
-                    return new FavoritesFragment();
-                case 2:
-                    return trip_fragment;
-                case 3:{
-                    return spot_fragment;
-                }
-                case 4:
-                    return profile_fragment;
-            }
-            return null;
-        }
-
-        @Override
-        public int getCount() {
-            return PAGE_COUNT;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mTabsTitle[position];
-        }
     }
 
 

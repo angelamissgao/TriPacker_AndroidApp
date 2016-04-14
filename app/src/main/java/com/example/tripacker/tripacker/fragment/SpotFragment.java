@@ -1,19 +1,24 @@
 package com.example.tripacker.tripacker.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.SpotEditActivity;
+import com.example.tripacker.tripacker.SpotViewActivity;
 import com.example.tripacker.tripacker.adapter.SpotsTimelineAdapter;
-import com.example.tripacker.tripacker.model.Spot;
+import com.example.tripacker.tripacker.entity.Spot;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonGetTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
@@ -82,48 +87,48 @@ public class SpotFragment extends Fragment implements AsyncCaller {
         }
 
 
-//        // relocate to spot profile
-//        ImageView img1 = (ImageView) view.findViewById(R.id.img1);
-//        // could be set to onTouchListener
-//        img1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
-//
-//                // bundle data to the spot view activity
-//                ArrayList<String> spot_info = new ArrayList<String>();
-//                //Todo: added spot json
-//                spot_info.add("spotID");
-//                Bundle bundle = new Bundle();
-//                bundle.putStringArrayList("spotId", spot_info);
-//                mainInten.putExtras(bundle);
-//
-//                startActivity(mainInten);
-//
-//            }
-//        });
-//
-//
-//        // Floating button
-//        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_spot);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent mainInten = new Intent(getActivity(), SpotEditActivity.class);
-//
-//                // bundle data to the spot view activity
-//                ArrayList<String> spot_info = new ArrayList<String>();
-//                //Todo: added spot json
-//                spot_info.add("user_id");
-//                Bundle bundle = new Bundle();
-//                bundle.putStringArrayList("user_id", spot_info);
-//
-//                mainInten.putExtras(bundle);
-//                startActivity(mainInten);
-//
-//            }
-//        });
+        // relocate to spot profile
+        ImageView img1 = (ImageView) view.findViewById(R.id.img1);
+        // could be set to onTouchListener
+        img1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
+
+                // bundle data to the spot view activity
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("spotID");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("spotId", spot_info);
+                mainInten.putExtras(bundle);
+
+                startActivity(mainInten);
+
+            }
+        });
+
+
+        // Floating button
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_spot);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getActivity(), SpotEditActivity.class);
+
+                // bundle data to the spot view activity
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("user_id");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("user_id", spot_info);
+
+                mainInten.putExtras(bundle);
+                startActivity(mainInten);
+
+            }
+        });
 
         return view;
     }
