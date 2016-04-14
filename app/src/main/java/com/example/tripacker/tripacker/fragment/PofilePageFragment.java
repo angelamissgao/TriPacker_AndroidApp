@@ -8,30 +8,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.activeandroid.Configuration;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.adapter.TripsTimelineAdapter;
-import com.example.tripacker.tripacker.ws.AsyncCaller;
-import com.example.tripacker.tripacker.ws.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.ws.WebServices;
+import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.ws.remote.WebServices;
 import com.example.tripacker.tripacker.model.Trip;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * @author Waleed Sarwar

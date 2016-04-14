@@ -19,7 +19,7 @@ import java.util.ArrayList;
 /**
  * Created by angelagao on 4/11/16.
  */
-public class SpotProfileActivity extends AppCompatActivity {
+public class SpotViewActivity extends AppCompatActivity {
 
     //GetSpotAPI - // TODO: 4/11/16
     private static final String SendSpot_URL = "";

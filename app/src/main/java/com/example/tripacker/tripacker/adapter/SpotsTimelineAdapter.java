@@ -30,12 +30,10 @@ public class SpotsTimelineAdapter extends ArrayAdapter<Spot> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View row = convertView;
-        RecyclerView.ViewHolder holder = null;
 
         Spot spot = (Spot) getItem(position);
 
-        if (row == null) {
+        if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_layout, parent, false);
         }
 
@@ -44,6 +42,6 @@ public class SpotsTimelineAdapter extends ArrayAdapter<Spot> {
 
 //        imageView.setBackground(spot.getImage_main());
         textView.setText(spot.getName());
-        return row;
+        return convertView;
     }
 }

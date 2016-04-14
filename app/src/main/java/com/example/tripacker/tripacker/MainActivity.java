@@ -1,6 +1,5 @@
 package com.example.tripacker.tripacker;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -27,7 +26,7 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 
-import com.example.tripacker.tripacker.ws.WebServices;
+import com.example.tripacker.tripacker.ws.remote.WebServices;
 import com.example.tripacker.tripacker.fragment.ExploreFragment;
 import com.example.tripacker.tripacker.fragment.FavoritesFragment;
 import com.example.tripacker.tripacker.fragment.PofilePageFragment;

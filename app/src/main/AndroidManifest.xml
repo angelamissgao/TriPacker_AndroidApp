@@ -20,8 +20,8 @@
         </activity>
         <activity android:name="com.example.tripacker.tripacker.LoginActivity" android:theme="@style/AppTheme.Dark" />
         <activity android:name="com.example.tripacker.tripacker.SignupActivity" android:theme="@style/AppTheme.Dark" />
-        <activity android:name=".SpotProfileActivity" android:theme="@style/AppTheme"/>
-        <activity android:name=".SpotEdit" android:theme="@style/AppTheme"/>
+        <activity android:name=".SpotViewActivity" android:theme="@style/AppTheme"/>
+        <activity android:name=".SpotEditActivity" android:theme="@style/AppTheme"/>
     </application>
 
 </manifest>

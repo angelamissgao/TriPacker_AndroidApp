@@ -13,7 +13,7 @@ import java.util.ArrayList;
 /**
  * Created by angelagao on 4/11/16.
  */
-public class SpotEdit extends AppCompatActivity {
+public class SpotEditActivity extends AppCompatActivity {
     //EditSpotAPI - // TODO: 4/11/16
     private static final String SendSpot_URL = "";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";

@@ -3,13 +3,10 @@ package com.example.tripacker.tripacker;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.IntentFilter;
-import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
 
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.AppCompatEditText;
 import android.util.Log;
 
 import android.content.Intent;
@@ -19,9 +16,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripacker.tripacker.ws.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.ws.WebServices;
-import com.example.tripacker.tripacker.ws.AsyncCaller;
+import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.ws.remote.WebServices;
+import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
 //import butterknife.ButterKnife;
 //import butterknife.InjectView;
@@ -42,8 +39,6 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
-
-import android.support.design.widget.TextInputEditText;
 
 public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private static final String TAG = "LoginActivity";
