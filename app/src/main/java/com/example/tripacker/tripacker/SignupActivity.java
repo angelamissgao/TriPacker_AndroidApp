@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripacker.tripacker.async.AsyncCaller;
-import com.example.tripacker.tripacker.async.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.async.WebServices;
+import com.example.tripacker.tripacker.ws.AsyncCaller;
+import com.example.tripacker.tripacker.ws.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.ws.WebServices;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
