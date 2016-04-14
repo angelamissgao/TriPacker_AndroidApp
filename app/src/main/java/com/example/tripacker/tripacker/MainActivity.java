@@ -27,14 +27,17 @@ import android.widget.Toast;
 
 import com.activeandroid.ActiveAndroid;
 
+import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
 import com.example.tripacker.tripacker.ws.WebServices;
 import com.example.tripacker.tripacker.fragment.ExploreFragment;
 import com.example.tripacker.tripacker.fragment.FavoritesFragment;
-import com.example.tripacker.tripacker.fragment.PofilePageFragment;
+import com.example.tripacker.tripacker.fragment.ProfilePageFragment;
 import com.example.tripacker.tripacker.fragment.SpotFragment;
 import com.example.tripacker.tripacker.fragment.TripFragment;
 import com.example.tripacker.tripacker.model.Trip;
 import com.example.tripacker.tripacker.model.User;
+
+import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
     // Runner IO for calling external APIs
@@ -65,6 +68,16 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
 
+
+    //new added
+    private SlidingTabLayout slidingTabLayout;
+    private ViewPager viewPager;
+    private ArrayList<Fragment> fragments;
+    private ActionTabsViewPagerAdapter myViewPageAdapter;
+
+
+
+
     // Configuration for calling a REST service
     private static final String TEST_URL                   = "http://47.88.12.177/api";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
@@ -75,25 +88,45 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-////      // start login activity
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
+//        // start login activity
+  //      Intent intent = new Intent(this, LoginActivity.class);
+  //      startActivity(intent);
 
 
-        // Setup the viewPager for bottom navigation
-        ViewPager viewPager = (ViewPager) findViewById(R.id.view_pager);
-        MyPagerAdapter pagerAdapter = new MyPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(pagerAdapter);
+        // Define SlidingTabLayout (shown at top)
+        // and ViewPager (shown at bottom) in the layout.
+        // Get their instances.
+        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.tab);
+        viewPager = (ViewPager) findViewById(R.id.view_pager);
 
-        mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        mTabLayout.setupWithViewPager(viewPager);
 
-        for (int i = 0; i < mTabLayout.getTabCount(); i++) {
-            TabLayout.Tab tab = mTabLayout.getTabAt(i);
-            tab.setCustomView(pagerAdapter.getTabView(i));
-        }
-        // Setup the landing fragment to profile fragment
-        mTabLayout.getTabAt(4).getCustomView().setSelected(true);
+        // create a fragment list in order.
+        fragments = new ArrayList<Fragment>();
+        ProfilePageFragment profile_frag = new ProfilePageFragment();
+        SpotFragment spot_frag = new SpotFragment();
+        TripFragment trip_frag = new TripFragment();
+        ExploreFragment explore_frag = new ExploreFragment();
+        FavoritesFragment fav_frag = new FavoritesFragment();
+
+
+        fragments.add(explore_frag);
+        fragments.add(fav_frag);
+        fragments.add(trip_frag);
+        fragments.add(spot_frag);
+        fragments.add(profile_frag);
+
+
+
+        // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
+        // and ViewPager (different pages of fragment) together.
+        myViewPageAdapter =new ActionTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
+        viewPager.setAdapter(myViewPageAdapter);
+        slidingTabLayout.setCustomTabView(R.layout.custom_tab, R.id.title, R.id.icon);
+        // make sure the tabs are equally spaced.
+        slidingTabLayout.setDistributeEvenly(true);
+        slidingTabLayout.setViewPager(viewPager);
+
+
 
 
         // Setup the menu bar
@@ -106,7 +139,7 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
-
+        getSupportActionBar().setElevation(0);
 
         // Register models to ActiveAndroid
         com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this);
@@ -197,7 +230,7 @@ public class MainActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
+/*
     private class MyPagerAdapter extends FragmentPagerAdapter {
         public final FragmentManager mFragmentManager;
 
@@ -205,10 +238,14 @@ public class MainActivity extends ActionBarActivity {
 
         private final String[] mTabsTitle = {"Explore", "Favorites", "Trip", "Spot", "Profile"};
 
+<<<<<<< HEAD
         private PofilePageFragment profile_fragment = new PofilePageFragment();
         private Fragment spot_fragment = new SpotFragment();
         private TripFragment trip_fragment = new TripFragment();
 
+=======
+        private ProfilePageFragment profile_fragment = new ProfilePageFragment();
+>>>>>>> top_sliding_bar
         public MyPagerAdapter(FragmentManager fm) {
             super(fm);
             mFragmentManager = fm;
@@ -252,7 +289,7 @@ public class MainActivity extends ActionBarActivity {
         public CharSequence getPageTitle(int position) {
             return mTabsTitle[position];
         }
-    }
+    }*/
 
 
     private class TabViewHolder {

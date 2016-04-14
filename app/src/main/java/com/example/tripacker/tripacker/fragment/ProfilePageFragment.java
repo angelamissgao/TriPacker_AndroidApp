@@ -37,7 +37,7 @@ import java.util.List;
  * @author Waleed Sarwar
  * @since March 30, 2016 12:34 PM
  */
-public class PofilePageFragment extends Fragment implements AsyncCaller {
+public class ProfilePageFragment extends Fragment implements AsyncCaller {
     private static final String TAG = "PofilePageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
