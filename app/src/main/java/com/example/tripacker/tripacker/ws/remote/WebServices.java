@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.ws;
+package com.example.tripacker.tripacker.ws.remote;
 
 import java.util.List;
 

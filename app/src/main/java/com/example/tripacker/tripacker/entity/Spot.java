@@ -1,4 +1,6 @@
-package com.example.tripacker.tripacker.model;
+package com.example.tripacker.tripacker.entity;
+
+import android.util.Log;
 
 import com.activeandroid.Model;
 import com.activeandroid.annotation.Column;
@@ -66,6 +68,7 @@ public class Spot extends Model {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        Log.e("new Spot model created", "----->");
     }
 
     public static ArrayList<Spot> fromJson(JSONArray jsonArray) {

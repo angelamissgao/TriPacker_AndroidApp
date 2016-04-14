@@ -12,9 +12,10 @@
 
     <TextView
         android:id="@+id/spot_item_text"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:layout_marginTop="5dp"
+        android:text="tesstt!"
         android:gravity="center"
         android:textSize="12sp" />
 

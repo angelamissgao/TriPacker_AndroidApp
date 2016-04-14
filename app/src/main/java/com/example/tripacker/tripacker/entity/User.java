@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.model;
+package com.example.tripacker.tripacker.entity;
 
 import org.json.JSONException;
 import org.json.JSONObject;

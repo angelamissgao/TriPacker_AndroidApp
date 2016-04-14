@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.activity;
 
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -10,6 +10,9 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.RestTask;
+
 import org.apache.http.client.methods.HttpGet;
 
 import java.net.URI;
@@ -19,7 +22,7 @@ import java.util.ArrayList;
 /**
  * Created by angelagao on 4/11/16.
  */
-public class SpotProfileActivity extends AppCompatActivity {
+public class SpotViewActivity extends AppCompatActivity {
 
     //GetSpotAPI - // TODO: 4/11/16
     private static final String SendSpot_URL = "";

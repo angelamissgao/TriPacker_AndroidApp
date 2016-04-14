@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.activity;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
@@ -10,9 +10,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.tripacker.tripacker.ws.AsyncCaller;
-import com.example.tripacker.tripacker.ws.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.ws.WebServices;
+import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
+import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;

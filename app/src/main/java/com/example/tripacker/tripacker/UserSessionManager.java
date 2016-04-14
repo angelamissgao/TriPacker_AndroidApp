@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import com.example.tripacker.tripacker.view.activity.LoginActivity;
+
 public class UserSessionManager {
     // Shared Preferences reference
     SharedPreferences pref;

@@ -24,7 +24,7 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:id="@+id/trip1_img"
-            android:background="#c0baba" />
+            android:background="#c0baba"/>
 
         <LinearLayout
             android:orientation="vertical"

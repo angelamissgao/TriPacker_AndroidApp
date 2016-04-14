@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.fragment;
+package com.example.tripacker.tripacker.view.fragment;
 
 import android.content.Context;
 import android.os.Bundle;

@@ -1,9 +1,5 @@
-package com.example.tripacker.tripacker.ws;
+package com.example.tripacker.tripacker.ws.remote;
 import android.os.AsyncTask;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpUriRequest;
@@ -54,7 +50,7 @@ public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
 	@Override
 	protected Object doInBackground(Object... params) {
 
-		HttpResponse response = WebServices.httpPost((HttpUriRequest)params[0], (String)params[1]);
+		HttpResponse response = WebServices.httpPost((HttpUriRequest) params[0], (String) params[1]);
 		return response;
 		/*
 		if (params.length ==3) {
