@@ -12,6 +12,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
@@ -25,7 +26,7 @@ import java.net.URI;
 import java.util.ArrayList;
 
 /**
- * @author Waleed Sarwar
+ * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
 public class ProfilePageFragment extends Fragment implements AsyncCaller {
@@ -52,7 +53,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
         Log.e("From Session", "-------> "+pref.getString("name", null));
 
         // Construct the data source
-        ArrayList<Trip> arrayOfTrips = new ArrayList<Trip>();
+        ArrayList<TripEntity> arrayOfTrips = new ArrayList<TripEntity>();
         // Create the adapter to convert the array to views
         TripsTimelineAdapter adapter = new TripsTimelineAdapter(thiscontext, arrayOfTrips);
         // Attach the adapter to a ListView
@@ -67,25 +68,25 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
            JSONObject js_trip1 = new JSONObject();
             js_trip1.put("name", "San Diego Trip");
             js_trip1.put("gmt_create", "04/10/2015");
-            Trip newTrip1 = new Trip(js_trip1);
+            TripEntity newTrip1 = new TripEntity(js_trip1);
             adapter.add(newTrip1);
 
             JSONObject js_trip2 = new JSONObject();
             js_trip2.put("name", "SFMA");
             js_trip2.put("gmt_create", "06/12/2015");
-            Trip newTrip2 = new Trip(js_trip2);
+            TripEntity newTrip2 = new TripEntity(js_trip2);
             adapter.add(newTrip2);
 
             JSONObject js_trip3 = new JSONObject();
             js_trip3.put("name", "Stanford University");
             js_trip3.put("gmt_create", "08/12/2015");
-            Trip newTrip3 = new Trip(js_trip3);
+            TripEntity newTrip3 = new TripEntity(js_trip3);
             adapter.add(newTrip3);
 
             JSONObject js_trip4 = new JSONObject();
             js_trip4.put("name", "NASA Research Park");
             js_trip4.put("gmt_create", "12/12/2015");
-            Trip newTrip4 = new Trip(js_trip4);
+            TripEntity newTrip4 = new TripEntity(js_trip4);
             adapter.add(newTrip4);
 
         } catch (JSONException e) {

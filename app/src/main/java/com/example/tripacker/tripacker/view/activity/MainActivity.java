@@ -24,6 +24,8 @@ import com.activeandroid.ActiveAndroid;
 
 import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.TripEntity;
+import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
@@ -137,12 +139,6 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
-
-        // Register models to ActiveAndroid
-        com.activeandroid.Configuration.Builder configurationBuilder = new com.activeandroid.Configuration.Builder(this);
-        configurationBuilder.addModelClass(Trip.class);
-        configurationBuilder.addModelClass(User.class);
-        ActiveAndroid.initialize(configurationBuilder.create());
 
 
         //

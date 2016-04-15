@@ -15,9 +15,13 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.SpotEntity;
+import com.example.tripacker.tripacker.presenter.SpotListPresenter;
+import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
 import com.example.tripacker.tripacker.view.adapter.SpotsTimelineAdapter;
+import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonGetTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
@@ -34,14 +38,18 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Inject;
 
 /**
  * Created by angelagao on 4/10/16.
  */
-public class SpotFragment extends Fragment implements AsyncCaller {
+public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
     String TAG = "SpotFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+    @Inject
+    SpotListPresenter spotListPresenter;
+
 
     public static SpotFragment newInstance() {
         SpotFragment f = new SpotFragment();
@@ -65,9 +73,9 @@ public class SpotFragment extends Fragment implements AsyncCaller {
 //        getContent();
 
         //GridView
-        ArrayList<Spot> arrayOfSpots = new ArrayList<Spot>();
+        ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
         GridView gridView = (GridView) view.findViewById(R.id.gridView);
-        SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
+        SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext,arrayOfSpots);
         gridView.setAdapter(gridAdapter);
 
 
@@ -76,10 +84,10 @@ public class SpotFragment extends Fragment implements AsyncCaller {
             JSONObject spot1 = new JSONObject();
             spot1.put("name", "Thiland");
 //            spot1.put("image_main", "Thiland");
-            Spot spot = new Spot(spot1);
+            SpotEntity spot = new SpotEntity(spot1);
             Toast.makeText(getContext(), "SpotsTineAdapter", Toast.LENGTH_LONG).show();
             Log.e("SpotsTineAdapter", "----->");
-            gridAdapter.add(spot);
+//            gridAdapter.add(spot);
 
         }catch (Exception e) {
 
@@ -132,6 +140,15 @@ public class SpotFragment extends Fragment implements AsyncCaller {
         return view;
     }
 
+//    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//        this.spotListPresenter.setView(this);
+//        if(savedInstanceState == null) {
+//
+//        }
+//
+//    }
+
     private void getContent() {
         HttpResponse spots;
         JSONObject json = new JSONObject();
@@ -150,10 +167,6 @@ public class SpotFragment extends Fragment implements AsyncCaller {
             Log.e("getSpots", e.toString());
             e.printStackTrace();
         }
-
-
-
-
     }
 
     @Override
@@ -177,4 +190,41 @@ public class SpotFragment extends Fragment implements AsyncCaller {
         }
 
     }
+
+    @Override
+    public void renderSpotList(ArrayList<SpotEntity> Spot) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showRetry() {
+
+    }
+
+    @Override
+    public void hideRetry() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context context() {
+        return null;
+    }
+
+//    private void loadSpotList() {this.spotListPresenter.}
 }

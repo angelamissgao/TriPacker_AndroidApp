@@ -9,25 +9,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.SpotEntity;
 
 import java.util.ArrayList;
 
 /**
  * Created by angelagao on 4/11/16.
  */
-public class SpotsTimelineAdapter extends ArrayAdapter<Spot> {
+public class SpotsTimelineAdapter extends ArrayAdapter<SpotEntity> {
     private Context context;
     private int layoutResourceId;
     private ArrayList data = new ArrayList();
 
-    public SpotsTimelineAdapter(Context context, ArrayList<Spot> spots) {
+    public SpotsTimelineAdapter(Context context, ArrayList<SpotEntity> spots) {
         super(context, 0, spots);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        Spot spot = (Spot) getItem(position);
+        SpotEntity spot = (SpotEntity) getItem(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_layout, parent, false);

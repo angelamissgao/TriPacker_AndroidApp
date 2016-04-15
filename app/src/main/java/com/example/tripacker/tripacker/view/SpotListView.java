@@ -2,9 +2,12 @@ package com.example.tripacker.tripacker.view;
 
 import com.example.tripacker.tripacker.entity.SpotEntity;
 
+import java.util.ArrayList;
+
 /**
  * Created by angelagao on 4/14/16.
  */
-public interface SpotDetailsView extends LoadDataView {
-    void renderSpot(SpotEntity spot);
+public interface SpotListView extends LoadDataView{
+
+    void renderSpotList(ArrayList<SpotEntity> Spot);
 }

@@ -1,6 +1,7 @@
 package com.example.tripacker.tripacker.view.adapter;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.TripEntity;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,8 +15,8 @@ import java.util.ArrayList;
 /**
  * Created by EILEENWEI on 4/9/16.
  */
-public class TripsTimelineAdapter extends ArrayAdapter<Trip> {
-    public TripsTimelineAdapter(Context context, ArrayList<Trip> trips) {
+public class TripsTimelineAdapter extends ArrayAdapter<TripEntity> {
+    public TripsTimelineAdapter(Context context, ArrayList<TripEntity> trips) {
         super(context, 0, trips);
     }
 
@@ -23,7 +24,7 @@ public class TripsTimelineAdapter extends ArrayAdapter<Trip> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         // Get the data item for this position
-        Trip trip = (Trip) getItem(position);
+        TripEntity trip = (TripEntity) getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.trip_item, parent, false);

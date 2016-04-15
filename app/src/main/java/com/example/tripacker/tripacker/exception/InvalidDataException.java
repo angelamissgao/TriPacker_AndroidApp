@@ -22,6 +22,10 @@ public class InvalidDataException extends Throwable {
         bw.write(exceptionmsg);
         bw.append("\n");
         bw.close();
+    }
+
+    public void fixException() {
 
     }
+
 }

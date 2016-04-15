@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.tripacker.tripacker.entity.SpotEntity;
+
 /**
  * Created by angelagao on 4/12/16.
  */
@@ -32,10 +34,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public void insertSpotRecord(Spot spot_item) {
+    public void insertSpotRecord(SpotEntity spot_item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-        values.put(T1COL_1, spot_item.getId());
+        values.put(T1COL_1, spot_item.getCity_id());
     }
 }
