@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.entity.Spot;
 
 import java.util.ArrayList;
 

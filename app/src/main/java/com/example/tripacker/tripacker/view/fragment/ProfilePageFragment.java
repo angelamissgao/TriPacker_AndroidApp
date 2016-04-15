@@ -16,7 +16,6 @@ import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
-import com.example.tripacker.tripacker.entity.Trip;
 
 import org.apache.http.client.methods.HttpGet;
 import org.json.JSONException;

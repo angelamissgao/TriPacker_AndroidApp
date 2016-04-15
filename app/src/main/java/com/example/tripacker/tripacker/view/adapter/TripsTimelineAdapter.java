@@ -1,7 +1,6 @@
 package com.example.tripacker.tripacker.view.adapter;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.entity.Trip;
 
 import android.content.Context;
 import android.view.LayoutInflater;

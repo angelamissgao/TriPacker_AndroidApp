@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.example.tripacker.tripacker.entity.Spot;
-
 /**
  * Created by angelagao on 4/12/16.
  */

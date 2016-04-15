@@ -18,7 +18,6 @@ import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
 import com.example.tripacker.tripacker.view.adapter.SpotsTimelineAdapter;
-import com.example.tripacker.tripacker.entity.Spot;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonGetTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;

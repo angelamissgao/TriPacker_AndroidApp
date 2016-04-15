@@ -7,7 +7,7 @@ import java.lang.reflect.Type;
 import java.util.List;
 import javax.inject.Inject;
 
-import com.example.tripacker.tripacker.entities.UserEntity;
+import com.example.tripacker.tripacker.entity.UserEntity;
 
 /**
  * Class used to transform from Strings representing json to valid objects.

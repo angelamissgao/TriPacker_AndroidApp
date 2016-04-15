@@ -33,8 +33,6 @@ import com.example.tripacker.tripacker.view.fragment.FavoritesFragment;
 import com.example.tripacker.tripacker.view.fragment.ProfilePageFragment;
 import com.example.tripacker.tripacker.view.fragment.SpotFragment;
 import com.example.tripacker.tripacker.view.fragment.TripFragment;
-import com.example.tripacker.tripacker.entity.Trip;
-import com.example.tripacker.tripacker.entity.User;
 
 import java.util.ArrayList;
 

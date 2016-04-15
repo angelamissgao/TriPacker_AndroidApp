@@ -1,7 +1,5 @@
-package com.example.tripacker.tripacker.entities;
+package com.example.tripacker.tripacker.entity;
 
-import com.activeandroid.annotation.Column;
-import com.activeandroid.query.Select;
 import com.google.gson.annotations.SerializedName;
 
 import org.json.JSONArray;
@@ -9,7 +7,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by EILEENWEI on 4/13/16.
