@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -74,29 +75,23 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         gridView.setAdapter(gridAdapter);
 
 
-//        // relocate to spot profile
-//        ImageView img1 = (ImageView) view.findViewById(R.id.img1);
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
 
-//        // could be set to onTouchListener
-//        img1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
-//
-//                // bundle data to the spot view activity
-//                ArrayList<String> spot_info = new ArrayList<String>();
-//                //Todo: added spot json
-//                spot_info.add("spotID");
-//                Bundle bundle = new Bundle();
-//                bundle.putStringArrayList("spotId", spot_info);
-//                mainInten.putExtras(bundle);
-//
-//                startActivity(mainInten);
-//
-//            }
-//        });
+                // bundle data to the spot view activity
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("spotID");
 
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("spotId", spot_info);
+                mainInten.putExtras(bundle);
+
+                startActivity(mainInten);
+            }
+        });
 
         // Floating button
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_spot);
