@@ -1,9 +1,12 @@
 package com.example.tripacker.tripacker.view.activity;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -37,6 +40,13 @@ public class SpotViewActivity extends AppCompatActivity {
 
         Bundle bundle = getIntent().getExtras();
         ArrayList<String> stuff = bundle.getStringArrayList("spotID");
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
+        getSupportActionBar().setElevation(0);
+
 
 //
 //        //// TODO: 4/11/16 request more datas

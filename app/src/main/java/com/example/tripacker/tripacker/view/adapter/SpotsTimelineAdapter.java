@@ -37,7 +37,8 @@ public class SpotsTimelineAdapter extends ArrayAdapter<SpotEntity> {
         ImageView imageView = (ImageView) convertView.findViewById(R.id.spot_item_img);
         TextView textView = (TextView) convertView.findViewById(R.id.spot_item_text);
 
-//        imageView.setBackground(spot.getImage_main());
+        // image view set background
+        imageView.setBackgroundResource(R.drawable.thai_temple);
         textView.setText(spot.getName());
         return convertView;
     }
