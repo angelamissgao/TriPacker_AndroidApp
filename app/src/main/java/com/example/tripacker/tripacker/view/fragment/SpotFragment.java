@@ -66,55 +66,36 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
         final View view = inflater.inflate(R.layout.spot_main, container, false);
 
-        //Search
-        SearchView spot_search = (SearchView) view.findViewById(R.id.spot_search);
+        //HTTP GET requests
+        ArrayList<SpotEntity> arrayOfSpots = getContent();
 
-//        //HTTP GET requests
-//        getContent();
-
-        //GridView
-        ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
         GridView gridView = (GridView) view.findViewById(R.id.gridView);
-        SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext,arrayOfSpots);
+        SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
         gridView.setAdapter(gridAdapter);
 
 
-        try {
+//        // relocate to spot profile
+//        ImageView img1 = (ImageView) view.findViewById(R.id.img1);
 
-            JSONObject spot1 = new JSONObject();
-            spot1.put("name", "Thiland");
-//            spot1.put("image_main", "Thiland");
-            SpotEntity spot = new SpotEntity(spot1);
-            Toast.makeText(getContext(), "SpotsTineAdapter", Toast.LENGTH_LONG).show();
-            Log.e("SpotsTineAdapter", "----->");
-//            gridAdapter.add(spot);
-
-        }catch (Exception e) {
-
-        }
-
-
-        // relocate to spot profile
-        ImageView img1 = (ImageView) view.findViewById(R.id.img1);
-        // could be set to onTouchListener
-        img1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
-
-                // bundle data to the spot view activity
-                ArrayList<String> spot_info = new ArrayList<String>();
-                //Todo: added spot json
-                spot_info.add("spotID");
-                Bundle bundle = new Bundle();
-                bundle.putStringArrayList("spotId", spot_info);
-                mainInten.putExtras(bundle);
-
-                startActivity(mainInten);
-
-            }
-        });
+//        // could be set to onTouchListener
+//        img1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
+//
+//                // bundle data to the spot view activity
+//                ArrayList<String> spot_info = new ArrayList<String>();
+//                //Todo: added spot json
+//                spot_info.add("spotID");
+//                Bundle bundle = new Bundle();
+//                bundle.putStringArrayList("spotId", spot_info);
+//                mainInten.putExtras(bundle);
+//
+//                startActivity(mainInten);
+//
+//            }
+//        });
 
 
         // Floating button
@@ -149,24 +130,48 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 //
 //    }
 
-    private void getContent() {
-        HttpResponse spots;
-        JSONObject json = new JSONObject();
-        try{
-            HttpGet httpGet = new HttpGet(new URI(WebServices.getBaseUrl()+"/spot/getspots"));
-            AsyncJsonGetTask getTask = new AsyncJsonGetTask(this);
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+    private ArrayList<SpotEntity> getContent() {
+        ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
+        try {
+            JSONObject spot1 = new JSONObject();
+            spot1.put("name", "Thiland");
+//            spot1.put("image_main", "Thiland");
+            SpotEntity Spot1 = new SpotEntity(spot1);
+            arrayOfSpots.add(Spot1);
 
-            nameValuePairs.add(new BasicNameValuePair("city", "SanFransisco"));
-            nameValuePairs.add(new BasicNameValuePair("state", "California"));
-//        httpGet.setHeader();
+            JSONObject spot2 = new JSONObject();
+            spot2.put("name", "new Zealand");
+//            spot1.put("image_main", "Thiland");
+            SpotEntity Spot2 = new SpotEntity(spot2);
+            arrayOfSpots.add(Spot2);
 
-            getTask.execute(httpGet, nameValuePairs);
-            Log.d("get Request", "------------->");
-        } catch (Exception e) {
-            Log.e("getSpots", e.toString());
-            e.printStackTrace();
+
+            Toast.makeText(getContext(), "SpotsTineAdapter", Toast.LENGTH_LONG).show();
+            Log.e("SpotsTineAdapter", "----->");
+
+        }catch (Exception e) {
+
         }
+
+//        HttpResponse spots;
+//        JSONObject json = new JSONObject();
+//        try{
+//            HttpGet httpGet = new HttpGet(new URI(WebServices.getBaseUrl()+"/spot/getspots"));
+//            AsyncJsonGetTask getTask = new AsyncJsonGetTask(this);
+//            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+//
+//            nameValuePairs.add(new BasicNameValuePair("city", "SanFransisco"));
+//            nameValuePairs.add(new BasicNameValuePair("state", "California"));
+////        httpGet.setHeader();
+//
+//            getTask.execute(httpGet, nameValuePairs);
+//            Log.d("get Request", "------------->");
+//        } catch (Exception e) {
+//            Log.e("getSpots", e.toString());
+//            e.printStackTrace();
+//        }
+
+        return arrayOfSpots;
     }
 
     @Override
