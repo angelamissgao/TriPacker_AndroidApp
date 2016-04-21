@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.UserSessionManager;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
@@ -66,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
 
     // Configuration for calling a REST service
-    private static final String TEST_URL                   = "http://47.88.12.177/api/member/login/dologin";
+    //private static final String TEST_URL                   = "http://47.88.12.177/api/member/login/dologin";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
     private ProgressDialog progressDialog;
 
@@ -193,10 +194,21 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     }
 
     private void getContent(){
+        Log.e("User Authentication", "-------> Get Content");
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("username", username));
+        nameValuePairs.add(new BasicNameValuePair("password", password));
         // the request
         try{
+            Log.e("User Authentication", "-------> Get Content2");
+
+            APIConnection.SetAsyncCaller(this, getApplicationContext());
+            Log.e("User Authentication", "-------> SetAsncCaller");
+
+            APIConnection.authenticateUser(nameValuePairs);
+            Log.e("login! ", "im here2!");
         /*    HttpPost httpPost = new HttpPost(new URI(TEST_URL));
             // Add your data
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -208,14 +220,12 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             task.execute(httpPost); //doInBackground runs*/
 
 
-            HttpPost httpPost = new HttpPost(new URI(WebServices.getBaseUrl()+"/member/login/dologin"));
+      /*  HttpPost httpPost = new HttpPost(new URI(WebServices.getBaseUrl()+"/member/login/dologin"));
             AsyncJsonPostTask postTask = new AsyncJsonPostTask(this);
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("username", username));
-            nameValuePairs.add(new BasicNameValuePair("password", password));
+
             httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
 
-            postTask.execute(httpPost, "");
+            postTask.execute(httpPost, "");*/
 
         }
         catch (Exception e)

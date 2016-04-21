@@ -1,5 +1,6 @@
 package com.example.tripacker.tripacker.view.activity;
 
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -87,9 +88,12 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        WebServices.setURL(TEST_URL);
+
 //        // start login activity
-  //      Intent intent = new Intent(this, LoginActivity.class);
-  //      startActivity(intent);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
 
         // Define SlidingTabLayout (shown at top)
@@ -142,7 +146,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         //
-        WebServices.setURL(TEST_URL);
+
 
 
 
