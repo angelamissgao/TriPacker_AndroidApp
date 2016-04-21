@@ -1,7 +1,9 @@
 package com.example.tripacker.tripacker.view.fragment;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -16,6 +18,7 @@ import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.presenter.SpotListPresenter;
 import com.example.tripacker.tripacker.view.SpotListView;
@@ -45,6 +48,9 @@ import javax.inject.Inject;
  * Created by angelagao on 4/10/16.
  */
 public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
+    private static final String TEST_URL                   = "http://47.88.12.177/api/spot/getspots";
+    private static final String ACTION_FOR_INTENT_CALLBACK = "Spots_test_receiver";
+
     String TAG = "SpotFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -128,46 +134,67 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
     private ArrayList<SpotEntity> getContent() {
         ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
         try {
-            JSONObject spot1 = new JSONObject();
-            spot1.put("name", "Thiland");
-//            spot1.put("image_main", "Thiland");
-            SpotEntity Spot1 = new SpotEntity(spot1);
-            arrayOfSpots.add(Spot1);
-
-            JSONObject spot2 = new JSONObject();
-            spot2.put("name", "new Zealand");
-//            spot1.put("image_main", "Thiland");
-            SpotEntity Spot2 = new SpotEntity(spot2);
-            arrayOfSpots.add(Spot2);
-
-
-            Toast.makeText(getContext(), "SpotsTineAdapter", Toast.LENGTH_LONG).show();
-            Log.e("SpotsTineAdapter", "----->");
+//            JSONObject spot1 = new JSONObject();
+//            spot1.put("name", "Thiland");
+////            spot1.put("image_main", "Thiland");
+//            SpotEntity Spot1 = new SpotEntity(spot1);
+//            arrayOfSpots.add(Spot1);
+//
+//            JSONObject spot2 = new JSONObject();
+//            spot2.put("name", "new Zealand");
+////            spot1.put("image_main", "Thiland");
+//            SpotEntity Spot2 = new SpotEntity(spot2);
+//            arrayOfSpots.add(Spot2);
+//
+//
+//            Toast.makeText(getContext(), "SpotsTineAdapter", Toast.LENGTH_LONG).show();
+//            Log.e("SpotsTineAdapter", "----->");
 
         }catch (Exception e) {
 
         }
 
-//        HttpResponse spots;
-//        JSONObject json = new JSONObject();
-//        try{
-//            HttpGet httpGet = new HttpGet(new URI(WebServices.getBaseUrl()+"/spot/getspots"));
+        HttpResponse spots;
+        JSONObject json = new JSONObject();
+        try{
+            HttpGet httpGet = new HttpGet(new URI(TEST_URL));
+            RestTask tast = new RestTask(getActivity(), ACTION_FOR_INTENT_CALLBACK);
+            tast.execute(httpGet);
 //            AsyncJsonGetTask getTask = new AsyncJsonGetTask(this);
 //            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-//
 //            nameValuePairs.add(new BasicNameValuePair("city", "SanFransisco"));
 //            nameValuePairs.add(new BasicNameValuePair("state", "California"));
-////        httpGet.setHeader();
-//
 //            getTask.execute(httpGet, nameValuePairs);
-//            Log.d("get Request", "------------->");
-//        } catch (Exception e) {
-//            Log.e("getSpots", e.toString());
-//            e.printStackTrace();
-//        }
+            Log.d("get Request finished", "------------->");
+        } catch (Exception e) {
+            Log.e("getSpots", e.toString());
+            e.printStackTrace();
+        }
 
         return arrayOfSpots;
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        getActivity().registerReceiver(receiver,new IntentFilter(ACTION_FOR_INTENT_CALLBACK) );
+
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        getActivity().unregisterReceiver(receiver);
+    }
+
+    private BroadcastReceiver receiver = new BroadcastReceiver(){
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String response = intent.getStringExtra(RestTask.HTTP_RESPONSE);
+            Log.e("receive---->", response);
+        }
+    };
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
