@@ -1,9 +1,16 @@
 package com.example.tripacker.tripacker.view.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -31,19 +38,36 @@ import java.util.List;
  * Created by angelagao on 4/11/16.
  */
 public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
-    //EditSpotAPI - // TODO: 4/11/16
-    private static final String SendSpot_URL = "";
-    private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
-    private static final String GetSpot_URL = "";
+
     ProgressDialog progress;
+    protected LocationManager locationManager;
+    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
+    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spot_edit);
 
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+//        locationManager.requestLocationUpdates(
+//                LocationManager.GPS_PROVIDER,
+//                MINIMUM_TIME_BETWEEN_UPDATES,
+//                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
+//                new MyLocationListener()
+//        );
+
         Bundle bundle = getIntent().getExtras();
-        ArrayList<String> stuff = bundle.getStringArrayList("UserID");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -67,8 +91,8 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
 
     private void sendContent() {
         String name = "San Jose Museum";
-        String categoryId = "1";
-        String cityId = "11";
+        String categoryId = "11";
+        String cityId = "1";
         String address = "131 Homer Rd.";
         String geoLatitude = "-28.12345";
         String geoLongitude = "25.12345";
@@ -109,6 +133,34 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
             Toast.makeText(getApplicationContext(), "create spots success", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    //Location Listener class
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            String message = String.format(
+                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
+                    location.getLongitude(), location.getLatitude()
+            );
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Toast.makeText(getApplicationContext(), "provider status changed", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Toast.makeText(getApplicationContext(), "privider enabled by user", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
         }
     }
 }

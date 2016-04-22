@@ -123,31 +123,7 @@ public class APIConnection{
 //        createGetReq(TripPackerAPIs.getUserProfile(0), userId);
     }
 
-//    private static void createGetReq(String url, int id){
-//        //if (isThereInternetConnection()) {
-//        if (true) {
-//            HttpGet httpGet = new HttpGet(url);
-//            setRequestCookies(httpGet);
-//            AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
-//         /*  try {
-//                httpGet.setEntity(new UrlEncodedFormEntity(params));
-//            } catch (UnsupportedEncodingException e) {
-//                e.printStackTrace();
-//            }*/
-//
-//            getTask.execute(httpGet, "");
-//        } else {
-//            try {
-//                throw new NetworkConnectionException();
-//            } catch (NetworkConnectionException e) {
-//                e.displayMessageBox("Error", "NetworkConnectionException");
-//            }
-//        }
-//
-//    }
-
     private static void createPostReq(String url, List<NameValuePair> params){
-        //if (isThereInternetConnection()) {
             if (true) {
                 HttpPost httpPost = new HttpPost(url);
                 setRequestCookies(httpPost);
@@ -170,17 +146,17 @@ public class APIConnection{
     }
 
     private static void createGetReq(String url,List<NameValuePair> params) {
-
         if (true) {
+            url += "?";
+            String paramString = URLEncodedUtils.format(params, "utf-8");
+            url += paramString;
+
             HttpGet httpGet = new HttpGet(url);
+            Log.e("GET URL----->",url);
+
             AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
-            try {
-//                httpGet.setHeader("test", "test");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
             getTask.execute(httpGet, "");
-            Log.e("createGetReq---->","Get Request sent!");
+
         } else {
             try {
                 throw new NetworkConnectionException();
