@@ -57,7 +57,7 @@ public class WebServices {
 		DEBUG = debug;
 	}
 	
-	public static String httpGet(final String methodName, final List<NameValuePair> params) {
+/*	public static String httpGet(final String methodName, final List<NameValuePair> params) {
 		
 		if (BASE_URL.equals("")) {
 			return null;
@@ -108,8 +108,39 @@ public class WebServices {
 			e.printStackTrace();
 		} 
 		return response;	
-	}
+	}*/
 
+	public static HttpResponse httpGet(HttpUriRequest requestGet, String payLoad) {
+		HttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMOUT);
+
+		//    HttpPost request = new HttpPost(BASE_URL+"/"+methodName);
+		HttpUriRequest request = requestGet;
+
+		if (WS_USERNAME != null && WS_PASSWORD != null) {
+			Log.d(TAG, "Setting request credentials");
+			// Apparently this doesn't work with POST Request
+			//client.getCredentialsProvider().setCredentials(new AuthScope(null, -1), new UsernamePasswordCredentials(WS_USERNAME,WS_PASSWORD));
+			request.setHeader("Authorization","Basic "+Base64.encodeToString((WS_USERNAME+":"+WS_PASSWORD).getBytes(),Base64.URL_SAFE|Base64.NO_WRAP));
+		}
+
+//        String jsonResponse = null;
+		HttpResponse jsonResponse = null;
+		Log.d(TAG, "HttpGetURL: "+ requestGet.getURI());
+
+		try {
+			//	request.setEntity(new StringEntity(payLoad, "UTF-8"));
+			request.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
+			BasicResponseHandler handler = new BasicResponseHandler();
+			//	if (DEBUG) Log.d(TAG, "Executing post request with payload "+payLoad);
+			//    jsonResponse = client.execute(request, handler);
+			jsonResponse = client.execute(request);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage(),e);
+		}
+		return jsonResponse;
+	}
 
 	public static HttpResponse httpPost(HttpUriRequest requestPost, String payLoad) {
 		HttpParams httpParams = new BasicHttpParams();

@@ -48,6 +48,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
+
 /*  @InjectView(R.id.input_username) EditText _usernameText;
     @InjectView(R.id.input_password) EditText _passwordText;
     @InjectView(R.id.btn_login) Button _loginButton;
@@ -157,7 +158,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
     public void onLoginSuccess() {
         // Creating user login session
-        session.createUserLoginSession("Eileen Wei", "eileenwei0105@gmail.com");
+        session.createUserLoginSession("Eileen Wei", "eileenwei0105@gmail.com", APIConnection.getCookies());
         loginButton.setEnabled(true);
         finish();
     }
@@ -202,85 +203,21 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         nameValuePairs.add(new BasicNameValuePair("password", password));
         // the request
         try{
-            Log.e("User Authentication", "-------> Get Content2");
-
+            Log.e("User Authentication", "-------> Get Content1");
             APIConnection.SetAsyncCaller(this, getApplicationContext());
-            Log.e("User Authentication", "-------> SetAsncCaller");
-
+            Log.e("User Authentication", "-------> Get Content2");
             APIConnection.authenticateUser(nameValuePairs);
-            Log.e("login! ", "im here2!");
-        /*    HttpPost httpPost = new HttpPost(new URI(TEST_URL));
-            // Add your data
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("username", "eileen"));
-            nameValuePairs.add(new BasicNameValuePair("password", "111111"));
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
-            task.execute(httpPost); //doInBackground runs*/
-
-
-      /*  HttpPost httpPost = new HttpPost(new URI(WebServices.getBaseUrl()+"/member/login/dologin"));
-            AsyncJsonPostTask postTask = new AsyncJsonPostTask(this);
-
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            postTask.execute(httpPost, "");*/
 
         }
         catch (Exception e)
         {
-            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         }
 
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        this.registerReceiver(receiver, new IntentFilter(ACTION_FOR_INTENT_CALLBACK));
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        this.unregisterReceiver(receiver);
-    }
 
 
-    /**
-     * Our Broadcast Receiver. We get notified that the data is ready this way.
-     */
-    private BroadcastReceiver receiver = new BroadcastReceiver()
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            // clear the progress indicator
-            if (progressDialog != null)
-            {
-                progressDialog.dismiss();
-            }
-            String response = intent.getStringExtra(RestTask.HTTP_RESPONSE);
-            Toast.makeText(getApplicationContext(),
-                    "Response is ready: "+response,
-                    Toast.LENGTH_LONG).show();
-            Log.i(TAG, "RESPONSE = " + response);
-
-            //
-            // my old json code was here. this is where you will parse it.
-            //
-
-            JSONTokener tokener = new JSONTokener(response);
-            try {
-                JSONObject finalResult = new JSONObject(tokener);
-                Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-    };
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {

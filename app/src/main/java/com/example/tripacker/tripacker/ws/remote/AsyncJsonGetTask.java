@@ -1,11 +1,18 @@
 package com.example.tripacker.tripacker.ws.remote;
 
+import java.io.IOException;
 import java.util.List;
 
+import org.apache.http.Header;
+import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.BasicResponseHandler;
 import org.json.JSONException;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -74,25 +81,46 @@ public class AsyncJsonGetTask extends AsyncTask<Object, Void, Object> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Object doInBackground(Object... params) {
-		
-		String response;
-		
-		if (params.length > 1) {
-			response = WebServices.httpGet((String) params[0], (List<NameValuePair>) params[1]);
-		} else {
-			response = WebServices.httpGet((String) params[0], null ); 
-		}
-		
-		if (params.length == 3) {
-			JsonParser parser = new JsonParser();
-			JsonObject jsonObject = (JsonObject) parser.parse(response);
 
-			Object result = new Gson().fromJson(jsonObject.get("d"), (Class<?>) params[2]);
-			
-			return result; 
+		HttpResponse response;
+
+		if (params.length > 1) {
+			response = WebServices.httpGet((HttpUriRequest) params[0], (String) params[1]);
 		} else {
-			return response;
+			response = WebServices.httpGet((HttpUriRequest) params[0], null);
 		}
+
+		int code = response.getStatusLine().getStatusCode();
+		String responseBody = "";
+
+		Log.i(TAG, "RESPONSE CODE= " + code);
+
+		if(code == 200) {
+
+			// Get cookie
+			Header[] cookie = response.getHeaders("Set-Cookie");
+			for (int i = 0; i < cookie.length; i++) {
+				Header h = cookie[i];
+				Log.i(TAG, "Cookie Header names: " + h.getName());
+				Log.i(TAG, "Cookie Header Value: " + h.getValue());
+				APIConnection.setCookies(h.getValue()); //set cookies
+			}
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+
+			// Response Body
+			try {
+				responseBody = responseHandler.handleResponse(response);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			Log.i(TAG, "RESPONSE BODY= " + responseBody);
+			// Parse user json object
+		}else{
+			Log.i(TAG, "Some Error");
+		}
+
+		return responseBody;
 	}
 	
 	@Override

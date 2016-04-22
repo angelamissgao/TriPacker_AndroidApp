@@ -11,8 +11,8 @@ public class TripPackerAPIs {
     }
     // Get User
 
-    public static String getUserDetail(int user_id){
-        return API_BASE_URL+"/users/"+user_id;
+    public static String getUserProfile(int user_id){
+        return API_BASE_URL+"/member/profile/getprofile";
     }
 
     // Get Trip
