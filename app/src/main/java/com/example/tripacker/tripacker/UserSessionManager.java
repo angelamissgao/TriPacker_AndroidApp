@@ -34,6 +34,9 @@ public class UserSessionManager {
     // Email address (make variable public to access from outside)
     public static final String KEY_EMAIL = "email";
 
+    // Email address (make variable public to access from outside)
+    public static final String KEY_COOKIES = "cookies";
+
     // Constructor
     public UserSessionManager(Context context){
         this._context = context;
@@ -42,7 +45,7 @@ public class UserSessionManager {
     }
 
     //Create login session
-    public void createUserLoginSession(String name, String email){
+    public void createUserLoginSession(String name, String email, String cookies){
         // Storing login value as TRUE
         editor.putBoolean(IS_USER_LOGIN, true);
 
@@ -52,9 +55,14 @@ public class UserSessionManager {
         // Storing email in pref
         editor.putString(KEY_EMAIL, email);
 
+        // Storing cookies in pref
+        editor.putString(KEY_COOKIES, cookies);
+
         // commit changes
         editor.commit();
     }
+
+
 
     /**
      * Check login method will check user login status

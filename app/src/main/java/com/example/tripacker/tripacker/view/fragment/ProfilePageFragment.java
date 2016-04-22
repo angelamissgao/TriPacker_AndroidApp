@@ -14,16 +14,21 @@ import android.widget.TextView;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Tiger
@@ -48,9 +53,11 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
         SharedPreferences pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
 
+
         TextView username_view = (TextView) view.findViewById(R.id.user_name);
         username_view.setText(pref.getString("name", null));
-        Log.e("From Session", "-------> "+pref.getString("name", null));
+        Log.e("From Session", "-------> " + pref.getString("name", null));
+        Log.e("From Session", "-------> "+pref.getString("cookies", null));
 
         // Construct the data source
         ArrayList<TripEntity> arrayOfTrips = new ArrayList<TripEntity>();
@@ -93,7 +100,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
             e.printStackTrace();
         }
 
-
+        getContent();
 
 
         // Or even append an entire new collection
@@ -109,13 +116,15 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
     }
 
     private void getContent(){
+        Log.e("Get User Profile", "-------> Get Content");
+
+
         // the request
         try{
-            HttpGet httpGet = new HttpGet(new URI(WebServices.getBaseUrl()+"/member/profile/getprofile"));
-            AsyncJsonPostTask postTask = new AsyncJsonPostTask(this);
 
+            APIConnection.SetAsyncCaller(this, thiscontext);
 
-            postTask.execute(httpGet, "");
+            APIConnection.getUserProfile(0);
 
         }
         catch (Exception e)
@@ -128,6 +137,31 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
+        // clear the progress indicator
+//        if (progressDialog != null){
+//            progressDialog.dismiss();
+ //       }
+        String response = result.toString();
 
+        JSONTokener tokener = new JSONTokener(response);
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
+
+            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
+
+
+            if(finalResult.getString("success").equals("true")){
+
+
+                Log.i(TAG, "RESPONSE BODY= " + response);
+                // Parse user json object
+            }else{
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -166,7 +166,6 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
         try{
             APIConnection.SetAsyncCaller(this, getActivity().getApplicationContext());
-            Log.e("Spot Get SetAsnc", "-------> SetAsncCaller");
 
             APIConnection.getSpotsList(nameValuePairs);
 
@@ -189,12 +188,11 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
 
         String  response = result.toString();
-
         JSONTokener tokener = new JSONTokener(response);
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
-
+            Log.e("Spots Get result------>", response);
             Toast.makeText(getContext(), "Get spots success", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();

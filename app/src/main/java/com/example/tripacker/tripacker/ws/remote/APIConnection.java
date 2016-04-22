@@ -9,7 +9,10 @@ import android.util.Log;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 
-import org.apache.http.HttpResponse;
+
+import org.apache.http.Header;
+import org.apache.http.HttpMessage;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
@@ -29,6 +32,7 @@ public class APIConnection{
     private static Context context;
     private final UserEntityJsonMapper userEntityJsonMapper;
     private static AsyncCaller caller;
+    private static String cookies = "";
 
     /**
      * Constructor of the class
@@ -44,6 +48,12 @@ public class APIConnection{
         this.userEntityJsonMapper = userEntityJsonMapper;
     }
 
+    public static void setCookies(String thiscookies){
+        cookies = thiscookies;
+    }
+    public static String getCookies(){
+        return cookies;
+    }
     public static void SetAsyncCaller(AsyncCaller asyncCallercaller, Context thecontext){
         caller = asyncCallercaller;
         context = thecontext;
@@ -54,7 +64,8 @@ public class APIConnection{
         authenticateUserFromApi(params);
     }
 
-    public void getUserDetail(int user_id) {
+    public static void getUserProfile(int user_id) {
+        getUserProfileFromApi(user_id);
     }
 
     public void getPopularTrips() {
@@ -66,9 +77,13 @@ public class APIConnection{
     public void getTripDetail(int trip_id) {
     }
 
+    // Spots request
     public static void getSpotsList(List<NameValuePair> params) {
         getSpotsListFromApi(params);
+    }
 
+    public static void createSpot(List<NameValuePair> params) {
+        createSpotFromApi(params);
     }
 
     public void getPopularSpots() {
@@ -96,19 +111,47 @@ public class APIConnection{
         createGetReq(TripPackerAPIs.getSpotsList(), params);
     }
 
-/*    private String getUserEntitiesFromApi() throws MalformedURLException {
-        return ApiConnection.createGET(RestApi.API_URL_GET_USER_LIST).requestSyncCall();
+    private static void createSpotFromApi(List<NameValuePair> params){
+        createPostReq(TripPackerAPIs.createSpot(), params);
     }
 
-    private String getUserDetailsFromApi(int userId) throws MalformedURLException {
-        String apiUrl = RestApi.API_URL_GET_USER_DETAILS + userId + ".json";
-        return ApiConnection.createGET(apiUrl).requestSyncCall();
+/*    private String getUserEntitiesFromApi() throws MalformedURLException {
+        return ApiConnection.createGET(RestApi.API_URL_GET_USER_LIST).requestSyncCall();
+    }*/
+
+    private static void getUserProfileFromApi(int userId){
+//        createGetReq(TripPackerAPIs.getUserProfile(0), userId);
     }
-*/
+
+//    private static void createGetReq(String url, int id){
+//        //if (isThereInternetConnection()) {
+//        if (true) {
+//            HttpGet httpGet = new HttpGet(url);
+//            setRequestCookies(httpGet);
+//            AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
+//         /*  try {
+//                httpGet.setEntity(new UrlEncodedFormEntity(params));
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }*/
+//
+//            getTask.execute(httpGet, "");
+//        } else {
+//            try {
+//                throw new NetworkConnectionException();
+//            } catch (NetworkConnectionException e) {
+//                e.displayMessageBox("Error", "NetworkConnectionException");
+//            }
+//        }
+//
+//    }
+
     private static void createPostReq(String url, List<NameValuePair> params){
         //if (isThereInternetConnection()) {
             if (true) {
                 HttpPost httpPost = new HttpPost(url);
+                setRequestCookies(httpPost);
+
                 AsyncJsonPostTask postTask = new AsyncJsonPostTask(caller);
                 try {
                     httpPost.setEntity(new UrlEncodedFormEntity(params));
@@ -132,17 +175,44 @@ public class APIConnection{
             HttpGet httpGet = new HttpGet(url);
             AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
             try {
-                httpGet.setHeader("test", "test");
+//                httpGet.setHeader("test", "test");
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            getTask.execute(httpGet, params);
+            getTask.execute(httpGet, "");
             Log.e("createGetReq---->","Get Request sent!");
         } else {
             try {
                 throw new NetworkConnectionException();
             } catch (NetworkConnectionException e) {
                 e.displayMessageBox("Error", "NetworkConnectionException");
+            }
+        }
+    }
+
+
+    /**
+     * set request header
+     * @param reqMsg
+     */
+    private static void setRequestCookies(HttpMessage reqMsg) {
+        if(!cookies.isEmpty()){
+            reqMsg.setHeader("Set-Cookie", cookies);
+        }
+    }
+    /**
+     * append the old cookies to the new cookies
+     * @param resMsg
+     */
+    private static void appendCookies(HttpMessage resMsg) {
+        Header setCookieHeader=resMsg.getFirstHeader("Set-Cookie");
+        if (setCookieHeader != null
+                && cookies.isEmpty()) {
+            String setCookie=setCookieHeader.getValue();
+            if(cookies.isEmpty()){
+                cookies=setCookie;
+            }else{
+                cookies=cookies+"; "+setCookie;
             }
         }
     }

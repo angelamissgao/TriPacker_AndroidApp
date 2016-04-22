@@ -2,13 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/lightgrey">
 
     <!--<com.google.android.gms.maps.MapView-->
     <!--android:id="@+id/mapview"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="200dp">-->
     <!--</com.google.android.gms.maps.MapView>-->
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -16,44 +18,72 @@
         android:id="@+id/imageView"
         android:background="#6d6a6a" />
 
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:paddingTop="40dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_spot"
-            android:gravity="center"
-            android:id="@+id/imageView2" />
+            android:padding="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_spot"
+                android:gravity="center"
+                android:id="@+id/imageView2"
+                android:backgroundTint="@color/primary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Spot Name"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/SpotName"
+                android:textColor="@color/primary" />
+        </LinearLayout>
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="Edit Place here..."
             android:id="@+id/spotNameInput"
             android:gravity="center_horizontal"
             android:layout_weight="1" />
-
-
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:paddingTop="40dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_tel"
-            android:gravity="center"
-            android:id="@+id/imageView3" />
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_tel"
+                android:gravity="center"
+                android:id="@+id/imageView3" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Address"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/description"
+                android:textColor="@color/primary" />
+        </LinearLayout>
 
         <EditText
             android:layout_width="fill_parent"
@@ -85,7 +115,15 @@
             android:gravity="center_horizontal"
             android:layout_weight="1" />
 
+
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Add Spot"
+        android:id="@+id/addSpot" />
 
 
 </LinearLayout>
