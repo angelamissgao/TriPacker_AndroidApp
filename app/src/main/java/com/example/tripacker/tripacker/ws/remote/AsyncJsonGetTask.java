@@ -81,7 +81,6 @@ public class AsyncJsonGetTask extends AsyncTask<Object, Void, Object> {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected Object doInBackground(Object... params) {
-
 		HttpResponse response;
 
 		if (params.length > 1) {

@@ -4,16 +4,20 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 
+
 import org.apache.http.Header;
 import org.apache.http.HttpMessage;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.io.UnsupportedEncodingException;
@@ -73,6 +77,15 @@ public class APIConnection{
     public void getTripDetail(int trip_id) {
     }
 
+    // Spots request
+    public static void getSpotsList(List<NameValuePair> params) {
+        getSpotsListFromApi(params);
+    }
+
+    public static void createSpot(List<NameValuePair> params) {
+        createSpotFromApi(params);
+    }
+
     public void getPopularSpots() {
     }
 
@@ -85,8 +98,21 @@ public class APIConnection{
     public void getConfiguration() {
     }
 
+
+    /**
+     * each function to get Api and call Restful request
+     * @param params
+     */
     private static void authenticateUserFromApi(List<NameValuePair> params){
         createPostReq(TripPackerAPIs.loginUser(), params);
+    }
+
+    private static void getSpotsListFromApi(List<NameValuePair> params){
+        createGetReq(TripPackerAPIs.getSpotsList(), params);
+    }
+
+    private static void createSpotFromApi(List<NameValuePair> params){
+        createPostReq(TripPackerAPIs.createSpot(), params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {
@@ -94,38 +120,14 @@ public class APIConnection{
     }*/
 
     private static void getUserProfileFromApi(int userId){
-        createGetReq(TripPackerAPIs.getUserProfile(0), userId);
-    }
-
-    private static void createGetReq(String url, int id){
-        //if (isThereInternetConnection()) {
-        if (true) {
-            HttpGet httpGet = new HttpGet(url);
-            setRequestCookies(httpGet);
-            AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
-    /*        try {
-                httpGet.setEntity(new UrlEncodedFormEntity(params));
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-            }*/
-
-            getTask.execute(httpGet, "");
-        } else {
-            try {
-                throw new NetworkConnectionException();
-            } catch (NetworkConnectionException e) {
-                e.displayMessageBox("Error", "NetworkConnectionException");
-            }
-        }
-
-
+//        createGetReq(TripPackerAPIs.getUserProfile(0), userId);
     }
 
     private static void createPostReq(String url, List<NameValuePair> params){
-        //if (isThereInternetConnection()) {
             if (true) {
-                HttpPost httpPost = new HttpPost(TripPackerAPIs.loginUser());
+                HttpPost httpPost = new HttpPost(url);
                 setRequestCookies(httpPost);
+
                 AsyncJsonPostTask postTask = new AsyncJsonPostTask(caller);
                 try {
                     httpPost.setEntity(new UrlEncodedFormEntity(params));
@@ -141,9 +143,29 @@ public class APIConnection{
                     e.displayMessageBox("Error", "NetworkConnectionException");
                 }
             }
-
-
     }
+
+    private static void createGetReq(String url,List<NameValuePair> params) {
+        if (true) {
+            url += "?";
+            String paramString = URLEncodedUtils.format(params, "utf-8");
+            url += paramString;
+
+            HttpGet httpGet = new HttpGet(url);
+            Log.e("GET URL----->",url);
+
+            AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
+            getTask.execute(httpGet, "");
+
+        } else {
+            try {
+                throw new NetworkConnectionException();
+            } catch (NetworkConnectionException e) {
+                e.displayMessageBox("Error", "NetworkConnectionException");
+            }
+        }
+    }
+
 
     /**
      * set request header
@@ -170,6 +192,7 @@ public class APIConnection{
             }
         }
     }
+
     /**
      * Checks if the device has any active internet connection.
      *
@@ -185,4 +208,5 @@ public class APIConnection{
 
         return isConnected;
     }
+
 }

@@ -84,7 +84,8 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         }
 
         if (id == R.id.action_cancel) {
-            return true;
+            setResult(400, null);
+            finish();
         }
 
 

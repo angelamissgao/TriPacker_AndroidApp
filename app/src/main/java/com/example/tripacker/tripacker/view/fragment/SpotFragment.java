@@ -26,6 +26,7 @@ import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
 import com.example.tripacker.tripacker.view.adapter.SpotsTimelineAdapter;
 import com.example.tripacker.tripacker.entity.SpotEntity;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonGetTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
@@ -36,7 +37,10 @@ import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.net.URI;
@@ -56,6 +60,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
     public static final String ARG_PAGE = "ARG_PAGE";
     @Inject
     SpotListPresenter spotListPresenter;
+    ArrayList<SpotEntity> arrayOfSpots = new ArrayList<>();
 
 
     public static SpotFragment newInstance() {
@@ -74,30 +79,28 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         final View view = inflater.inflate(R.layout.spot_main, container, false);
 
         //HTTP GET requests
-        ArrayList<SpotEntity> arrayOfSpots = getContent();
+//        ArrayList<SpotEntity> arrayOfSpots = getContent();
+        getContent();
 
-        GridView gridView = (GridView) view.findViewById(R.id.gridView);
-        SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
-        gridView.setAdapter(gridAdapter);
-
-
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
-
-                // bundle data to the spot view activity
-                ArrayList<String> spot_info = new ArrayList<String>();
-                //Todo: added spot json
-                spot_info.add("spotID");
-
-                Bundle bundle = new Bundle();
-                bundle.putStringArrayList("spotId", spot_info);
-                mainInten.putExtras(bundle);
-
-                startActivity(mainInten);
-            }
-        });
+//
+//
+//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
+//
+//                // bundle data to the spot view activity
+//                ArrayList<String> spot_info = new ArrayList<String>();
+//                //Todo: added spot json
+//                spot_info.add("spotID");
+//
+//                Bundle bundle = new Bundle();
+//                bundle.putStringArrayList("spotId", spot_info);
+//                mainInten.putExtras(bundle);
+//
+//                startActivity(mainInten);
+//            }
+//        });
 
         // Floating button
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_spot);
@@ -131,53 +134,73 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 //
 //    }
 
-    private ArrayList<SpotEntity> getContent() {
+    private void getContent() {
         ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
-        try {
-//            JSONObject spot1 = new JSONObject();
-//            spot1.put("name", "Thiland");
-////            spot1.put("image_main", "Thiland");
-//            SpotEntity Spot1 = new SpotEntity(spot1);
-//            arrayOfSpots.add(Spot1);
-//
-//            JSONObject spot2 = new JSONObject();
-//            spot2.put("name", "new Zealand");
-////            spot1.put("image_main", "Thiland");
-//            SpotEntity Spot2 = new SpotEntity(spot2);
-//            arrayOfSpots.add(Spot2);
-//
-//
-//            Toast.makeText(getContext(), "SpotsTineAdapter", Toast.LENGTH_LONG).show();
-//            Log.e("SpotsTineAdapter", "----->");
 
-        }catch (Exception e) {
+        // Http Call
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        String cityId = "1";
+        String pageId = "1";
+        String pageSize = "10";
+        nameValuePairs.add(new BasicNameValuePair("cityId", cityId));
+        nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
+        nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
 
-        }
-
-        HttpResponse spots;
-        JSONObject json = new JSONObject();
         try{
-            HttpGet httpGet = new HttpGet(new URI(TEST_URL));
-            RestTask tast = new RestTask(getActivity(), ACTION_FOR_INTENT_CALLBACK);
-            tast.execute(httpGet);
-//            AsyncJsonGetTask getTask = new AsyncJsonGetTask(this);
-//            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-//            nameValuePairs.add(new BasicNameValuePair("city", "SanFransisco"));
-//            nameValuePairs.add(new BasicNameValuePair("state", "California"));
-//            getTask.execute(httpGet, nameValuePairs);
-            Log.d("get Request finished", "------------->");
+            APIConnection.SetAsyncCaller(this, getActivity().getApplicationContext());
+
+            APIConnection.getSpotsList(nameValuePairs);
+
         } catch (Exception e) {
             Log.e("getSpots", e.toString());
             e.printStackTrace();
         }
+    }
 
-        return arrayOfSpots;
+
+    @Override
+    /**
+     * Get Spot List request response result;
+     */
+    public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
+
+        String  response = result.toString();
+        JSONTokener tokener = new JSONTokener(response);
+
+
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            JSONArray Spots = finalResult.getJSONArray("spotList");
+            for (int i = 0; i < Spots.length(); i++) {  // **line 2**
+                JSONObject childJSONObject = Spots.getJSONObject(i);
+
+                String spotName = childJSONObject.getString("spotName");
+                String spotId = childJSONObject.getString("spotId");
+
+                JSONObject spoti = new JSONObject();
+                spoti.put("name", spotName);
+                SpotEntity Spot1 = new SpotEntity(spoti);
+                arrayOfSpots.add(Spot1);
+
+            }
+
+            GridView gridView = (GridView) getView().findViewById(R.id.gridView);
+            SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
+            gridView.setAdapter(gridAdapter);
+
+            Log.e("arrayOfSpots Size:------>", Integer.toString(arrayOfSpots.size()));
+            Log.e("Spots Get result------>", response);
+            Toast.makeText(getContext(), "Get spots success", Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override
     public void onResume(){
         super.onResume();
-        getActivity().registerReceiver(receiver,new IntentFilter(ACTION_FOR_INTENT_CALLBACK) );
+        getActivity().registerReceiver(receiver, new IntentFilter(ACTION_FOR_INTENT_CALLBACK));
 
     }
 
@@ -196,27 +219,6 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         }
     };
 
-    @Override
-    public void onBackgroundTaskCompleted(int requestCode, Object result) {
-
-        HttpResponse  response = (HttpResponse) result;
-        int code = response.getStatusLine().getStatusCode();
-        Log.i(TAG, "RESPONSE CODE= " + code);
-
-        String responseBody = "";
-
-        ResponseHandler<String> responseHandler = new BasicResponseHandler();
-        if(code == 200) {
-            try {
-                responseBody = responseHandler.handleResponse(response);
-                Toast.makeText(getContext(), "Get spots success", Toast.LENGTH_LONG).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else{
-        }
-
-    }
 
     @Override
     public void renderSpotList(ArrayList<SpotEntity> Spot) {

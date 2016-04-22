@@ -247,10 +247,5 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
-
-
-
     }
 }

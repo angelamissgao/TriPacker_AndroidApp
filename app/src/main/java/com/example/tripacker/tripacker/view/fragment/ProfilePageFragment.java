@@ -50,6 +50,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final int REQUEST_EDIT = 0;
     private static final int RESULT_OK = 200;
+    private static final int RESULT_NOTSAVED = 400;
 
 
     @Override
@@ -222,6 +223,8 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
         if (requestCode == REQUEST_EDIT) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(thiscontext, "Cancel Update", Toast.LENGTH_LONG).show();
             }
         }
     }
