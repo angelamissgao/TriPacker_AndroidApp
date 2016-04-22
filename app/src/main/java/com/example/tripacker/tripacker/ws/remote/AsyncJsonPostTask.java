@@ -1,8 +1,15 @@
 package com.example.tripacker.tripacker.ws.remote;
 import android.os.AsyncTask;
+import android.util.Log;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.json.JSONException;
+
+import java.io.IOException;
 
 /**
  * Manages getting the Json response for a webservice call.
@@ -51,7 +58,37 @@ public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
 	protected Object doInBackground(Object... params) {
 
 		HttpResponse response = WebServices.httpPost((HttpUriRequest) params[0], (String) params[1]);
-		return response;
+
+		int code = response.getStatusLine().getStatusCode();
+		String responseBody = "";
+
+		Log.i(TAG, "RESPONSE CODE= " + code);
+
+		if(code == 200) {
+
+			// Get cookie
+			Header[] cookie = response.getHeaders("Set-Cookie");
+			for (int i = 0; i < cookie.length; i++) {
+				Header h = cookie[i];
+				Log.i(TAG, "Cookie Header names: " + h.getName());
+				Log.i(TAG, "Cookie Header Value: " + h.getValue());
+			}
+			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+
+			// Response Body
+			try {
+				responseBody = responseHandler.handleResponse(response);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			Log.i(TAG, "RESPONSE BODY= " + responseBody);
+			// Parse user json object
+		}else{
+			Log.i(TAG, "Some Error");
+		}
+
+		return responseBody;
 		/*
 		if (params.length ==3) {
 			JsonParser parser = new JsonParser();
@@ -69,6 +106,10 @@ public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
 	
 	@Override
 	protected void onPostExecute(Object result) {
-		activity.onBackgroundTaskCompleted(requestCode, result);
+		try {
+			activity.onBackgroundTaskCompleted(requestCode, result);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 }

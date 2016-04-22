@@ -288,34 +288,30 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         if (progressDialog != null){
             progressDialog.dismiss();
         }
+        String response = result.toString();
 
-        HttpResponse  response = (HttpResponse) result;
-        int code = response.getStatusLine().getStatusCode();
-        Log.i(TAG, "RESPONSE CODE= " + code);
-        if(code == 200){
-            onLoginSuccess();
+        JSONTokener tokener = new JSONTokener(response);
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-            // Get cookie
-            Header[] cookie = response.getHeaders("Set-Cookie");
-            for (int i=0; i < cookie.length; i++) {
-                Header h = cookie[i];
-                Log.i(TAG, "Cookie Header names: "+h.getName());
-                Log.i(TAG, "Cookie Header Value: "+h.getValue());
-            }
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            String responseBody = "";
-            // Response Body
-            try {
-                responseBody = responseHandler.handleResponse(response);
-            } catch (IOException e) {
-                e.printStackTrace();
+            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
+
+
+            if(finalResult.getString("success").equals("true")){
+                onLoginSuccess();
+
+                Log.i(TAG, "RESPONSE BODY= " + response);
+                // Parse user json object
+            }else{
+                onLoginFailed();
             }
 
-            Log.i(TAG, "RESPONSE BODY= " + responseBody);
-            // Parse user json object
-        }else{
-            onLoginFailed();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+
 
 
 

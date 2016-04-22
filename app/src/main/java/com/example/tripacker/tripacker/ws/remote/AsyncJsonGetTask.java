@@ -3,6 +3,7 @@ package com.example.tripacker.tripacker.ws.remote;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONException;
 
 import android.os.AsyncTask;
 
@@ -96,6 +97,10 @@ public class AsyncJsonGetTask extends AsyncTask<Object, Void, Object> {
 	
 	@Override
 	protected void onPostExecute(Object result) {
-		activity.onBackgroundTaskCompleted(requestCode, result);
+		try {
+			activity.onBackgroundTaskCompleted(requestCode, result);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 	}
 }
