@@ -1,23 +1,33 @@
 package com.example.tripacker.tripacker.view.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
+import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
+import com.example.tripacker.tripacker.view.activity.SignupActivity;
+import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -38,6 +48,8 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
     private static final String TAG = "PofilePageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static final int REQUEST_EDIT = 0;
+    private static final int RESULT_OK = 200;
 
 
     @Override
@@ -111,6 +123,45 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
         //adapter.addAll(newUsers);
 
 
+        // Edit button
+        ImageView editProfileButton = (ImageView) view.findViewById(R.id.edit_profile_btn);
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getActivity(), SpotEditActivity.class);
+
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivityForResult(intent, REQUEST_EDIT);
+
+            }
+        });
+
+
+
+        final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.fab_frame_layout);
+
+        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) view.findViewById(R.id.fab_trip_spot);
+        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+            @Override
+            public void onMenuExpanded() {
+                frameLayout.getBackground().setAlpha(240);
+                frameLayout.setOnTouchListener(new View.OnTouchListener() {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        fabMenu.collapse();
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                frameLayout.getBackground().setAlpha(0);
+                frameLayout.setOnTouchListener(null);
+            }
+        });
+
 
         return view;
     }
@@ -162,6 +213,16 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
 
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("onActivityResult ", "requestCode= " + requestCode + "resultCode= "+resultCode);
+        if (requestCode == REQUEST_EDIT) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
+            }
         }
     }
 }

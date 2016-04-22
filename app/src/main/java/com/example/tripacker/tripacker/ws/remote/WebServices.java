@@ -2,6 +2,7 @@ package com.example.tripacker.tripacker.ws.remote;
 
 import java.util.List;
 
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.auth.AuthScope;
@@ -125,6 +126,13 @@ public class WebServices {
 			request.setHeader("Authorization","Basic "+Base64.encodeToString((WS_USERNAME+":"+WS_PASSWORD).getBytes(),Base64.URL_SAFE|Base64.NO_WRAP));
 		}
 
+		Header[] cookie = request.getHeaders("Set-Cookie");
+		for (int i = 0; i < cookie.length; i++) {
+			Header h = cookie[i];
+			Log.i(TAG, "%% Cookie Header names: " + h.getName());
+			Log.i(TAG, "%% Cookie Header Value: " + h.getValue());
+			APIConnection.setCookies(h.getValue()); //set cookies
+		}
 //        String jsonResponse = null;
 		HttpResponse jsonResponse = null;
 		Log.d(TAG, "HttpGetURL: "+ requestGet.getURI());

@@ -28,13 +28,7 @@ android:layout_height="match_parent">
             android:layout_weight="1"
             android:background="@color/lightgrey"/>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tab_layout"
-            style="@style/AppTabLayout"
-            android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:background="@color/white"
-            />
+
 
     </LinearLayout>
 

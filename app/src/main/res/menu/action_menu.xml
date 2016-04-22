@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" tools:context=".view.activity.EditProfileActivity">
+
+    <item
+        android:id="@+id/action_cancel"
+        android:icon="@drawable/ic_clear_white_24dp"
+        android:title="Clear"
+        app:showAsAction="always"
+        android:orderInCategory="1"/>
+
+    <item
+        android:id="@+id/action_done"
+        android:icon="@drawable/ic_done_white_24dp"
+        android:title="Done"
+        app:showAsAction="ifRoom"
+        android:orderInCategory="1000"/>
+</menu>
