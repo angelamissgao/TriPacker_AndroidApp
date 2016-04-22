@@ -91,7 +91,8 @@ public class MainActivity extends ActionBarActivity {
 
         WebServices.setURL(TEST_URL);
 
-////        // start login activity
+
+        // start login activity
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 

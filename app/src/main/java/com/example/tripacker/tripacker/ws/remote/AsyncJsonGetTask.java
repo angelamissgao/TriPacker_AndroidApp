@@ -76,23 +76,27 @@ public class AsyncJsonGetTask extends AsyncTask<Object, Void, Object> {
 	protected Object doInBackground(Object... params) {
 		
 		String response;
-		
-		if (params.length > 1) {
-			response = WebServices.httpGet((String) params[0], (List<NameValuePair>) params[1]);
-		} else {
-			response = WebServices.httpGet((String) params[0], null ); 
-		}
-		
-		if (params.length == 3) {
-			JsonParser parser = new JsonParser();
-			JsonObject jsonObject = (JsonObject) parser.parse(response);
 
-			Object result = new Gson().fromJson(jsonObject.get("d"), (Class<?>) params[2]);
-			
-			return result; 
-		} else {
-			return response;
-		}
+		response = WebServices.httpGet((String) params[0], (List<NameValuePair>) params[1]);
+
+
+//		if (params.length > 1) {
+//			response = WebServices.httpGet((String) params[0], (List<NameValuePair>) params[1]);
+//		} else {
+//			response = WebServices.httpGet((String) params[0], null );
+//		}
+		
+//		if (params.length == 3) {
+//			JsonParser parser = new JsonParser();
+//			JsonObject jsonObject = (JsonObject) parser.parse(response);
+//
+//			Object result = new Gson().fromJson(jsonObject.get("d"), (Class<?>) params[2]);
+//
+//			return result;
+//		} else {
+//			return response;
+//		}
+		return response;
 	}
 	
 	@Override

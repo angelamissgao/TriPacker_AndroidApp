@@ -73,7 +73,6 @@ public class WebServices {
 			httpGet = new HttpGet(methodURL);
 		}
 		
-		
 		httpGet.addHeader("Accept", "application/json");
 		httpGet.addHeader(HTTP.CONTENT_TYPE, "application/json");
 		
