@@ -92,8 +92,8 @@ public class MainActivity extends ActionBarActivity {
         WebServices.setURL(TEST_URL);
 
 ////        // start login activity
-//        Intent intent = new Intent(this, LoginActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
 
 
         // Define SlidingTabLayout (shown at top)
