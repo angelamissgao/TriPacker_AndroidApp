@@ -16,6 +16,10 @@ public class TripEntity {
     String name;
     @SerializedName("owner")
     String owner;
+    @SerializedName("cover_photo")
+    String cover_photo;
+    @SerializedName("cover_photo_id")
+    String cover_photo_id;
     @SerializedName("tip")
     String tip;
     @SerializedName("score")
@@ -33,6 +37,14 @@ public class TripEntity {
         super();
     }
 
+    public TripEntity(String name, String cover_photo_url){
+        this.name = name;
+        this.cover_photo = cover_photo_url;
+    }
+    public TripEntity(String name, int cover_photo_id){
+        this.name = name;
+        this.cover_photo_id = cover_photo_id+"";
+    }
     // Parse model from JSON
     public TripEntity(JSONObject object){
         super();
@@ -40,6 +52,7 @@ public class TripEntity {
         try {
             this.name = object.getString("name");
             this.owner = object.getString("owner");
+            this.cover_photo = object.getString("cover_photo");
             this.tip = object.getString("tip");
             this.status = object.getString("status");
             this.score = object.getString("score");
@@ -77,6 +90,8 @@ public class TripEntity {
     public String getOwner() {
         return owner;
     }
+    public String getCover_photo(){return cover_photo;}
+    public int getCover_photo_id(){return Integer.parseInt(cover_photo_id);}
     public String getTip() {
         return tip;
     }
@@ -97,6 +112,7 @@ public class TripEntity {
     public void setName(String name) {
         this.name = name;
     }
+    public void setCover_photo(String cover_photo) {this.cover_photo = cover_photo;}
     public void SetGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;
     }
