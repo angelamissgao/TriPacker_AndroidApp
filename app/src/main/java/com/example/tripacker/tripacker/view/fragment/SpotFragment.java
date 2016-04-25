@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.SearchView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
@@ -25,25 +23,16 @@ import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
 import com.example.tripacker.tripacker.view.adapter.SpotsTimelineAdapter;
-import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
-import com.example.tripacker.tripacker.ws.remote.AsyncJsonGetTask;
-import com.example.tripacker.tripacker.ws.remote.WebServices;
 
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -58,6 +47,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
     String TAG = "SpotFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+    GridView gridView;
     @Inject
     SpotListPresenter spotListPresenter;
     ArrayList<SpotEntity> arrayOfSpots = new ArrayList<>();
@@ -77,30 +67,32 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         thiscontext = container.getContext();
 
         final View view = inflater.inflate(R.layout.spot_main, container, false);
+        gridView = (GridView) view.findViewById(R.id.gridView_spot);
+
 
         //HTTP GET requests
 //        ArrayList<SpotEntity> arrayOfSpots = getContent();
         getContent();
 
-//
-//
-//        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
-//
-//                // bundle data to the spot view activity
-//                ArrayList<String> spot_info = new ArrayList<String>();
-//                //Todo: added spot json
-//                spot_info.add("spotID");
-//
-//                Bundle bundle = new Bundle();
-//                bundle.putStringArrayList("spotId", spot_info);
-//                mainInten.putExtras(bundle);
-//
-//                startActivity(mainInten);
-//            }
-//        });
+
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
+
+                // bundle data to the spot view activity
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("spotID");
+
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("spotId", spot_info);
+                mainInten.putExtras(bundle);
+
+                startActivity(mainInten);
+            }
+        });
 
         // Floating button
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_spot);
@@ -184,7 +176,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
             }
 
-            GridView gridView = (GridView) getView().findViewById(R.id.gridView);
+            GridView gridView = (GridView) getView().findViewById(R.id.gridView_spot);
             SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
             gridView.setAdapter(gridAdapter);
 
