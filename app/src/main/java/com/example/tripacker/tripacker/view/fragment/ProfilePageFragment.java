@@ -1,8 +1,10 @@
 package com.example.tripacker.tripacker.view.fragment;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
+import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
 import com.example.tripacker.tripacker.view.activity.SignupActivity;
 import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
@@ -30,6 +33,7 @@ import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -46,7 +50,7 @@ import java.util.List;
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class ProfilePageFragment extends Fragment implements AsyncCaller {
+public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDetailsView {
     private static final String TAG = "PofilePageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -55,6 +59,12 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
     private static final int RESULT_NOTSAVED = 400;
     private static SharedPreferences pref;
 
+    private ProgressDialog progressDialog;
+
+    private ImageView profile_pic;
+    private TextView username_view;
+    private ListView trip_listView;
+    private ImageView editProfileButton;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,20 +78,158 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
 
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
+        setUpViewById(view);
 
 
-        TextView username_view = (TextView) view.findViewById(R.id.user_name);
-        username_view.setText(pref.getString("name", null));
+
         Log.e("From Session", "-------> " + pref.getString("name", null));
-        Log.e("From Session", "-------> "+pref.getString("cookies", null));
+        Log.e("From Session", "-------> " + pref.getString("cookies", null));
 
+        getContent();
+
+
+
+
+        // Or even append an entire new collection
+        // Fetching some data, data has now returned
+        // If data was JSON, convert to ArrayList of User objects.
+        //JSONArray jsonArray = ...;
+        //ArrayList<User> newUsers = User.fromJson(jsonArray)
+        //adapter.addAll(newUsers);
+
+
+        // Edit button
+
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getActivity(), SpotEditActivity.class);
+
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivityForResult(intent, REQUEST_EDIT);
+
+            }
+        });
+
+        // FAB
+        final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.fab_frame_layout);
+
+        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) view.findViewById(R.id.fab_trip_spot);
+        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
+            @Override
+            public void onMenuExpanded() {
+                frameLayout.getBackground().setAlpha(240);
+                frameLayout.setOnTouchListener(new View.OnTouchListener() {
+
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        fabMenu.collapse();
+                        return true;
+                    }
+                });
+            }
+
+            @Override
+            public void onMenuCollapsed() {
+                frameLayout.getBackground().setAlpha(0);
+                frameLayout.setOnTouchListener(null);
+            }
+        });
+
+
+        return view;
+    }
+
+    private void setUpViewById(View view){
+        profile_pic = (ImageView) view.findViewById(R.id.profile_image);
+        username_view = (TextView) view.findViewById(R.id.user_name);
+        trip_listView = (ListView) view.findViewById(R.id.triplistview);
+        editProfileButton = (ImageView) view.findViewById(R.id.edit_profile_btn);
+    }
+
+    private void getContent(){
+        showLoading();
+        Log.e("Get User Profile", "-------> Get Content");
+
+
+        // the request
+        try{
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
+            APIConnection.SetAsyncCaller(this, thiscontext);
+
+            APIConnection.getUserProfile(nameValuePairs);
+
+        }
+        catch (Exception e)
+        {
+            Log.e(TAG, e.getMessage());
+        }
+
+    }
+
+
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) {
+
+        String response = result.toString();
+
+        JSONTokener tokener = new JSONTokener(response);
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
+
+            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
+
+
+            if(finalResult.getString("success").equals("true")){
+                hideLoading();
+
+                Log.i(TAG, "RESPONSE BODY= " + response);
+                // Parse user json object
+                UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
+                Log.i(TAG, "User Info= " + user.toString());
+                renderUser(user);
+
+            }else{
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.e("onActivityResult ", "requestCode= " + requestCode + "resultCode= "+resultCode);
+        if (requestCode == REQUEST_EDIT) {
+            if (resultCode == RESULT_OK) {
+                Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(thiscontext, "Cancel Update", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    @Override
+    public void renderUser(UserEntity user) {
+        username_view.setText(pref.getString("name", null));
+        Picasso
+                .with(thiscontext)
+                .load("http://weknowyourdreamz.com/images/minions/minions-07.jpg")
+                .fit() // will explain later
+                .into((ImageView) profile_pic);
+    }
+
+    @Override
+    public void renderTrip(ArrayList<TripEntity> TripEntities) {
         // Construct the data source
         ArrayList<TripEntity> arrayOfTrips = new ArrayList<TripEntity>();
         // Create the adapter to convert the array to views
         TripsTimelineAdapter adapter = new TripsTimelineAdapter(thiscontext, arrayOfTrips);
         // Attach the adapter to a ListView
-        ListView listView = (ListView) view.findViewById(R.id.triplistview);
-        listView.setAdapter(adapter);
+        trip_listView.setAdapter(adapter);
 
 
         // Add item to adapter
@@ -116,124 +264,41 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
             e.printStackTrace();
         }
         */
-
-        getContent();
-
-
-        // Or even append an entire new collection
-        // Fetching some data, data has now returned
-        // If data was JSON, convert to ArrayList of User objects.
-        //JSONArray jsonArray = ...;
-        //ArrayList<User> newUsers = User.fromJson(jsonArray)
-        //adapter.addAll(newUsers);
-
-
-        // Edit button
-        ImageView editProfileButton = (ImageView) view.findViewById(R.id.edit_profile_btn);
-        editProfileButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent mainInten = new Intent(getActivity(), SpotEditActivity.class);
-
-                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
-                startActivityForResult(intent, REQUEST_EDIT);
-
-            }
-        });
-
-
-
-        final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.fab_frame_layout);
-
-        final FloatingActionsMenu fabMenu = (FloatingActionsMenu) view.findViewById(R.id.fab_trip_spot);
-        fabMenu.setOnFloatingActionsMenuUpdateListener(new FloatingActionsMenu.OnFloatingActionsMenuUpdateListener() {
-            @Override
-            public void onMenuExpanded() {
-                frameLayout.getBackground().setAlpha(240);
-                frameLayout.setOnTouchListener(new View.OnTouchListener() {
-
-                    @Override
-                    public boolean onTouch(View v, MotionEvent event) {
-                        fabMenu.collapse();
-                        return true;
-                    }
-                });
-            }
-
-            @Override
-            public void onMenuCollapsed() {
-                frameLayout.getBackground().setAlpha(0);
-                frameLayout.setOnTouchListener(null);
-            }
-        });
-
-
-        return view;
     }
-
-    private void getContent(){
-        Log.e("Get User Profile", "-------> Get Content");
-
-
-        // the request
-        try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
-            APIConnection.SetAsyncCaller(this, thiscontext);
-
-            APIConnection.getUserProfile(nameValuePairs);
-
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
-
-    }
-
 
     @Override
-    public void onBackgroundTaskCompleted(int requestCode, Object result) {
-        // clear the progress indicator
-//        if (progressDialog != null){
-//            progressDialog.dismiss();
- //       }
-        String response = result.toString();
+    public void showLoading() {
+        progressDialog = new ProgressDialog(thiscontext,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+    }
 
-        JSONTokener tokener = new JSONTokener(response);
-        try {
-            JSONObject finalResult = new JSONObject(tokener);
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
-
-            if(finalResult.getString("success").equals("true")){
-
-
-                Log.i(TAG, "RESPONSE BODY= " + response);
-                // Parse user json object
-                UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
-                Log.i(TAG, "User Info= " + user.toString());
-
-            }else{
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+    @Override
+    public void hideLoading() {
+        if (progressDialog != null){
+            progressDialog.dismiss();
         }
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("onActivityResult ", "requestCode= " + requestCode + "resultCode= "+resultCode);
-        if (requestCode == REQUEST_EDIT) {
-            if (resultCode == RESULT_OK) {
-                Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(thiscontext, "Cancel Update", Toast.LENGTH_LONG).show();
-            }
-        }
+    public void showRetry() {
+
+    }
+
+    @Override
+    public void hideRetry() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context context() {
+        return null;
     }
 }
