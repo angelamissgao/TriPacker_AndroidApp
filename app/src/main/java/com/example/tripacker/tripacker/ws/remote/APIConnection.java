@@ -17,6 +17,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.utils.URLEncodedUtils;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -64,8 +65,12 @@ public class APIConnection{
         authenticateUserFromApi(params);
     }
 
-    public static void getUserProfile(int user_id) {
-        getUserProfileFromApi(user_id);
+    public static void getUserProfile(List<NameValuePair> params) {
+        getUserProfileFromApi(params);
+    }
+
+    public static void updateUserProfile(List<NameValuePair> params) {
+        updateUserProfileFromApi(params);
     }
 
     public void getPopularTrips() {
@@ -111,6 +116,8 @@ public class APIConnection{
         createGetReq(TripPackerAPIs.getSpotsList(), params);
     }
 
+
+
     private static void createSpotFromApi(List<NameValuePair> params){
         createPostReq(TripPackerAPIs.createSpot(), params);
     }
@@ -119,8 +126,37 @@ public class APIConnection{
         return ApiConnection.createGET(RestApi.API_URL_GET_USER_LIST).requestSyncCall();
     }*/
 
-    private static void getUserProfileFromApi(int userId){
-//        createGetReq(TripPackerAPIs.getUserProfile(0), userId);
+    private static void getUserProfileFromApi(List<NameValuePair> params){
+        createGetReq(TripPackerAPIs.getUserProfile(0), params);
+    }
+
+    private static void updateUserProfileFromApi(List<NameValuePair> params){
+        createPutReq(TripPackerAPIs.getUserProfile(0), params);
+    }
+
+
+    private static void createDeleteReq(String url, List<NameValuePair> params){}
+
+    private static void createPutReq(String url, List<NameValuePair> params){
+        if (true) {
+            HttpPut httpPut = new HttpPut(url);
+            setRequestCookies(httpPut);
+
+            AsyncJsonPutTask postTask = new AsyncJsonPutTask(caller);
+            try {
+                httpPut.setEntity(new UrlEncodedFormEntity(params));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+
+            postTask.execute(httpPut, "");
+        } else {
+            try {
+                throw new NetworkConnectionException();
+            } catch (NetworkConnectionException e) {
+                e.displayMessageBox("Error", "NetworkConnectionException");
+            }
+        }
     }
 
     private static void createPostReq(String url, List<NameValuePair> params){

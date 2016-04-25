@@ -71,7 +71,7 @@
                             android:inputType="textPersonName"
                             android:text="Name"
                             android:ems="8"
-                            android:id="@+id/rwo1editText" />
+                            android:id="@+id/row1editText" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -123,23 +123,25 @@
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/row3icon"
-                            android:layout_gravity="right"
-                            android:src="@android:drawable/ic_menu_edit"
+                            android:src="@drawable/ic_email_black_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
-                            android:clickable="true" />
+                            android:clickable="true"
+                            android:layout_gravity="center_vertical" />
                     </LinearLayout>
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:gravity="bottom">
 
                         <EditText
                             android:layout_width="match_parent"
@@ -168,7 +170,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/row4icon"
                             android:layout_gravity="right"
-                            android:src="@android:drawable/ic_menu_edit"
+                            android:src="@drawable/ic_cake_black_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true" />
@@ -184,7 +186,8 @@
                             android:layout_height="wrap_content"
                             android:inputType="date"
                             android:ems="10"
-                            android:id="@+id/row4editText" />
+                            android:id="@+id/row4editText"
+                            android:layout_gravity="bottom" />
                     </LinearLayout>
                 </LinearLayout>
 
@@ -241,7 +244,7 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/row6icon"
                             android:layout_gravity="right"
-                            android:src="@android:drawable/ic_menu_edit"
+                            android:src="@drawable/ic_stay_primary_portrait_black_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true" />
@@ -250,7 +253,8 @@
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:layout_gravity="bottom">
 
                         <EditText
                             android:layout_width="match_parent"
@@ -258,7 +262,8 @@
                             android:text="Phone"
                             android:ems="8"
                             android:id="@+id/row6editText"
-                            android:inputType="textPhonetic" />
+                            android:inputType="textPhonetic"
+                            android:layout_gravity="bottom" />
                     </LinearLayout>
                 </LinearLayout>
 

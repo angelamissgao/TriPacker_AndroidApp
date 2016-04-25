@@ -15,10 +15,16 @@ public class UserEntity {
     String id;
     @SerializedName("username")
     String username;
+    @SerializedName("gender")
+    String gender;
     @SerializedName("email")
     String email;
     @SerializedName("tel")
     String tel;
+    @SerializedName("birthday")
+    String birthday;
+    @SerializedName("introduction")
+    String introduction;
     @SerializedName("status")
     String status;
     @SerializedName("grade")
@@ -42,6 +48,9 @@ public class UserEntity {
             this.username = object.getString("username");
             this.email = object.getString("email");
             this.tel = object.getString("tel");
+            this.birthday = object.getString("birthday");
+            this.introduction = object.getString("introduction");
+            this.gender = object.getString("gender");
             this.status = object.getString("status");
             this.grade = object.getString("grade");
             this.gmt_create = object.getString("gmt_create");
@@ -65,9 +74,12 @@ public class UserEntity {
     public String getTel() {
         return tel;
     }
+    public String getBirthday() {return birthday;}
+    public String getGender() {return gender;}
     public String getStatus() {
         return status;
     }
+    public String getIntroduction(){ return  introduction;}
     public String getGrade() {
         return grade;
     }
@@ -91,6 +103,9 @@ public class UserEntity {
     public void setEmail(String email) {
         this.email = email;
     }
+    public void setBirthday(String birthday) {this.birthday = birthday;}
+    public void setIntroduction(String introduction) {this.introduction = introduction;}
+    public void setGender(String gender){ this.gender = gender; }
     public void setTel(String tel) {
         this.tel = tel;
     }
@@ -119,6 +134,9 @@ public class UserEntity {
         stringBuilder.append("username=" + this.getUsername() + "\n");
         stringBuilder.append("email=" + this.getEmail() + "\n");
         stringBuilder.append("tel=" + this.getTel() + "\n");
+        stringBuilder.append("birthday=" + this.getBirthday() + "\n");
+        stringBuilder.append("gender=" + this.getGender() + "\n");
+        stringBuilder.append("introduction=" + this.getIntroduction() + "\n");
         stringBuilder.append("status=" + this.getStatus() + "\n");
         stringBuilder.append("grade=" + this.getGrade() + "\n");
         stringBuilder.append("created_at=" + this.getGmt_create() + "\n");

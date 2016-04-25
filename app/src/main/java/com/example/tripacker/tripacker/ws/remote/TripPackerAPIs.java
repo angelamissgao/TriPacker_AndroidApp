@@ -14,6 +14,9 @@ public class TripPackerAPIs {
     public static String getUserProfile(int user_id){
         return API_BASE_URL+"/member/profile/getprofile";
     }
+    public static String updateUserProfile(int user_id){
+        return API_BASE_URL+"/member/"+user_id+"/profile";
+    }
 
     // Get Trip
 

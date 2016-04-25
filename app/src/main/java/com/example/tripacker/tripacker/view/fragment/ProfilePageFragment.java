@@ -19,6 +19,8 @@ import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
+import com.example.tripacker.tripacker.entity.UserEntity;
+import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
 import com.example.tripacker.tripacker.view.activity.SignupActivity;
 import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
@@ -51,6 +53,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
     private static final int REQUEST_EDIT = 0;
     private static final int RESULT_OK = 200;
     private static final int RESULT_NOTSAVED = 400;
+    private static SharedPreferences pref;
 
 
     @Override
@@ -63,7 +66,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
 
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
 
-        SharedPreferences pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
+        pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
 
 
@@ -82,7 +85,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
 
 
         // Add item to adapter
-
+/*
         try {
 
            JSONObject js_trip1 = new JSONObject();
@@ -112,6 +115,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        */
 
         getContent();
 
@@ -173,10 +177,11 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
 
         // the request
         try{
-
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
             APIConnection.SetAsyncCaller(this, thiscontext);
 
-            APIConnection.getUserProfile(0);
+            APIConnection.getUserProfile(nameValuePairs);
 
         }
         catch (Exception e)
@@ -208,6 +213,9 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller {
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse user json object
+                UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
+                Log.i(TAG, "User Info= " + user.toString());
+
             }else{
 
             }

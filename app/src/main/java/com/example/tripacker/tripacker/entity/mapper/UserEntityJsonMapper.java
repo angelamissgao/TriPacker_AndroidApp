@@ -1,11 +1,13 @@
 package com.example.tripacker.tripacker.entity.mapper;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.List;
-import javax.inject.Inject;
+
 
 import com.example.tripacker.tripacker.entity.UserEntity;
 
@@ -13,10 +15,10 @@ import com.example.tripacker.tripacker.entity.UserEntity;
  * Class used to transform from Strings representing json to valid objects.
  */
 public class UserEntityJsonMapper {
-
+    private static final String TAG = "UserEntityJsonMapper";
     private final Gson gson;
 
-    @Inject
+
     public UserEntityJsonMapper() {
         this.gson = new Gson();
     }
@@ -29,9 +31,10 @@ public class UserEntityJsonMapper {
      * @throws com.google.gson.JsonSyntaxException if the json string is not a valid json structure.
      */
     public UserEntity transformUserEntity(String userJsonResponse) throws JsonSyntaxException {
+        Log.i(TAG, "Json String= " + userJsonResponse);
         try {
-            Type userEntityType = new TypeToken<UserEntity>() {}.getType();
-            UserEntity userEntity = this.gson.fromJson(userJsonResponse, userEntityType);
+            String sample = "{\"id\":4,\"gender\":0,\"grade\":0,\"tel\":\"\",\"birthday\":\"04-21-2016\",\"nickname\":\"\",\"selfie\":\"\",\"introduction\":\"\"}";
+            UserEntity userEntity = this.gson.fromJson(sample, UserEntity.class);
 
             return userEntity;
         } catch (JsonSyntaxException jsonException) {

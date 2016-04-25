@@ -180,6 +180,37 @@ public class WebServices {
         }
         return jsonResponse;
 	}
+
+
+	public static HttpResponse httpPut(HttpUriRequest requestPut, String payLoad) {
+		HttpParams httpParams = new BasicHttpParams();
+		HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMOUT);
+
+		HttpUriRequest request = requestPut;
+
+		if (WS_USERNAME != null && WS_PASSWORD != null) {
+			Log.d(TAG, "Setting request credentials");
+			// Apparently this doesn't work with POST Request
+			//client.getCredentialsProvider().setCredentials(new AuthScope(null, -1), new UsernamePasswordCredentials(WS_USERNAME,WS_PASSWORD));
+			request.setHeader("Authorization","Basic "+Base64.encodeToString((WS_USERNAME+":"+WS_PASSWORD).getBytes(),Base64.URL_SAFE|Base64.NO_WRAP));
+		}
+
+		HttpResponse jsonResponse = null;
+		Log.d(TAG, "HttpPost URL: "+ requestPut.getURI());
+
+		try {
+			//	request.setEntity(new StringEntity(payLoad, "UTF-8"));
+			request.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
+			BasicResponseHandler handler = new BasicResponseHandler();
+			//	if (DEBUG) Log.d(TAG, "Executing post request with payload "+payLoad);
+			//    jsonResponse = client.execute(request, handler);
+			jsonResponse = client.execute(request);
+		} catch (Exception e) {
+			Log.e(TAG, e.getMessage(),e);
+		}
+		return jsonResponse;
+	}
 	
 	private static DefaultHttpClient getThreadSafeClient()  {
 

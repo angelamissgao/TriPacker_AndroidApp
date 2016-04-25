@@ -66,6 +66,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     // User Session Manager Class
     private UserSessionManager session;
 
+    private String user_name = "";
+    private String user_id = "";
+    private String user_email = "";
+
 
     // Configuration for calling a REST service
     //private static final String TEST_URL                   = "http://47.88.12.177/api/member/login/dologin";
@@ -158,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
     public void onLoginSuccess() {
         // Creating user login session
-        session.createUserLoginSession("Eileen Wei", "eileenwei0105@gmail.com", APIConnection.getCookies());
+        session.createUserLoginSession(user_name, user_id, user_email, APIConnection.getCookies());
         loginButton.setEnabled(true);
         finish();
     }
@@ -239,7 +243,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
                 onLoginSuccess();
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
-                // Parse user json object
+                // Parse session json object
+
+
             }else{
                 onLoginFailed();
             }
