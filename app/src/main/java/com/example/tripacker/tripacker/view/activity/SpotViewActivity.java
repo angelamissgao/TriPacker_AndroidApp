@@ -15,17 +15,23 @@ import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.RestTask;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
+import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by angelagao on 4/11/16.
  */
-public class SpotViewActivity extends AppCompatActivity {
+public class SpotViewActivity extends AppCompatActivity implements AsyncCaller {
 
     //GetSpotAPI - // TODO: 4/11/16
     private static final String SendSpot_URL = "";
@@ -51,31 +57,25 @@ public class SpotViewActivity extends AppCompatActivity {
 //
 //        //// TODO: 4/11/16 request more datas
 //        Spot showSpot = new Spot();
-//        getContent();
+        getContent();
 
     }
 
     private void getContent() {
-//        HttpResponse spot;
-//        JSONObject json = new JSONObject();
-//        try{
-//            HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
-//
-//            RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
-//             //doInBackground runs
-//            progress = ProgressDialog.show(this, "Getting Spot Data ...", "Waiting For Results...", true);
-//        } catch (URISyntaxException e) {
-//            e.printStackTrace();
-//        }
+        // Http Call
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        String spotid = "2";
+        nameValuePairs.add(new BasicNameValuePair("spotid", spotid));
 
-//        WebServices.setURL(GetSpot_URL);
-//        HttpGet httpGet = new HttpGet(new URI(GetSpot_URL));
-//        AsyncJsonGetTask getTask = new AsyncJsonGetTask(this);
-//        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-//        nameValuePairs.add(new BasicNameValuePair("spotname", "thailand"));
-////        httpGet.setHeader();
-//
-//        getTask.execute(httpGet, "");
+        try{
+            APIConnection.SetAsyncCaller(this, getApplicationContext());
+
+            APIConnection.getSpotDetail(nameValuePairs);
+
+        } catch (Exception e) {
+            Log.e("getSpots", e.toString());
+            e.printStackTrace();
+        }
     }
 
 
@@ -110,4 +110,9 @@ public class SpotViewActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
+        String  response = result.toString();
+        Log.e("Spot Get Detail result------>", response);
+    }
 }

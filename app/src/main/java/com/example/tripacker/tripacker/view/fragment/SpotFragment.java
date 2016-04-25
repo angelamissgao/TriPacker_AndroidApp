@@ -71,11 +71,9 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
 
         //HTTP GET requests
-//        ArrayList<SpotEntity> arrayOfSpots = getContent();
         getContent();
 
-
-
+        // Spots gridView listener
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -85,6 +83,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
                 ArrayList<String> spot_info = new ArrayList<String>();
                 //Todo: added spot json
                 spot_info.add("spotID");
+                Toast.makeText(view.getContext(), "Clicked Position = " + position + "Click ID = " + id, Toast.LENGTH_SHORT).show();
 
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("spotId", spot_info);

@@ -46,8 +46,8 @@ public class TripPackerAPIs {
         return API_BASE_URL+"/spots/polular";
     }
 
-    public static String getSpotDetail(int spot_id){
-        return API_BASE_URL+"/spots/"+spot_id;
+    public static String getSpotDetail(){
+        return API_BASE_URL+"/spot/";
 
     }
 
