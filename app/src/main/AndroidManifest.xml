@@ -38,6 +38,10 @@
             android:name=".view.activity.EditProfileActivity"
             android:label="@string/title_activity_edit_profile"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".view.activity.TripViewActivity"
+            android:label="@string/title_activity_trip_view"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity {
 
     private TabLayout mTabLayout;
 
-    //bottom navigation
+    //top navigation
     private int[] mTabsIcons = {
             R.drawable.ic_main_selector,
             R.drawable.ic_favorite_selector,

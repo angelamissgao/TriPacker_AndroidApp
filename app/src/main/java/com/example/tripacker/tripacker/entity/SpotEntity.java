@@ -13,6 +13,7 @@ import java.util.ArrayList;
  * Created by EILEENWEI on 4/13/16.
  */
 public class SpotEntity {
+
     @SerializedName("name")
     String name;
     @SerializedName("category_id")
@@ -50,14 +51,14 @@ public class SpotEntity {
         try {
             this.name = object.getString("name");
 //            this.category_id = object.getString("category_id");
-//            this.city_id = object.getString("city_id");
+            this.city_id = object.getString("city_id");
 //            this.geo_latitude = object.getString("geo_latitude");
 //            this.geo_longitude = object.getString("geo_longitude");
 //            this.image_main = object.getString("image_main");
 //            this.image_rest = object.getString("image_rest");
 //            this.status = object.getString("status");
 //            this.score = object.getString("score");
-//            this.gmt_create = object.getString("gmt_create");
+            this.gmt_create = object.getString("gmt_create");
 //            this.gmt_modified = object.getString("gmt_modified");
 //            this.gmt_approved = object.getString("gmt_approved");
         } catch (JSONException e) {
@@ -118,6 +119,16 @@ public class SpotEntity {
     //Setters
     public void setName(String name) { this.name = name; }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("***** Spot Entity Details *****\n");
+        stringBuilder.append("name=" + this.getName() + "\n");
+        stringBuilder.append("city_id=" + this.getCity_id() + "\n");
+        stringBuilder.append("created_at=" + this.getGmt_create() + "\n");
+        stringBuilder.append("*******************************");
 
+        return stringBuilder.toString();
+    }
 
 }
