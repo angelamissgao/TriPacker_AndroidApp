@@ -11,10 +11,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -22,6 +25,12 @@ import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -44,6 +53,7 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
     protected LocationManager locationManager;
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,10 +78,10 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
 
         Bundle bundle = getIntent().getExtras();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
-        getSupportActionBar().setElevation(0);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
+//        getSupportActionBar().setElevation(0);
 
 //        EditText inputName = (EditText) findViewById(R.id.spotNameInput);
 //        Spot spot = new Spot();
@@ -87,6 +97,13 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
         });
 
     }
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+//        final View view = inflater.inflate(R.layout.spot_main, container, false);
+//
+//        return view;
+//    }
 
     private void sendContent() {
         String name = "San Jose Museum";

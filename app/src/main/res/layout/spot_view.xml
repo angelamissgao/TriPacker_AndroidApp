@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -10,6 +11,7 @@
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="200dp">-->
     <!--</com.google.android.gms.maps.MapView>-->
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="200dp"
@@ -18,6 +20,15 @@
         android:id="@+id/imageView"
         android:textColor="@color/abc_primary_text_material_dark"
         android:background="@drawable/thai_temple" />
+
+    <!--<fragment-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--class="com.google.android.gms.maps.SupportMapFragment"-->
+        <!--android:id="@+id/map"-->
+        <!--android:layout_gravity="center_horizontal" />-->
+        <!--&lt;!&ndash;tools:layout="@layout/spot_view" />&ndash;&gt;-->
+
 
     <LinearLayout
         android:orientation="horizontal"
@@ -32,7 +43,6 @@
             android:background="@drawable/ic_spot"
             android:gravity="center"
             android:id="@+id/imageView2" />
-
 
         <TextView
             android:layout_width="fill_parent"

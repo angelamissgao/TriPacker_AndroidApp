@@ -11,13 +11,13 @@
     <!--android:layout_height="200dp">-->
     <!--</com.google.android.gms.maps.MapView>-->
 
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:gravity="center"
         android:id="@+id/imageView"
         android:background="#6d6a6a" />
-
 
     <LinearLayout
         android:orientation="vertical"

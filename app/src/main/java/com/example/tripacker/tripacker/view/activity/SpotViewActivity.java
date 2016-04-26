@@ -17,6 +17,12 @@ import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -31,13 +37,15 @@ import java.util.List;
 /**
  * Created by angelagao on 4/11/16.
  */
-public class SpotViewActivity extends AppCompatActivity implements AsyncCaller {
+public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,OnMapReadyCallback {
 
     //GetSpotAPI - // TODO: 4/11/16
     private static final String SendSpot_URL = "";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
     private static final String GetSpot_URL = "";
     ProgressDialog progress;
+
+    private GoogleMap mMap;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,13 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller {
 //        //// TODO: 4/11/16 request more datas
 //        Spot showSpot = new Spot();
         getContent();
+
+
+
+//        //Google Map
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
     }
 
@@ -114,5 +129,15 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller {
     public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
         String  response = result.toString();
         Log.e("Spot Get Detail result------>", response);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+//        mMap = googleMap;
+//
+//        // Add a marker in Sydney and move the camera
+//        LatLng sydney = new LatLng(-34, 151);
+//        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
