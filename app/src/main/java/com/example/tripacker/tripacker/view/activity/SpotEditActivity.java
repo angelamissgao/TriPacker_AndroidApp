@@ -50,31 +50,13 @@ import java.util.List;
 public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
 
     ProgressDialog progress;
-    protected LocationManager locationManager;
-    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
-    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
+
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spot_edit);
-
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.SEND_SMS}, 10);
-            return;
-        }
-
-
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                MINIMUM_TIME_BETWEEN_UPDATES,
-                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-                new MyLocationListener()
-        );
-
-        showCurrentLocation();
 
         Bundle bundle = getIntent().getExtras();
 
@@ -149,52 +131,6 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
             Toast.makeText(getApplicationContext(), "create spots success", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    protected void showCurrentLocation() {
-
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
-            return;
-        }
-
-        if (location != null) {
-            String message = String.format(
-                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
-                    location.getLongitude(), location.getLatitude()
-            );
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    //Location Listener class
-    private class MyLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            String message = String.format(
-                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
-                    location.getLongitude(), location.getLatitude()
-            );
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Toast.makeText(getApplicationContext(), "provider status changed", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            Toast.makeText(getApplicationContext(), "privider enabled by user", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
         }
     }
 }

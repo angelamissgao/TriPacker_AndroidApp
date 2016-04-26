@@ -12,21 +12,22 @@
         <!--android:layout_height="200dp">-->
     <!--</com.google.android.gms.maps.MapView>-->
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:gravity="center"
-        android:text="Thai Temple"
-        android:id="@+id/imageView"
-        android:textColor="@color/abc_primary_text_material_dark"
-        android:background="@drawable/thai_temple" />
-
-    <!--<fragment-->
+    <!--<TextView-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="200dp"-->
-        <!--class="com.google.android.gms.maps.SupportMapFragment"-->
-        <!--android:id="@+id/map"-->
-        <!--android:layout_gravity="center_horizontal" />-->
+        <!--android:gravity="center"-->
+        <!--android:text="Thai Temple"-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:textColor="@color/abc_primary_text_material_dark"-->
+        <!--android:background="@drawable/thai_temple" />-->
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
+        android:layout_gravity="center_horizontal"
+        tools:context="com.example.tripacker.tripacker.view.activity.SpotViewActivity"/>
         <!--&lt;!&ndash;tools:layout="@layout/spot_view" />&ndash;&gt;-->
 
 

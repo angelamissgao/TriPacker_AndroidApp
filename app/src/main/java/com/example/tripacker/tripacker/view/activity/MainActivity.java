@@ -96,6 +96,10 @@ public class MainActivity extends ActionBarActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
 
+//        //test
+//        Intent intent = new Intent(this, SpotViewActivity.class);
+//        startActivity(intent);
+
 
         // Define SlidingTabLayout (shown at top)
         // and ViewPager (shown at bottom) in the layout.
