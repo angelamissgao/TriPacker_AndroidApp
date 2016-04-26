@@ -79,7 +79,7 @@ public class MainActivity extends ActionBarActivity {
 
 
     // Configuration for calling a REST service
-    private static final String TEST_URL                   = "http://47.88.12.177/api";
+    private static final String TEST_URL                   = "http://47.88.12.177/api/v1";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
 
 

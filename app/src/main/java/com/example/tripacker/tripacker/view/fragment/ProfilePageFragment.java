@@ -81,8 +81,9 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
         setUpViewById(view);
 
 
-
-        Log.e("From Session", "-------> " + pref.getString("name", null));
+        //From session
+        Log.e("From Session", "-------> " + pref.getString("username", null));
+        Log.e("From Session", "-------> " + pref.getString("uid", null));
         Log.e("From Session", "-------> " + pref.getString("cookies", null));
 
         getContent();

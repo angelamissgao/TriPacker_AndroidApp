@@ -66,9 +66,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     // User Session Manager Class
     private UserSessionManager session;
 
-    private String user_name = "";
+    private String user_username = "";
     private String user_id = "";
-    private String user_email = "";
 
 
     // Configuration for calling a REST service
@@ -162,7 +161,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
     public void onLoginSuccess() {
         // Creating user login session
-        session.createUserLoginSession(user_name, user_id, user_email, APIConnection.getCookies());
+        session.createUserLoginSession(user_username, user_id, APIConnection.getCookies());
         loginButton.setEnabled(true);
         finish();
     }
@@ -236,15 +235,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             JSONObject finalResult = new JSONObject(tokener);
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
 
             if(finalResult.getString("success").equals("true")){
                 onLoginSuccess();
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse session json object
-
+                user_username = finalResult.getString("username");
+                user_id = finalResult.getString("uid");
 
             }else{
                 onLoginFailed();

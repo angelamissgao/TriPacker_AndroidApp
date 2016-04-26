@@ -29,13 +29,12 @@ public class UserSessionManager {
     private static final String IS_USER_LOGIN = "IsUserLoggedIn";
 
     // User name (make variable public to access from outside)
-    public static final String KEY_NAME = "name";
+    public static final String KEY_USERNAME = "username";
 
     // User id (make variable public to access from outside)
-    public static final String KEY_USER_ID = "user_id";
+    public static final String KEY_UID = "uid";
 
-    // Email address (make variable public to access from outside)
-    public static final String KEY_EMAIL = "email";
+
 
     // Email address (make variable public to access from outside)
     public static final String KEY_COOKIES = "cookies";
@@ -48,18 +47,17 @@ public class UserSessionManager {
     }
 
     //Create login session
-    public void createUserLoginSession(String name, String user_id, String email, String cookies){
+    public void createUserLoginSession(String username, String uid, String cookies){
         // Storing login value as TRUE
         editor.putBoolean(IS_USER_LOGIN, true);
 
         // Storing name in pref
-        editor.putString(KEY_NAME, name);
+        editor.putString(KEY_USERNAME, username);
 
         // Storing name in pref
-        editor.putString(KEY_USER_ID, user_id);
+        editor.putString(KEY_UID, uid);
 
-        // Storing email in pref
-        editor.putString(KEY_EMAIL, email);
+
 
         // Storing cookies in pref
         editor.putString(KEY_COOKIES, cookies);
@@ -107,13 +105,11 @@ public class UserSessionManager {
         HashMap<String, String> user = new HashMap<String, String>();
 
         // user name
-        user.put(KEY_NAME, pref.getString(KEY_NAME, null));
+        user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
 
         // user name
-        user.put(KEY_USER_ID, pref.getString(KEY_USER_ID, null));
+        user.put(KEY_UID, pref.getString(KEY_UID, null));
 
-        // user email id
-        user.put(KEY_EMAIL, pref.getString(KEY_EMAIL, null));
 
         // user session id
         user.put(KEY_COOKIES, pref.getString(KEY_COOKIES, null));

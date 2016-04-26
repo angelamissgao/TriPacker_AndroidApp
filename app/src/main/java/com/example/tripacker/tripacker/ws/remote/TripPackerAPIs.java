@@ -7,7 +7,7 @@ public class TripPackerAPIs {
 
 
     public static String loginUser(){
-        return API_BASE_URL+"/member/login/dologin";
+        return API_BASE_URL+"/member/login";
     }
     // Get User
 
