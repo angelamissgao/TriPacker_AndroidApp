@@ -11,9 +11,13 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -21,6 +25,12 @@ import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
@@ -40,39 +50,20 @@ import java.util.List;
 public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
 
     ProgressDialog progress;
-    protected LocationManager locationManager;
-    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
-    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spot_edit);
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-//        locationManager.requestLocationUpdates(
-//                LocationManager.GPS_PROVIDER,
-//                MINIMUM_TIME_BETWEEN_UPDATES,
-//                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-//                new MyLocationListener()
-//        );
-
         Bundle bundle = getIntent().getExtras();
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
-        getSupportActionBar().setElevation(0);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
+//        getSupportActionBar().setElevation(0);
 
 //        EditText inputName = (EditText) findViewById(R.id.spotNameInput);
 //        Spot spot = new Spot();
@@ -88,6 +79,13 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
         });
 
     }
+
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
+//        final View view = inflater.inflate(R.layout.spot_main, container, false);
+//
+//        return view;
+//    }
 
     private void sendContent() {
         String name = "San Jose Museum";
@@ -133,34 +131,6 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
             Toast.makeText(getApplicationContext(), "create spots success", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-    }
-
-    //Location Listener class
-    private class MyLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            String message = String.format(
-                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
-                    location.getLongitude(), location.getLatitude()
-            );
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Toast.makeText(getApplicationContext(), "provider status changed", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            Toast.makeText(getApplicationContext(), "privider enabled by user", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
         }
     }
 }

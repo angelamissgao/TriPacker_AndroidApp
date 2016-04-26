@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <GridView
-        android:id="@+id/gridView"
+        android:id="@+id/gridView_spot"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
@@ -86,14 +86,6 @@
                 <!--android:layout_margin="5dp"-->
                 <!--android:background="@color/monsoon"/>-->
         <!--</LinearLayout>-->
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="click image view"
-            android:id="@+id/test"
-            android:layout_weight="0.13" />
 
         <android.support.design.widget.FloatingActionButton
             xmlns:android="http://schemas.android.com/apk/res/android"
