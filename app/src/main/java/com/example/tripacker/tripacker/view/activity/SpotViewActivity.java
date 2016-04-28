@@ -15,6 +15,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -84,10 +85,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
-
-//
-//        //// TODO: 4/11/16 request more datas
-//        Spot showSpot = new Spot();
+        //Http Request
         getContent(stuff.get(0));
 
 
@@ -105,10 +103,31 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
                 new MyLocationListener()
         );
 
-//        //Google Map
+      //Google Map showing spot info
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+        // Floating button
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.edit_spot);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getApplicationContext(), SpotEditActivity.class);
+
+                // bundle data to the spot view activity
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("user_id");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("user_id", spot_info);
+
+                mainInten.putExtras(bundle);
+                startActivity(mainInten);
+
+            }
+        });
 
     }
 

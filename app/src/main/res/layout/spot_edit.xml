@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/lightgrey">
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map"
+        android:layout_gravity="center_horizontal"
+        tools:context="com.example.tripacker.tripacker.view.activity.SpotViewActivity"/>
+        <!--&lt;!&ndash;tools:layout="@layout/spot_view" />&ndash;&gt;-->
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingTop="40dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_spot"
+                android:gravity="center"
+                android:id="@+id/spotNameIcon"
+                android:backgroundTint="@color/primary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Spot Name"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/SpotName"
+                android:textColor="@color/primary" />
+            </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="San Francisco"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:id="@+id/spotName_show" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingTop="40dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_tel"
+                android:gravity="center"
+                android:backgroundTint="@color/primary"
+                android:id="@+id/imageView3" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Address"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/address"
+                android:textColor="@color/primary" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="SpotAdress"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:id="@+id/spotAddress_show" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingTop="40dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_email"
+                android:gravity="center"
+                android:backgroundTint="@color/primary"
+                android:id="@+id/imageView4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Spot Description"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/description"
+                android:textColor="@color/primary" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="spot info"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:id="@+id/spot_show3" />
+
+    </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Edit Spot"
+        android:id="@+id/editSpot"
+        android:backgroundTint="@color/primary"
+        android:textColor="@color/secondary_text_default_material_dark" />
+
+</LinearLayout>

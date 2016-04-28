@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/spot_item_img"
-        android:layout_width="100dp"
+        android:layout_width="150dp"
         android:layout_height="100dp" />
 
     <TextView
