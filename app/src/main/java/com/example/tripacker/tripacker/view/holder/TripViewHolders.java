@@ -1,6 +1,5 @@
 package com.example.tripacker.tripacker.view.holder;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +9,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
-import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
 import com.example.tripacker.tripacker.view.activity.TripViewActivity;
 
 public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {

@@ -83,8 +83,8 @@ public class APIConnection{
     }
 
     // Spots request
-    public static void getSpotsList(List<NameValuePair> params) {
-        getSpotsListFromApi(params);
+    public static void getSpotsList(String id, List<NameValuePair> params) {
+        getSpotsListFromApi(id, params);
     }
 
     public static void createSpot(List<NameValuePair> params) {
@@ -113,8 +113,8 @@ public class APIConnection{
         createPostReq(TripPackerAPIs.loginUser(), params);
     }
 
-    private static void getSpotsListFromApi(List<NameValuePair> params){
-        createGetReq(TripPackerAPIs.getSpotsList(), params);
+    private static void getSpotsListFromApi(String id, List<NameValuePair> params){
+        createGetReq(TripPackerAPIs.getSpotsList(), id, params);
     }
 
 
@@ -123,7 +123,7 @@ public class APIConnection{
     }
 
     private static void getSpotDetailFromApi(List<NameValuePair> params) {
-        createGetReq(TripPackerAPIs.getSpotDetail(), params);
+//        createGetReq(TripPackerAPIs.getSpotDetail(), params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {
@@ -131,7 +131,7 @@ public class APIConnection{
     }*/
 
     private static void getUserProfileFromApi(List<NameValuePair> params){
-        createGetReq(TripPackerAPIs.getUserProfile(0), params);
+//        createGetReq(TripPackerAPIs.getUserProfile(0), params);
     }
 
     private static void updateUserProfileFromApi(List<NameValuePair> params){
@@ -185,8 +185,9 @@ public class APIConnection{
             }
     }
 
-    private static void createGetReq(String url,List<NameValuePair> params) {
+    private static void createGetReq(String url,String id, List<NameValuePair> params) {
         if (true) {
+            url += "/" + id;
             url += "?";
             String paramString = URLEncodedUtils.format(params, "utf-8");
             url += paramString;

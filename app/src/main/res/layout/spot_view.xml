@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,7 +30,6 @@
         android:layout_gravity="center_horizontal"
         tools:context="com.example.tripacker.tripacker.view.activity.SpotViewActivity"/>
         <!--&lt;!&ndash;tools:layout="@layout/spot_view" />&ndash;&gt;-->
-
 
     <LinearLayout
         android:orientation="horizontal"
@@ -106,6 +106,15 @@
             android:id="@+id/textView5" />
 
     </LinearLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/edit_spot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|bottom"
+        android:src="@drawable/ic_add_white_24dp"
+        app:backgroundTint="@color/primary" />
 
 
 </LinearLayout>

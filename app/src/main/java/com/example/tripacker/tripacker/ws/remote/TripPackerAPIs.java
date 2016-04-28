@@ -34,7 +34,7 @@ public class TripPackerAPIs {
 
     // Get Spot
 
-    public static String getSpotsList() {return API_BASE_URL + "/spot/getspots";}
+    public static String getSpotsList() {return API_BASE_URL + "/spot/getByCity";}
 
     public static String createSpot() {return API_BASE_URL + "/spot/createspot";}
 

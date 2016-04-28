@@ -20,7 +20,7 @@ import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.presenter.SpotListPresenter;
 import com.example.tripacker.tripacker.view.SpotListView;
-import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
+import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
 import com.example.tripacker.tripacker.view.adapter.SpotsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
@@ -98,7 +98,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainInten = new Intent(getActivity(), SpotEditActivity.class);
+                Intent mainInten = new Intent(getActivity(), SpotCreateActivity.class);
 
                 // bundle data to the spot view activity
                 ArrayList<String> spot_info = new ArrayList<String>();
@@ -133,14 +133,14 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         String cityId = "1";
         String pageId = "1";
         String pageSize = "10";
-        nameValuePairs.add(new BasicNameValuePair("cityId", cityId));
+
         nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
         nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
 
         try{
             APIConnection.SetAsyncCaller(this, getActivity().getApplicationContext());
 
-            APIConnection.getSpotsList(nameValuePairs);
+            APIConnection.getSpotsList(cityId, nameValuePairs);
 
         } catch (Exception e) {
             Log.e("getSpots", e.toString());

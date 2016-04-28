@@ -4,9 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,24 +23,19 @@ import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
-import com.example.tripacker.tripacker.view.activity.SignupActivity;
-import com.example.tripacker.tripacker.view.activity.SpotEditActivity;
+import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
-import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.ws.remote.WebServices;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,7 +97,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainInten = new Intent(getActivity(), SpotEditActivity.class);
+                Intent mainInten = new Intent(getActivity(), SpotCreateActivity.class);
 
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 startActivityForResult(intent, REQUEST_EDIT);
