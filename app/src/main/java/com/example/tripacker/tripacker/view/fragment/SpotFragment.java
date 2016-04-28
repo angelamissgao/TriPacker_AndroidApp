@@ -81,9 +81,12 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
                 // bundle data to the spot view activity
                 ArrayList<String> spot_info = new ArrayList<String>();
-                //Todo: added spot json
-                spot_info.add("spotID");
-                Toast.makeText(view.getContext(), "Clicked Position = " + position + "Click ID = " + id, Toast.LENGTH_SHORT).show();
+
+                SpotEntity spot = (SpotEntity) gridView.getAdapter().getItem(position);
+
+                Log.e("get Adapter Spots:------>", spot.toString());
+
+                spot_info.add(spot.getSpotId());
 
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("spotId", spot_info);
@@ -116,14 +119,6 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         return view;
     }
 
-//    @Override public void onViewCreated(View view, Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        this.spotListPresenter.setView(this);
-//        if(savedInstanceState == null) {
-//
-//        }
-//
-//    }
 
     private void getContent() {
         ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
@@ -170,8 +165,10 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
                 JSONObject spoti = new JSONObject();
                 spoti.put("name", spotName);
-                SpotEntity Spot1 = new SpotEntity(spoti);
-                arrayOfSpots.add(Spot1);
+                spoti.put("spotId", spotId);
+
+                SpotEntity spotEntity = new SpotEntity(spoti);
+                arrayOfSpots.add(spotEntity);
 
             }
 
@@ -179,7 +176,6 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
             gridView.setAdapter(gridAdapter);
 
-            Log.e("arrayOfSpots Size:------>", Integer.toString(arrayOfSpots.size()));
             Log.e("Spots Get result------>", response);
             Toast.makeText(getContext(), "Get spots success", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {

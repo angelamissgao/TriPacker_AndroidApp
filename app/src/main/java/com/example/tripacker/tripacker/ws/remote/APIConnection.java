@@ -97,8 +97,8 @@ public class APIConnection{
     public void getPopularSpotsByPage() {
     }
 
-    public static void getSpotDetail(List<NameValuePair> params) {
-        getSpotDetailFromApi(params);
+    public static void getSpotDetail(String spotId, List<NameValuePair> params) {
+        getSpotDetailFromApi(spotId, params);
     }
 
     public void getConfiguration() {
@@ -122,8 +122,8 @@ public class APIConnection{
         createPostReq(TripPackerAPIs.createSpot(), params);
     }
 
-    private static void getSpotDetailFromApi(List<NameValuePair> params) {
-//        createGetReq(TripPackerAPIs.getSpotDetail(), params);
+    private static void getSpotDetailFromApi(String spotId, List<NameValuePair> params) {
+        createGetReq(TripPackerAPIs.getSpotDetail(), spotId, params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {

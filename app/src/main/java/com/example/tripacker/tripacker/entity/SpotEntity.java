@@ -16,6 +16,8 @@ public class SpotEntity {
 
     @SerializedName("name")
     String name;
+    @SerializedName("spotId")
+    String spotId;
     @SerializedName("category_id")
     String category_id;
     @SerializedName("city_id")
@@ -50,6 +52,7 @@ public class SpotEntity {
 
         try {
             this.name = object.getString("name");
+            this.spotId = object.getString("spotId");
 //            this.category_id = object.getString("category_id");
             this.city_id = object.getString("city_id");
 //            this.geo_latitude = object.getString("geo_latitude");
@@ -90,6 +93,7 @@ public class SpotEntity {
     public String getName() {
         return name;
     }
+    public String getSpotId() {return spotId;}
     public String getCategory_id() {
         return category_id;
     }
@@ -118,14 +122,14 @@ public class SpotEntity {
 
     //Setters
     public void setName(String name) { this.name = name; }
+    public void setSpotId(String id) {this.spotId = id;}
 
     @Override
     public String toString() {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("***** Spot Entity Details *****\n");
         stringBuilder.append("name=" + this.getName() + "\n");
-        stringBuilder.append("city_id=" + this.getCity_id() + "\n");
-        stringBuilder.append("created_at=" + this.getGmt_create() + "\n");
+        stringBuilder.append("spotID=" + this.getSpotId() + "\n");
         stringBuilder.append("*******************************");
 
         return stringBuilder.toString();

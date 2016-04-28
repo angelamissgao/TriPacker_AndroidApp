@@ -18,6 +18,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,7 +36,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -64,8 +68,9 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spot_view);
 
-//        Bundle bundle = getIntent().getExtras();
-////        ArrayList<String> stuff = bundle.getStringArrayList("spotID");
+        Bundle bundle = getIntent().getExtras();
+        ArrayList<String> stuff = bundle.getStringArrayList("spotId");
+        Log.e("SpotID is ----> ", stuff.get(0));
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -77,7 +82,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 //
 //        //// TODO: 4/11/16 request more datas
 //        Spot showSpot = new Spot();
-        getContent();
+        getContent(stuff.get(0));
 
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -103,16 +108,15 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
     }
 
-    private void getContent() {
+    private void getContent(String spotId) {
         // Http Call
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         String spotid = "2";
-        nameValuePairs.add(new BasicNameValuePair("spotid", spotid));
 
         try{
             APIConnection.SetAsyncCaller(this, getApplicationContext());
 
-            APIConnection.getSpotDetail(nameValuePairs);
+            APIConnection.getSpotDetail(spotId, nameValuePairs);
 
         } catch (Exception e) {
             Log.e("getSpots", e.toString());
@@ -156,6 +160,23 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
     public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
         String  response = result.toString();
         Log.e("Spot Get Detail result------>", response);
+
+        JSONTokener tokener = new JSONTokener(response);
+        JSONObject finalResult = new JSONObject(tokener);
+
+        // Set spot infor mation to view
+        String spot_name = finalResult.getString("spotName");
+        TextView tv_spotName = (TextView) findViewById(R.id.spotName_show);
+        tv_spotName.setText(spot_name);
+
+        String spot_address = finalResult.getString("address");
+        TextView tv_spotaddress = (TextView) findViewById(R.id.spotAddress_show);
+        tv_spotaddress.setText(spot_address);
+
+        String spot_info = finalResult.getString("rate");
+        TextView tv_spotInfo = (TextView) findViewById(R.id.spot_show3);
+        tv_spotInfo.setText(spot_info);
+
     }
 
     @Override

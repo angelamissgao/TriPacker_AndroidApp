@@ -78,7 +78,7 @@
             android:text="512-419-2231"
             android:textAlignment="center"
             android:gravity="center_horizontal"
-            android:id="@+id/textView2" />
+            android:id="@+id/spotAddress_show" />
 
     </LinearLayout>
 
@@ -103,7 +103,7 @@
             android:text="angela.gyc@gmail.com"
             android:textAlignment="center"
             android:gravity="center_horizontal"
-            android:id="@+id/textView5" />
+            android:id="@+id/spot_show3" />
 
     </LinearLayout>
 
