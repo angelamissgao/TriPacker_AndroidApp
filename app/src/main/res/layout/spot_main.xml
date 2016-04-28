@@ -89,7 +89,7 @@
 
         <android.support.design.widget.FloatingActionButton
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/fab_spot"
+            android:id="@+id/create_spot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"

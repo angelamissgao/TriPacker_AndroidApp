@@ -7,21 +7,6 @@
     android:orientation="vertical"
     android:background="@color/lightgrey">
 
-    <!--<com.google.android.gms.maps.MapView-->
-        <!--android:id="@+id/mapview"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp">-->
-    <!--</com.google.android.gms.maps.MapView>-->
-
-    <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp"-->
-        <!--android:gravity="center"-->
-        <!--android:text="Thai Temple"-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:textColor="@color/abc_primary_text_material_dark"-->
-        <!--android:background="@drawable/thai_temple" />-->
-
     <fragment
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -32,18 +17,33 @@
         <!--&lt;!&ndash;tools:layout="@layout/spot_view" />&ndash;&gt;-->
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:paddingTop="40dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_spot"
-            android:gravity="center"
-            android:id="@+id/imageView2" />
+            android:padding="5dp">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_spot"
+                android:gravity="center"
+                android:id="@+id/spotNameIcon"
+                android:backgroundTint="@color/primary" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Spot Name"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/SpotName"
+                android:textColor="@color/primary" />
+            </LinearLayout>
 
         <TextView
             android:layout_width="fill_parent"
@@ -58,24 +58,41 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:paddingTop="40dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_tel"
-            android:gravity="center"
-            android:id="@+id/imageView3" />
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_tel"
+                android:gravity="center"
+                android:backgroundTint="@color/primary"
+                android:id="@+id/imageView3" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Address"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/address"
+                android:textColor="@color/primary" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="512-419-2231"
+            android:text="SpotAdress"
             android:textAlignment="center"
             android:gravity="center_horizontal"
             android:id="@+id/spotAddress_show" />
@@ -83,38 +100,62 @@
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:paddingTop="40dp">
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/ic_email"
-            android:gravity="center"
-            android:id="@+id/imageView4" />
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_email"
+                android:gravity="center"
+                android:backgroundTint="@color/primary"
+                android:id="@+id/imageView4" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Spot Description"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/description"
+                android:textColor="@color/primary" />
+        </LinearLayout>
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="angela.gyc@gmail.com"
+            android:text="spot info"
             android:textAlignment="center"
             android:gravity="center_horizontal"
             android:id="@+id/spot_show3" />
 
     </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent">
 
-    <android.support.design.widget.FloatingActionButton
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/edit_spot"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:src="@drawable/ic_add_white_24dp"
-        app:backgroundTint="@color/primary" />
+        <android.support.design.widget.FloatingActionButton
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/edit_spot"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="28dp"
+            android:src="@drawable/ic_mode_edit_white_24dp"
+            app:backgroundTint="@color/primary" />
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

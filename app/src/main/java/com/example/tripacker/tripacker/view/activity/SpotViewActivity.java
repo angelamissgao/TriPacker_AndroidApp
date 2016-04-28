@@ -202,9 +202,10 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(spotLocation.getLatitude(), spotLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(sydney).title(spotEntity.getName()));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        LatLng spot_gps = new LatLng(spotLocation.getLatitude(), spotLocation.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(spot_gps).title(spotEntity.getName()));
+        float zoomLevel = (float) 12.0;
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spot_gps, zoomLevel));
     }
 
     protected void showCurrentLocation() {

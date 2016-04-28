@@ -97,7 +97,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         });
 
         // Floating button
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab_spot);
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.create_spot);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -206,7 +206,8 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
 
             googleMap.addMarker(markerOptions);
 
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            float zoomLevel = (float) 12.0;
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
         }
     }
 }
