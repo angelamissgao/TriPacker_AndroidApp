@@ -63,6 +63,8 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
 
+    private Location spotLocation = new Location("SpotLocation");
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -177,6 +179,11 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         TextView tv_spotInfo = (TextView) findViewById(R.id.spot_show3);
         tv_spotInfo.setText(spot_info);
 
+        String geoLati = finalResult.getString("geoLatitude");
+        String geoLong = finalResult.getString("geoLongitude");
+        spotLocation.setLatitude(Double.parseDouble(geoLati));
+        spotLocation.setLongitude(Double.parseDouble(geoLong));
+
     }
 
     @Override
@@ -190,7 +197,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(location.getLatitude(), location.getLongitude());
+        LatLng sydney = new LatLng(spotLocation.getLatitude(), spotLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }

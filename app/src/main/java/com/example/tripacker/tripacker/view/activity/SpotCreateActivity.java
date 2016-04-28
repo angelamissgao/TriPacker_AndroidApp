@@ -1,6 +1,8 @@
 package com.example.tripacker.tripacker.view.activity;
 
 import android.app.ProgressDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -13,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -35,10 +38,18 @@ import java.util.List;
 public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller {
 
     ProgressDialog progress;
+    //View Element
+    EditText spotName;
+    EditText spotAddress;
+    EditText spotDescription;
+
     //Spot on Google maps
     private GoogleMap googleMap;
     MarkerOptions markerOptions;
     LatLng latLng;
+
+    //Spot Model
+    SpotEntity newspot = new SpotEntity();
 
 
     @Override
@@ -47,16 +58,11 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
         setContentView(R.layout.spot_create);
 
         Bundle bundle = getIntent().getExtras();
-//        getLocationFromAddress("1121 Homer Cmn, San Jose, CA");
 
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
-//        getSupportActionBar().setElevation(0);
-
-//        EditText inputName = (EditText) findViewById(R.id.spotNameInput);
-//        Spot spot = new Spot();
-//        spot.setName(inputName.getText().toString());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
+        getSupportActionBar().setElevation(0);
 
         // Post request to add a spot
         Button button_addSpot = (Button) findViewById(R.id.addSpot);
@@ -70,14 +76,15 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
         //Google Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapCreate);
-        Button button_showMap = (Button) findViewById(R.id.showSpotMap);// Getting a reference to the map
-        googleMap = mapFragment.getMap();
 
+        // Getting a reference to the map and search by address
+        Button button_showMap = (Button) findViewById(R.id.showSpotMap);
+        googleMap = mapFragment.getMap();
         button_showMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Getting reference to EditText to get the user input location
-                EditText etLocation = (EditText) findViewById(R.id.spotAddress);
+                EditText etLocation = (EditText) findViewById(R.id.spotAddressInput);
 
                 // Getting user input location
                 String location = etLocation.getText().toString();
@@ -86,18 +93,34 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
             }
         });
 
+//        //Getting Current location
+//        Button button_getCurrentGps = (Button) findViewById(R.id.getCurrentGps);
+//        button_getCurrentGps.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//            }
+//        });
     }
 
     private void sendContent() {
-        String name = "San Jose Museum";
+        spotName = (EditText) findViewById(R.id.spotNameInput);
+        spotAddress = (EditText) findViewById(R.id.spotAddressInput);
+        spotDescription = (EditText) findViewById(R.id.spotDescInput);
+
+        String name = spotName.getText().toString();
         String tags = "history";
         String categoryId = "11";
         String cityId = "1";
-        String address = "131 Homer Rd.";
-        String geoLatitude = "-28.12345";
-        String geoLongitude = "25.12345";
-        String description = "This is a good place";
+        String address = spotAddress.getText().toString();
+        String geoLatitude = newspot.getGeo_latitude();
+        String geoLongitude = newspot.getGeo_longitude();
+        String description = spotDescription.getText().toString();
         String img="/res/drawable/tie";
+
+        //Spot Entity
+        newspot.setName(name);
+        newspot.setAddress(address);
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("spotName", name));
@@ -137,25 +160,6 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
         }
     }
 
-    public void getLocationFromAddress(String strAddress) {
-        Geocoder coder = new Geocoder(this);
-        List<Address> address;
-
-        try {
-            address = coder.getFromLocationName(strAddress,1);
-            if (address==null) {
-                return;
-            }
-            Address location=address.get(0);
-            location.getLatitude();
-            location.getLongitude();
-            Log.e("location is: ---****",location.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     private class GeocoderTask extends AsyncTask<String, Void, List<Address>>{
         @Override
         protected List<Address> doInBackground(String... locationName){
@@ -185,6 +189,12 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
             Address location=addresses.get(0);
 
             latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+            newspot.setGeo_latitude(String.format("%s", location.getLatitude()));
+            newspot.setGeo_longitude(String.format("%s", location.getLongitude()));
+
+            Log.e("location.getLatitude------", String.format("%s", location.getLatitude()));
+            Log.e("location.getLongitude------", String.format("%s", location.getLongitude()));
 
             String addressText = String.format("%s, %s",
                     location.getMaxAddressLineIndex() > 0 ? location.getAddressLine(0) : "",

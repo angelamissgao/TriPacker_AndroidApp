@@ -95,18 +95,28 @@
                 android:textColor="@color/primary" />
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="5dp">
 
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:id="@+id/spotAddress" />
+            android:id="@+id/spotAddressInput" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp">
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -115,6 +125,15 @@
             android:id="@+id/showSpotMap"
             android:backgroundTint="@color/primary"
             android:textColor="@color/secondary_text_default_material_dark" />
+
+            <!--<Button-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:text="Use Current Location"-->
+                <!--android:id="@+id/getCurrentGps"-->
+                <!--android:backgroundTint="@color/primary"-->
+                <!--android:textColor="@color/secondary_text_default_material_dark" />-->
         </LinearLayout>
 
     </LinearLayout>
@@ -152,7 +171,8 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:id="@+id/spotDescInput"/>
 
 
     </LinearLayout>

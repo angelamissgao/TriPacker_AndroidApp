@@ -18,6 +18,8 @@ public class SpotEntity {
     String name;
     @SerializedName("spotId")
     String spotId;
+    @SerializedName("address")
+    String address;
     @SerializedName("category_id")
     String category_id;
     @SerializedName("city_id")
@@ -123,6 +125,9 @@ public class SpotEntity {
     //Setters
     public void setName(String name) { this.name = name; }
     public void setSpotId(String id) {this.spotId = id;}
+    public void setAddress(String address) {this.address = address; }
+    public void setGeo_latitude(String latitude) {this.geo_latitude = latitude ;}
+    public void setGeo_longitude(String longitude) {this.geo_longitude = longitude;}
 
     @Override
     public String toString() {
