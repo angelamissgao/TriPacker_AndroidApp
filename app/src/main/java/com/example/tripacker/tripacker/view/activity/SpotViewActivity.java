@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Address;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -24,6 +26,7 @@ import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.RestTask;
+import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -64,6 +67,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
 
     private Location spotLocation = new Location("SpotLocation");
+    SpotEntity spotEntity = new SpotEntity();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,8 +104,6 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
                 MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
                 new MyLocationListener()
         );
-
-        showCurrentLocation();
 
 //        //Google Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -169,6 +171,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         // Set spot infor mation to view
         String spot_name = finalResult.getString("spotName");
         TextView tv_spotName = (TextView) findViewById(R.id.spotName_show);
+        spotEntity.setName(spot_name);
         tv_spotName.setText(spot_name);
 
         String spot_address = finalResult.getString("address");
@@ -183,6 +186,8 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         String geoLong = finalResult.getString("geoLongitude");
         spotLocation.setLatitude(Double.parseDouble(geoLati));
         spotLocation.setLongitude(Double.parseDouble(geoLong));
+        onMapReady(mMap);
+        Log.e("Spot geo set------>", "Lat" + geoLati + "  " + "Long" + geoLong);
 
     }
 
@@ -198,7 +203,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = new LatLng(spotLocation.getLatitude(), spotLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(sydney).title(spotEntity.getName()));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 
@@ -247,4 +252,5 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
             Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
         }
     }
+
 }
