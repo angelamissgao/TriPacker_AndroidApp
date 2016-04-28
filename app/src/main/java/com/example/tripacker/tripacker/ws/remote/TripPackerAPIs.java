@@ -38,6 +38,8 @@ public class TripPackerAPIs {
 
     public static String createSpot() {return API_BASE_URL + "/spot/create";}
 
+    public static String editSpot() {return API_BASE_URL + "/spot";}
+
     public static String getPopularSpots(){
         return API_BASE_URL+"/spots/polular";
     }

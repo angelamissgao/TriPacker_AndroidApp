@@ -84,8 +84,6 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
                 SpotEntity spot = (SpotEntity) gridView.getAdapter().getItem(position);
 
-                Log.e("get Adapter Spots:------>", spot.toString());
-
                 spot_info.add(spot.getSpotId());
 
                 Bundle bundle = new Bundle();

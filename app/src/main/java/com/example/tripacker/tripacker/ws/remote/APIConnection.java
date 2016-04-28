@@ -87,6 +87,10 @@ public class APIConnection{
         getSpotsListFromApi(id, params);
     }
 
+    public static void editSpot(String id, List<NameValuePair> params){
+        editSpotFromApi(id, params);
+    }
+
     public static void createSpot(List<NameValuePair> params) {
         createSpotFromApi(params);
     }
@@ -117,6 +121,9 @@ public class APIConnection{
         createGetReq(TripPackerAPIs.getSpotsList(), id, params);
     }
 
+    private static void editSpotFromApi(String id, List<NameValuePair> params) {
+        createPutReq(TripPackerAPIs.editSpot(), id, params);
+    }
 
     private static void createSpotFromApi(List<NameValuePair> params){
         createPostReq(TripPackerAPIs.createSpot(), params);
@@ -135,25 +142,27 @@ public class APIConnection{
     }
 
     private static void updateUserProfileFromApi(List<NameValuePair> params){
-        createPutReq(TripPackerAPIs.getUserProfile(0), params);
+//        createPutReq(TripPackerAPIs.getUserProfile(0), params);
     }
 
 
     private static void createDeleteReq(String url, List<NameValuePair> params){}
 
-    private static void createPutReq(String url, List<NameValuePair> params){
+    private static void createPutReq(String url, String id, List<NameValuePair> params){
         if (true) {
+            url += "/" + id;
+
             HttpPut httpPut = new HttpPut(url);
             setRequestCookies(httpPut);
 
-            AsyncJsonPutTask postTask = new AsyncJsonPutTask(caller);
+            AsyncJsonPutTask putTask = new AsyncJsonPutTask(caller);
             try {
                 httpPut.setEntity(new UrlEncodedFormEntity(params));
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
 
-            postTask.execute(httpPut, "");
+            putTask.execute(httpPut, "");
         } else {
             try {
                 throw new NetworkConnectionException();

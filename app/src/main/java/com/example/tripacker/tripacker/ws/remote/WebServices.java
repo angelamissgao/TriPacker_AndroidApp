@@ -197,7 +197,7 @@ public class WebServices {
 		}
 
 		HttpResponse jsonResponse = null;
-		Log.d(TAG, "HttpPost URL: "+ requestPut.getURI());
+		Log.d(TAG, "HttpPut URL: "+ requestPut.getURI());
 
 		try {
 			//	request.setEntity(new StringEntity(payLoad, "UTF-8"));

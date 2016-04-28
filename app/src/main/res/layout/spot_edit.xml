@@ -45,14 +45,15 @@
                 android:textColor="@color/primary" />
             </LinearLayout>
 
-        <TextView
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="San Francisco"
+            android:text="update Spot Name"
             android:textAlignment="center"
             android:gravity="center_horizontal"
-            android:id="@+id/spotName_show" />
+            android:id="@+id/spotName_edit"
+            android:textColor="@color/primary_text_disabled_material_light" />
 
 
     </LinearLayout>
@@ -88,14 +89,15 @@
                 android:textColor="@color/primary" />
         </LinearLayout>
 
-        <TextView
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="SpotAdress"
             android:textAlignment="center"
             android:gravity="center_horizontal"
-            android:id="@+id/spotAddress_show" />
+            android:id="@+id/spotAddress_edit"
+            android:textColor="@color/primary_text_disabled_material_light"/>
 
     </LinearLayout>
 
@@ -130,14 +132,15 @@
                 android:textColor="@color/primary" />
         </LinearLayout>
 
-        <TextView
+        <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="spot info"
             android:textAlignment="center"
             android:gravity="center_horizontal"
-            android:id="@+id/spot_show3" />
+            android:id="@+id/spotInfo_edit"
+            android:textColor="@color/primary_text_disabled_material_light"/>
 
     </LinearLayout>
 

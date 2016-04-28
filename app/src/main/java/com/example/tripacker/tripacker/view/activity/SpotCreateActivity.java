@@ -134,9 +134,7 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
         nameValuePairs.add(new BasicNameValuePair("img", img));
 
         try{
-            Log.e("Create Spots set caller", "-------> create spot 1");
             APIConnection.SetAsyncCaller( this , getApplicationContext());
-            Log.e("Post request", "-------> create spot 2");
             APIConnection.createSpot(nameValuePairs);
 
         }

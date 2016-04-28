@@ -68,7 +68,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
 
     private Location spotLocation = new Location("SpotLocation");
-    SpotEntity spotEntity = new SpotEntity();
+    private SpotEntity spotEntity = new SpotEntity();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
         Bundle bundle = getIntent().getExtras();
         ArrayList<String> stuff = bundle.getStringArrayList("spotId");
+        spotEntity.setSpotId(stuff.get(0));
         Log.e("SpotID is ----> ", stuff.get(0));
 
 
@@ -85,7 +86,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
-        //Http Request
+        //get Request
         getContent(stuff.get(0));
 
 
@@ -116,12 +117,19 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
             public void onClick(View v) {
                 Intent mainInten = new Intent(getApplicationContext(), SpotEditActivity.class);
 
-                // bundle data to the spot view activity
+                // bundle data to the spot edit activity
                 ArrayList<String> spot_info = new ArrayList<String>();
-                //Todo: added spot json
-                spot_info.add("user_id");
+
+                spot_info.add(spotEntity.getSpotId());
+                spot_info.add(spotEntity.getName());
+                spot_info.add(spotEntity.getAddress());
+                spot_info.add(spotEntity.getGeo_latitude());
+                spot_info.add(spotEntity.getGeo_longitude());
+
+                Log.e("get SpotID in SpotView:------>", spotEntity.getSpotId());
+
                 Bundle bundle = new Bundle();
-                bundle.putStringArrayList("user_id", spot_info);
+                bundle.putStringArrayList("spotId", spot_info);
 
                 mainInten.putExtras(bundle);
                 startActivity(mainInten);
@@ -195,6 +203,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
         String spot_address = finalResult.getString("address");
         TextView tv_spotaddress = (TextView) findViewById(R.id.spotAddress_show);
+        spotEntity.setAddress(spot_address);
         tv_spotaddress.setText(spot_address);
 
         String spot_info = finalResult.getString("rate");
@@ -203,6 +212,8 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
         String geoLati = finalResult.getString("geoLatitude");
         String geoLong = finalResult.getString("geoLongitude");
+        spotEntity.setGeo_longitude(geoLong);
+        spotEntity.setGeo_latitude(geoLati);
         spotLocation.setLatitude(Double.parseDouble(geoLati));
         spotLocation.setLongitude(Double.parseDouble(geoLong));
         onMapReady(mMap);

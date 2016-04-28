@@ -96,6 +96,7 @@ public class SpotEntity {
         return name;
     }
     public String getSpotId() {return spotId;}
+    public String getAddress() {return address;}
     public String getCategory_id() {
         return category_id;
     }
