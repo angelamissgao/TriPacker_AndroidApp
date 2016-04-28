@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -12,12 +13,20 @@
     <!--</com.google.android.gms.maps.MapView>-->
 
 
-    <ImageView
+    <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="200dp"-->
+        <!--android:gravity="center"-->
+        <!--android:id="@+id/imageView"-->
+        <!--android:background="#6d6a6a" />-->
+    <fragment
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:gravity="center"
-        android:id="@+id/imageView"
-        android:background="#6d6a6a" />
+        android:layout_height="250dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/mapCreate"
+        android:layout_gravity="center_horizontal"
+        tools:context="com.example.tripacker.tripacker.view.activity.SpotCreateActivity"/>
+    <!--&lt;!&ndash;tools:layout="@layout/spot_view" />&ndash;&gt;-->
 
     <LinearLayout
         android:orientation="vertical"
@@ -86,11 +95,27 @@
                 android:textColor="@color/primary" />
         </LinearLayout>
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:id="@+id/spotAddress" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="show Map"
+            android:id="@+id/showSpotMap"
+            android:backgroundTint="@color/primary"
+            android:textColor="@color/secondary_text_default_material_dark" />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -36,7 +36,7 @@ public class TripPackerAPIs {
 
     public static String getSpotsList() {return API_BASE_URL + "/spot/getByCity";}
 
-    public static String createSpot() {return API_BASE_URL + "/spot/createspot";}
+    public static String createSpot() {return API_BASE_URL + "/spot/create";}
 
     public static String getPopularSpots(){
         return API_BASE_URL+"/spots/polular";
@@ -46,10 +46,7 @@ public class TripPackerAPIs {
         return API_BASE_URL+"/spots/polular";
     }
 
-    public static String getSpotDetail(){
-        return API_BASE_URL+"/spot";
-
-    }
+    public static String getSpotDetail(){return API_BASE_URL+"/spot";}
 
 
     // Get configuration

@@ -54,14 +54,14 @@ public class SpotEntity {
             this.name = object.getString("name");
             this.spotId = object.getString("spotId");
 //            this.category_id = object.getString("category_id");
-            this.city_id = object.getString("city_id");
+//            this.city_id = object.getString("city_id");
 //            this.geo_latitude = object.getString("geo_latitude");
 //            this.geo_longitude = object.getString("geo_longitude");
 //            this.image_main = object.getString("image_main");
 //            this.image_rest = object.getString("image_rest");
 //            this.status = object.getString("status");
 //            this.score = object.getString("score");
-            this.gmt_create = object.getString("gmt_create");
+//            this.gmt_create = object.getString("gmt_create");
 //            this.gmt_modified = object.getString("gmt_modified");
 //            this.gmt_approved = object.getString("gmt_approved");
         } catch (JSONException e) {
