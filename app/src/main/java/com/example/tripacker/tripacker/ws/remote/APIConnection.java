@@ -118,7 +118,7 @@ public class APIConnection{
     }
 
     private static void getSpotsListFromApi(String id, List<NameValuePair> params){
-        createGetReq(TripPackerAPIs.getSpotsList(), id, params);
+        createGetReq(TripPackerAPIs.getSpotsList(id), params);
     }
 
     private static void editSpotFromApi(String id, List<NameValuePair> params) {
@@ -130,7 +130,7 @@ public class APIConnection{
     }
 
     private static void getSpotDetailFromApi(String spotId, List<NameValuePair> params) {
-        createGetReq(TripPackerAPIs.getSpotDetail(), spotId, params);
+        createGetReq(TripPackerAPIs.getSpotDetail(spotId) , params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {
@@ -194,12 +194,12 @@ public class APIConnection{
             }
     }
 
-    private static void createGetReq(String url,String id, List<NameValuePair> params) {
+    private static void createGetReq(String url, List<NameValuePair> params) {
         if (true) {
-            url += "/" + id;
-            url += "?";
-            String paramString = URLEncodedUtils.format(params, "utf-8");
-            url += paramString;
+//            url += "/" + id;
+//            url += "?";
+//            String paramString = URLEncodedUtils.format(params, "utf-8");
+//            url += paramString;
 
             HttpGet httpGet = new HttpGet(url);
             Log.e("GET URL----->",url);

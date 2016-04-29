@@ -160,6 +160,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         String  response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
 
+        Log.e("Spots Get result------>", response);
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
@@ -189,7 +190,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
             gridView.setAdapter(gridAdapter);
 
-            Log.e("Spots Get result------>", response);
+
             Toast.makeText(getContext(), "Get spots success", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();
