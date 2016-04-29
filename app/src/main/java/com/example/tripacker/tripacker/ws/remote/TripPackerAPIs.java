@@ -11,9 +11,12 @@ public class TripPackerAPIs {
     }
     // Get User
 
+    // api/v1/member/:id/profile
     public static String getUserProfile(int user_id){
-        return API_BASE_URL+"/member/profile/getprofile";
+        return API_BASE_URL+"/member/"+user_id+"profile";
     }
+
+    // api/v1/member/:id/profile
     public static String updateUserProfile(int user_id){
         return API_BASE_URL+"/member/"+user_id+"/profile";
     }

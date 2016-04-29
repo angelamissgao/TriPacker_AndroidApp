@@ -1,8 +1,10 @@
 package com.example.tripacker.tripacker.view.activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -56,6 +58,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
     private SimpleDateFormat dateFormatter;
 
     private ProgressDialog progressDialog;
+    private AlertDialog errorDialog;
 
     private static SharedPreferences pref;
 
@@ -75,7 +78,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
-
+        initializeDialog();
         showLoading();
 
         pref = getApplicationContext().getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
@@ -98,7 +101,26 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         setDateTimeField();
 
     }
+    public void initializeDialog(){
+        progressDialog = new ProgressDialog(EditProfileActivity.this,
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Loading...");
 
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("ERROR !!");
+        builder.setMessage("Sorry there was an error getting data from the Internet.\nNetwork Unavailable!");
+
+        errorDialog = builder.create();
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                //runTask();
+            }
+        });
+    }
     private void setUpViewById(){
         usernameEtxt = (EditText) findViewById(R.id.row1editText);
         locationEtxt = (EditText) findViewById(R.id.row2editText);
@@ -227,6 +249,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         }
     }
 
+
     @Override
     public void renderUser(UserEntity user) {
         usernameEtxt.setText(user.getUsername());
@@ -240,10 +263,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void showLoading() {
-        progressDialog = new ProgressDialog(EditProfileActivity.this,
-                R.style.AppTheme_Dark_Dialog);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        errorDialog.hide();
         progressDialog.show();
     }
 
@@ -256,17 +276,18 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void showRetry() {
-
+        hideLoading();
+        showError("");
     }
 
     @Override
     public void hideRetry() {
-
+        errorDialog.dismiss();
     }
 
     @Override
     public void showError(String message) {
-
+        errorDialog.show();
     }
 
     @Override
