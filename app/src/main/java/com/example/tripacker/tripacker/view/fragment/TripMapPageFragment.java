@@ -80,8 +80,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
         setUpViewById(view);
 
-
-
         Log.e("From Session", "-------> " + pref.getString("name", null));
         Log.e("From Session", "-------> " + pref.getString("cookies", null));
 

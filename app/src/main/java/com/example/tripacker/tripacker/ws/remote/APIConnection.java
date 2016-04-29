@@ -122,7 +122,7 @@ public class APIConnection{
     }
 
     private static void editSpotFromApi(String id, List<NameValuePair> params) {
-        createPutReq(TripPackerAPIs.editSpot(), id, params);
+        createPutReq(TripPackerAPIs.editSpot(id), params);
     }
 
     private static void createSpotFromApi(List<NameValuePair> params){
@@ -138,20 +138,18 @@ public class APIConnection{
     }*/
 
     private static void getUserProfileFromApi(List<NameValuePair> params){
-//        createGetReq(TripPackerAPIs.getUserProfile(0), params);
+        createGetReq(TripPackerAPIs.getUserProfile(0), params);
     }
 
     private static void updateUserProfileFromApi(List<NameValuePair> params){
-//        createPutReq(TripPackerAPIs.getUserProfile(0), params);
+        createPutReq(TripPackerAPIs.getUserProfile(0), params);
     }
 
 
     private static void createDeleteReq(String url, List<NameValuePair> params){}
 
-    private static void createPutReq(String url, String id, List<NameValuePair> params){
+    private static void createPutReq(String url, List<NameValuePair> params){
         if (true) {
-            url += "/" + id;
-
             HttpPut httpPut = new HttpPut(url);
             setRequestCookies(httpPut);
 
@@ -196,11 +194,6 @@ public class APIConnection{
 
     private static void createGetReq(String url, List<NameValuePair> params) {
         if (true) {
-//            url += "/" + id;
-//            url += "?";
-//            String paramString = URLEncodedUtils.format(params, "utf-8");
-//            url += paramString;
-
             HttpGet httpGet = new HttpGet(url);
             Log.e("GET URL----->",url);
 
