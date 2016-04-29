@@ -295,9 +295,10 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         String sensor = "sensor=false";
         String params = waypoints + "&" + sensor;
         String output = "json";
+        String key = "AIzaSyC25VtN-MdlR24RTttecKVurefMWiKoubU";
 //        String url = "https://maps.googleapis.com/maps/api/directions/"
 //                + output + "?" + params;
-        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=WALL%20STREET,New%20York&destination=BROOKLYN%20BRIDGE,New%20York&waypoints=LOWER%20MANHATTAN,New%20York|Manhattan,New%20York&key=AIzaSyC25VtN-MdlR24RTttecKVurefMWiKoubU";
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=WALL%20STREET,New%20York&destination=BROOKLYN%20BRIDGE,New%20York&waypoints=LOWER%20MANHATTAN,New%20York|Manhattan,New%20York&key=" + key;
         return url;
     }
 
@@ -376,7 +377,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
                 }
 
                 polyLineOptions.addAll(points);
-                polyLineOptions.width(3);
+                polyLineOptions.width(5);
                 polyLineOptions.color(Color.BLUE);
             }
 
