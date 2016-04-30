@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:paddingLeft="5dp"
-                android:text="Spot Name"
+                android:text="Trip Name"
                 style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
                 android:id="@+id/SpotName"
                 android:textColor="@color/primary" />
@@ -38,7 +38,7 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spotNameInput"
+            android:id="@+id/tripNameInput"
             android:gravity="center_horizontal"
             android:layout_weight="1" />
     </LinearLayout>
@@ -67,7 +67,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:paddingLeft="5dp"
-                android:text="Address"
+                android:text="Start Date"
                 style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
                 android:id="@+id/address"
                 android:textColor="@color/primary" />
@@ -79,7 +79,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:id="@+id/spotAddressInput" />
+            android:id="@+id/startDate" />
 
 
     </LinearLayout>
@@ -121,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:paddingLeft="5dp"
-                android:text="Spot Description"
+                android:text="End Date"
                 style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
                 android:id="@+id/description"
                 android:textColor="@color/primary" />
@@ -132,7 +132,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:id="@+id/spotDescInput"/>
+            android:id="@+id/endDate"/>
 
 
     </LinearLayout>
@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="Add Trip"
-        android:id="@+id/addSpot"
+        android:id="@+id/addTrip"
         android:backgroundTint="@color/primary"
         android:textColor="@color/secondary_text_default_material_dark" />
 

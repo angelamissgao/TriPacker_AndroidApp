@@ -4,16 +4,32 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by angelagao on 4/29/16.
  */
 public class TripCreateActivity extends AppCompatActivity implements AsyncCaller {
+
+    //View Element
+    EditText tripNameInput;
+    EditText beginDateInput;
+    EditText endDateInput;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,9 +42,56 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
-    }
-    @Override
-    public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
 
+        // Post request to add a spot
+        Button button_addSpot = (Button) findViewById(R.id.addTrip);
+        button_addSpot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendContent();
+            }
+        });
+    }
+
+    private void sendContent() {
+        tripNameInput = (EditText) findViewById(R.id.tripNameInput);
+        beginDateInput = (EditText) findViewById(R.id.startDate);
+        endDateInput = (EditText) findViewById(R.id.endDate);
+
+        String tripName = tripNameInput.getText().toString();
+        String beginDate = beginDateInput.getText().toString();
+        String endDate = endDateInput.getText().toString();
+        String spots = "7,8,9";
+
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("tripName", tripName));
+        nameValuePairs.add(new BasicNameValuePair("beginDate", beginDate));
+        nameValuePairs.add(new BasicNameValuePair("endDate", endDate));
+        nameValuePairs.add(new BasicNameValuePair("spots",spots));
+
+        try{
+            APIConnection.SetAsyncCaller(this, getApplicationContext());
+            APIConnection.createTrip(nameValuePairs);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) {
+        String  response = result.toString();
+//        JSONTokener tokener = new JSONTokener(response);
+
+        try {
+//            JSONObject finalResult = new JSONObject(tokener);
+            Log.e("Trip Post result------>", response);
+            Toast.makeText(getApplicationContext(), "create spots success", Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

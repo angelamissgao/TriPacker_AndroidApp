@@ -60,7 +60,7 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spotNameInput"
+            android:id="@+id/tripNameInput"
             android:gravity="center_horizontal"
             android:layout_weight="1" />
     </LinearLayout>
@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:id="@+id/spotAddressInput" />
+            android:id="@+id/startDate" />
 
 
     </LinearLayout>
@@ -172,7 +172,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:id="@+id/spotDescInput"/>
+            android:id="@+id/endDate"/>
 
 
     </LinearLayout>

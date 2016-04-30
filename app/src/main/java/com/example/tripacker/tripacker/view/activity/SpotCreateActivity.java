@@ -20,7 +20,6 @@ import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -84,7 +83,7 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
             @Override
             public void onClick(View v) {
                 // Getting reference to EditText to get the user input location
-                EditText etLocation = (EditText) findViewById(R.id.spotAddressInput);
+                EditText etLocation = (EditText) findViewById(R.id.startDate);
 
                 // Getting user input location
                 String location = etLocation.getText().toString();
@@ -104,9 +103,9 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
     }
 
     private void sendContent() {
-        spotName = (EditText) findViewById(R.id.spotNameInput);
-        spotAddress = (EditText) findViewById(R.id.spotAddressInput);
-        spotDescription = (EditText) findViewById(R.id.spotDescInput);
+        spotName = (EditText) findViewById(R.id.tripNameInput);
+        spotAddress = (EditText) findViewById(R.id.startDate);
+        spotDescription = (EditText) findViewById(R.id.endDate);
 
         String name = spotName.getText().toString();
         String tags = "history";
