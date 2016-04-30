@@ -23,6 +23,9 @@ import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -38,7 +41,7 @@ import java.util.List;
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDetailsView {
+public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDetailsView,OnMapReadyCallback {
     private static final String TAG = "TripMapPageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -54,9 +57,18 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
     private ListView trip_listView;
     private ImageView editProfileButton;
 
+    // Google Map
+    GoogleMap mMap;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Google Map Directions API
+        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
+                .findFragmentById(R.id.map_direction);
+//        mMap = mapFragment.getMap();
+
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -68,15 +80,10 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
         setUpViewById(view);
 
-
-
         Log.e("From Session", "-------> " + pref.getString("name", null));
         Log.e("From Session", "-------> " + pref.getString("cookies", null));
 
  //       getContent();
-
-
-
 
         // Or even append an entire new collection
         // Fetching some data, data has now returned
@@ -84,10 +91,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         //JSONArray jsonArray = ...;
         //ArrayList<User> newUsers = User.fromJson(jsonArray)
         //adapter.addAll(newUsers);
-
-
-
-
 
         return view;
     }
@@ -250,5 +253,10 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
     @Override
     public Context context() {
         return null;
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        mMap = googleMap;
     }
 }

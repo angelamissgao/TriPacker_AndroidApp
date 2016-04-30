@@ -43,6 +43,8 @@ public class SpotEntity {
     @SerializedName("gmt_approved")
     String gmt_approved;
 
+    Integer image_local;
+
     // Make sure to always define this constructor with no arguments
     public SpotEntity() {
         super();
@@ -122,6 +124,7 @@ public class SpotEntity {
     public String getGmt_approved() {
         return gmt_approved;
     }
+    public Integer getImage_local() { return image_local;}
 
     //Setters
     public void setName(String name) { this.name = name; }
@@ -129,6 +132,7 @@ public class SpotEntity {
     public void setAddress(String address) {this.address = address; }
     public void setGeo_latitude(String latitude) {this.geo_latitude = latitude ;}
     public void setGeo_longitude(String longitude) {this.geo_longitude = longitude;}
+    public void setImage_source_local(int postion){this.image_local = postion; }
 
     @Override
     public String toString() {

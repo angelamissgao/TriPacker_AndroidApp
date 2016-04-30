@@ -1,6 +1,7 @@
 package com.example.tripacker.tripacker.view.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,6 @@ import java.util.ArrayList;
  * Created by angelagao on 4/11/16.
  */
 public class SpotsTimelineAdapter extends ArrayAdapter<SpotEntity> {
-    private Context context;
-    private int layoutResourceId;
-    private ArrayList data = new ArrayList();
 
     public SpotsTimelineAdapter(Context context, ArrayList<SpotEntity> spots) {
         super(context, 0, spots);
@@ -38,7 +36,7 @@ public class SpotsTimelineAdapter extends ArrayAdapter<SpotEntity> {
         TextView textView = (TextView) convertView.findViewById(R.id.spot_item_text);
 
         // image view set background
-        imageView.setBackgroundResource(R.drawable.thai_temple);
+        imageView.setBackgroundResource(spot.getImage_local());
         textView.setText(spot.getName());
         return convertView;
     }

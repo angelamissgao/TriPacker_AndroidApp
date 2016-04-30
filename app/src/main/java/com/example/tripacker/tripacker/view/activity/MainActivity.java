@@ -88,7 +88,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         WebServices.setURL(TEST_URL);
 
 
@@ -122,8 +121,6 @@ public class MainActivity extends ActionBarActivity {
         fragments.add(trip_frag);
         fragments.add(spot_frag);
         fragments.add(profile_frag);
-
-
 
         // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
         // and ViewPager (different pages of fragment) together.

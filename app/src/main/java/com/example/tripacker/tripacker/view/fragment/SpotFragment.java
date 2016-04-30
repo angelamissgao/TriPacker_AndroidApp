@@ -48,9 +48,18 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
     GridView gridView;
+
     @Inject
     SpotListPresenter spotListPresenter;
     ArrayList<SpotEntity> arrayOfSpots = new ArrayList<>();
+
+    private Integer[] imagesource = {
+            R.drawable.paris,
+            R.drawable.thai_temple,
+            R.drawable.new_zealand,
+            R.drawable.sf_night,
+            R.drawable.sf_museum
+    };
 
 
     public static SpotFragment newInstance() {
@@ -151,6 +160,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         String  response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
 
+        Log.e("Spots Get result------>", response);
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
@@ -166,6 +176,12 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
                 spoti.put("spotId", spotId);
 
                 SpotEntity spotEntity = new SpotEntity(spoti);
+                //get image
+                int postion = (int)(Math.random() * imagesource.length);
+                int img_main = imagesource[postion];
+                spotEntity.setImage_source_local(img_main);
+
+                //add Spot Entity to array
                 arrayOfSpots.add(spotEntity);
 
             }
@@ -174,7 +190,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
             gridView.setAdapter(gridAdapter);
 
-            Log.e("Spots Get result------>", response);
+
             Toast.makeText(getContext(), "Get spots success", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
             e.printStackTrace();

@@ -11,6 +11,14 @@ android:layout_height="match_parent">
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:id="@+id/map_direction"
+        android:layout_gravity="center_horizontal"
+        tools:context="com.example.tripacker.tripacker.view.fragment.TripMapPageFragment"/>
+
 
     <TextView
         android:layout_width="wrap_content"

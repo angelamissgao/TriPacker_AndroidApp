@@ -118,11 +118,11 @@ public class APIConnection{
     }
 
     private static void getSpotsListFromApi(String id, List<NameValuePair> params){
-//        createGetReq(TripPackerAPIs.getSpotsList(), id, params);
+        createGetReq(TripPackerAPIs.getSpotsList(id), params);
     }
 
     private static void editSpotFromApi(String id, List<NameValuePair> params) {
-        createPutReq(TripPackerAPIs.editSpot(), id, params);
+        createPutReq(TripPackerAPIs.editSpot(id), params);
     }
 
     private static void createSpotFromApi(List<NameValuePair> params){
@@ -130,7 +130,7 @@ public class APIConnection{
     }
 
     private static void getSpotDetailFromApi(String spotId, List<NameValuePair> params) {
-//        createGetReq(TripPackerAPIs.getSpotDetail(), spotId, params);
+        createGetReq(TripPackerAPIs.getSpotDetail(spotId) , params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {
@@ -142,16 +142,14 @@ public class APIConnection{
     }
 
     private static void updateUserProfileFromApi(List<NameValuePair> params){
-//        createPutReq(TripPackerAPIs.getUserProfile(0), params);
+        createPutReq(TripPackerAPIs.getUserProfile(0), params);
     }
 
 
     private static void createDeleteReq(String url, List<NameValuePair> params){}
 
-    private static void createPutReq(String url, String id, List<NameValuePair> params){
+    private static void createPutReq(String url, List<NameValuePair> params){
         if (true) {
-            url += "/" + id;
-
             HttpPut httpPut = new HttpPut(url);
             setRequestCookies(httpPut);
 
@@ -194,34 +192,9 @@ public class APIConnection{
             }
     }
 
-    private static void createGetReq(String url,List<NameValuePair> params) {
+
+    private static void createGetReq(String url, List<NameValuePair> params) {
         if (true) {
-
-            String paramString = URLEncodedUtils.format(params, "utf-8");
-            url += paramString;
-
-            HttpGet httpGet = new HttpGet(url);
-            Log.e("GET URL----->", url);
-
-            AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
-            getTask.execute(httpGet, "");
-
-        } else {
-            try {
-                throw new NetworkConnectionException();
-            } catch (NetworkConnectionException e) {
-                e.displayMessageBox("Error", "NetworkConnectionException");
-            }
-        }
-    }
-/*
-    private static void createGetReq(String url,String id, List<NameValuePair> params) {
-        if (true) {
-            url += "/" + id;
-            url += "?";
-            String paramString = URLEncodedUtils.format(params, "utf-8");
-            url += paramString;
-
             HttpGet httpGet = new HttpGet(url);
             Log.e("GET URL----->",url);
 
@@ -235,7 +208,7 @@ public class APIConnection{
                 e.displayMessageBox("Error", "NetworkConnectionException");
             }
         }
-    }*/
+    }
 
 
     /**
