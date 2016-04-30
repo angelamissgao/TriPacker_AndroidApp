@@ -61,7 +61,7 @@ android:layout_height="match_parent">
             fab:fab_title="Add Spot" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_photo"
+            android:id="@+id/create_trip_map"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_colorNormal="@color/primary_dark"

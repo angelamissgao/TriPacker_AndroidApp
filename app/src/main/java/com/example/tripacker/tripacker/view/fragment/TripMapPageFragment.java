@@ -4,6 +4,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -18,14 +20,19 @@ import android.widget.Toast;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
+import com.example.tripacker.tripacker.entity.mapper.PathJSONParser;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.example.tripacker.tripacker.ws.remote.PathHttpConnection;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
@@ -35,13 +42,14 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDetailsView,OnMapReadyCallback {
+public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDetailsView{
     private static final String TAG = "TripMapPageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -58,16 +66,15 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
     private ImageView editProfileButton;
 
     // Google Map
-    GoogleMap mMap;
+    GoogleMap googleMap;
+    private static final LatLng LOWER_MANHATTAN = new LatLng(40.722543,
+            -73.998585);
+    private static final LatLng BROOKLYN_BRIDGE = new LatLng(40.7057, -73.9964);
+    private static final LatLng WALL_STREET = new LatLng(40.7064, -74.0094);
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Google Map Directions API
-        SupportMapFragment mapFragment = (SupportMapFragment) getActivity().getSupportFragmentManager()
-                .findFragmentById(R.id.map_direction);
-//        mMap = mapFragment.getMap();
 
     }
     @Override
@@ -91,6 +98,28 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         //JSONArray jsonArray = ...;
         //ArrayList<User> newUsers = User.fromJson(jsonArray)
         //adapter.addAll(newUsers);
+
+        // Google Map Directions API
+        SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
+                .findFragmentById(R.id.map_direction);
+        googleMap = mapFragment.getMap();
+
+
+        MarkerOptions options = new MarkerOptions();
+        options.position(LOWER_MANHATTAN);
+        options.position(BROOKLYN_BRIDGE);
+        options.position(WALL_STREET);
+        googleMap.addMarker(options);
+
+        String url = getMapsApiDirectionsUrl();
+        ReadTask downloadTask = new ReadTask();
+        downloadTask.execute(url);
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BROOKLYN_BRIDGE,
+                13));
+        addMarkers();
+
+        //Locations
 
         return view;
     }
@@ -155,7 +184,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("onActivityResult ", "requestCode= " + requestCode + "resultCode= "+resultCode);
+        Log.e("onActivityResult ", "requestCode= " + requestCode + "resultCode= " + resultCode);
         if (requestCode == REQUEST_EDIT) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
@@ -255,8 +284,106 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         return null;
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    //Google Maps
+    private String getMapsApiDirectionsUrl() {
+        String waypoints = "waypoints=optimize:true|"
+                + LOWER_MANHATTAN.latitude + "," + LOWER_MANHATTAN.longitude
+                + "|" + "|" + BROOKLYN_BRIDGE.latitude + ","
+                + BROOKLYN_BRIDGE.longitude + "|" + WALL_STREET.latitude + ","
+                + WALL_STREET.longitude;
+
+        String sensor = "sensor=false";
+        String params = waypoints + "&" + sensor;
+        String output = "json";
+        String key = "AIzaSyC25VtN-MdlR24RTttecKVurefMWiKoubU";
+//        String url = "https://maps.googleapis.com/maps/api/directions/"
+//                + output + "?" + params;
+        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=WALL%20STREET,New%20York&destination=BROOKLYN%20BRIDGE,New%20York&waypoints=LOWER%20MANHATTAN,New%20York|Manhattan,New%20York&key=" + key;
+        return url;
     }
+
+    private void addMarkers() {
+        if (googleMap != null) {
+            googleMap.addMarker(new MarkerOptions().position(BROOKLYN_BRIDGE)
+                    .title("First Point"));
+            googleMap.addMarker(new MarkerOptions().position(LOWER_MANHATTAN)
+                    .title("Second Point"));
+            googleMap.addMarker(new MarkerOptions().position(WALL_STREET)
+                    .title("Third Point"));
+        }
+    }
+
+    private class ReadTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... url) {
+            String data = "";
+            try {
+                PathHttpConnection http = new PathHttpConnection();
+                data = http.readUrl(url[0]);
+            } catch (Exception e) {
+                Log.d("Background Task", e.toString());
+            }
+            return data;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            new ParserTask().execute(result);
+        }
+    }
+
+    private class ParserTask extends
+            AsyncTask<String, Integer, List<List<HashMap<String, String>>>> {
+
+        @Override
+        protected List<List<HashMap<String, String>>> doInBackground(
+                String... jsonData) {
+
+            JSONObject jObject;
+            List<List<HashMap<String, String>>> routes = null;
+
+            try {
+                jObject = new JSONObject(jsonData[0]);
+                PathJSONParser parser = new PathJSONParser();
+                routes = parser.parse(jObject);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return routes;
+        }
+
+        @Override
+        protected void onPostExecute(List<List<HashMap<String, String>>> routes) {
+            ArrayList<LatLng> points = null;
+            PolylineOptions polyLineOptions = null;
+
+            Log.e("Log of routes result --->", routes.toString());
+
+            // traversing through routes
+            for (int i = 0; i < routes.size(); i++) {
+                points = new ArrayList<LatLng>();
+                polyLineOptions = new PolylineOptions();
+                List<HashMap<String, String>> path = routes.get(i);
+
+                for (int j = 0; j < path.size(); j++) {
+                    HashMap<String, String> point = path.get(j);
+
+                    double lat = Double.parseDouble(point.get("lat"));
+                    double lng = Double.parseDouble(point.get("lng"));
+                    LatLng position = new LatLng(lat, lng);
+
+                    points.add(position);
+                }
+
+                polyLineOptions.addAll(points);
+                polyLineOptions.width(5);
+                polyLineOptions.color(Color.BLUE);
+            }
+
+            googleMap.addPolyline(polyLineOptions);
+            Log.e("Polyline added to map --->",polyLineOptions.toString());
+        }
+    }
+
 }

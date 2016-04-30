@@ -96,7 +96,7 @@ public class MainActivity extends ActionBarActivity {
         startActivity(intent);
 
 //        //test
-//        Intent intent = new Intent(this, SpotCreateActivity.class);
+//        Intent intent = new Intent(this, MainActivity.class);
 //        startActivity(intent);
 
 

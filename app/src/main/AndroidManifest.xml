@@ -50,6 +50,9 @@
             android:name=".view.activity.TripViewActivity"
             android:label="@string/title_activity_trip_view"
             android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".view.activity.TripCreateActivity"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
