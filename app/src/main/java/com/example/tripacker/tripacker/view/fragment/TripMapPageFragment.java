@@ -125,7 +125,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
     }
 
     private void setUpViewById(View view){
-        username_view = (TextView) view.findViewById(R.id.textView4);
+
 
     }
 
@@ -378,7 +378,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
                 polyLineOptions.addAll(points);
                 polyLineOptions.width(5);
-                polyLineOptions.color(Color.BLUE);
+                polyLineOptions.color(R.color.path);
             }
 
             googleMap.addPolyline(polyLineOptions);

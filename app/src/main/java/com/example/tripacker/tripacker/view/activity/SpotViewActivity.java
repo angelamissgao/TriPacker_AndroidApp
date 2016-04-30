@@ -206,7 +206,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         spotEntity.setAddress(spot_address);
         tv_spotaddress.setText(spot_address);
 
-        String spot_info = finalResult.getString("rate");
+        String spot_info = finalResult.getString("description");
         TextView tv_spotInfo = (TextView) findViewById(R.id.spot_show3);
         tv_spotInfo.setText(spot_info);
 

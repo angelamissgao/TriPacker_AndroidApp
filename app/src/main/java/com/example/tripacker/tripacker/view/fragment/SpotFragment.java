@@ -128,13 +128,11 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
 
     private void getContent() {
-        ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
-
         // Http Call
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         String cityId = "1";
         String pageId = "1";
-        String pageSize = "10";
+        String pageSize = "12";
 
         nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
         nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
@@ -156,7 +154,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
      * Get Spot List request response result;
      */
     public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
-
+        arrayOfSpots.clear();
         String  response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
 

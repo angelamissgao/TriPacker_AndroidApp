@@ -108,5 +108,6 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        finish();
     }
 }

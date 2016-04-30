@@ -155,6 +155,7 @@ public class SpotCreateActivity extends AppCompatActivity implements AsyncCaller
         } catch (Exception e) {
             e.printStackTrace();
         }
+        finish();
     }
 
     private class GeocoderTask extends AsyncTask<String, Void, List<Address>>{
