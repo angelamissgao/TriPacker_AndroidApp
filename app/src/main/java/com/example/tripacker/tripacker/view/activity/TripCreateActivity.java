@@ -5,6 +5,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +41,7 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         Bundle bundle = getIntent().getExtras();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
@@ -51,6 +54,38 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
                 sendContent();
             }
         });
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_done) {
+            sendContent();
+            setResult(200, null);
+            finish();
+        }
+
+        if (id == android.R.id.home) {
+            setResult(400, null);
+            finish();
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void sendContent() {
