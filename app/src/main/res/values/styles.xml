@@ -61,4 +61,16 @@
         <item name="android:background">@drawable/fab_label_background</item>
         <item name="android:textColor">@color/monsoon</item>
     </style>
+
+    <style name="spinner_style">
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:dropDownWidth">300dp</item>
+        <item name="android:showDividers">none</item>
+        <item name="android:dividerHeight">10dp</item>
+        <item name="android:popupBackground">@color/base</item>
+        <item name="android:dropDownHeight">70dp</item>
+        <item name="android:scrollbarAlwaysDrawVerticalTrack">true</item>
+        <item name="android:dropDownSelector">@android:color/white</item>
+    </style>
+
 </resources>

@@ -133,6 +133,7 @@ public class SpotEntity {
     public void setGeo_latitude(String latitude) {this.geo_latitude = latitude ;}
     public void setGeo_longitude(String longitude) {this.geo_longitude = longitude;}
     public void setImage_source_local(int postion){this.image_local = postion; }
+    public void setCategory_id(String category_id) {this.category_id = category_id;}
 
     @Override
     public String toString() {
