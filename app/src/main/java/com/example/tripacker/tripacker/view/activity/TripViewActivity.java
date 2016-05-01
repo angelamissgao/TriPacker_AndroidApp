@@ -35,11 +35,19 @@ import com.example.tripacker.tripacker.view.fragment.SpotFragment;
 import com.example.tripacker.tripacker.view.fragment.TripFragment;
 import com.example.tripacker.tripacker.view.fragment.TripListPageFragment;
 import com.example.tripacker.tripacker.view.fragment.TripMapPageFragment;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
+import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
-import java.util.ArrayList;
+import org.apache.http.NameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
-public class TripViewActivity extends ActionBarActivity {
+import java.util.ArrayList;
+import java.util.List;
+
+public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
     // Runner IO for calling external APIs
 
     //new added
@@ -80,6 +88,9 @@ public class TripViewActivity extends ActionBarActivity {
         fragments.add(map_frag);
         fragments.add(list_frag);
 
+        //Http Request to get Trip details with TripID
+        getContent(2);
+
 
         // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
         // and ViewPager (different pages of fragment) together.
@@ -93,6 +104,22 @@ public class TripViewActivity extends ActionBarActivity {
 
     }
 
+    private void getContent(int tripId){
+
+        // the request
+        try{
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+
+            APIConnection.SetAsyncCaller(this, getApplicationContext());
+            APIConnection.getTripDetail(tripId, nameValuePairs);
+
+        }
+        catch (Exception e)
+        {
+            Log.e("GetTripException", e.getMessage());
+        }
+
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -144,6 +171,22 @@ public class TripViewActivity extends ActionBarActivity {
     private class TabViewHolder {
         public ImageView mIcon;
 
+    }
+
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) {
+
+        String response = result.toString();
+
+        JSONTokener tokener = new JSONTokener(response);
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            Log.e("Get Trip detail in Map------>",response);
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 }

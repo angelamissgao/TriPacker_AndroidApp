@@ -77,15 +77,11 @@ public class MainActivity extends ActionBarActivity {
 
     private static SharedPreferences pref;
 
-
-
     //new added
     private SlidingTabLayout slidingTabLayout;
     private ViewPager viewPager;
     private ArrayList<Fragment> fragments;
     private ActionTabsViewPagerAdapter myViewPageAdapter;
-
-
 
 
     // Configuration for calling a REST service
@@ -142,15 +138,10 @@ public class MainActivity extends ActionBarActivity {
         slidingTabLayout.setViewPager(viewPager);
 
 
-
-
         // Setup the menu bar
         mDrawerListView = (RecyclerView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
-
-
-
 
 
         addDrawerItems();

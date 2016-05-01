@@ -47,7 +47,7 @@ public class TripPackerAPIs {
     }
 
     public static String getTripDetail(int trip_id){
-        return API_BASE_URL+"/trips/"+trip_id;
+        return API_BASE_URL+"/trip/"+trip_id;
     }
 
     // Get Spot

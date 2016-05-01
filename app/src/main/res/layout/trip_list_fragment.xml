@@ -38,7 +38,7 @@ android:layout_height="match_parent">
         android:background="@android:color/transparent">
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
-            android:id="@+id/fab_trip_spot"
+            android:id="@+id/tripModify"
             android:src="@drawable/ic_add_white_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@ android:layout_height="match_parent">
             fab:fab_labelsPosition="left">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab_event"
+                android:id="@+id/AddSpotInTrip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/primary_dark"
@@ -61,7 +61,7 @@ android:layout_height="match_parent">
                 fab:fab_plusIconColor="@color/white"
                 fab:fab_icon="@drawable/ic_place_white_24dp"
                 fab:fab_size="mini"
-                fab:fab_title="Add Spot" />
+                fab:fab_title="Add Spot to Trip" />
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:id="@+id/fab_photo"
@@ -72,7 +72,7 @@ android:layout_height="match_parent">
                 fab:fab_plusIconColor="@color/white"
                 fab:fab_icon="@drawable/ic_trip_white_24dp"
                 fab:fab_size="mini"
-                fab:fab_title="Add Trip" />
+                fab:fab_title="Edit Trip" />
 
 
 

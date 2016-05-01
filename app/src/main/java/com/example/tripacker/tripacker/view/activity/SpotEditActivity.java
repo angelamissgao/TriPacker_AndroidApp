@@ -58,6 +58,7 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
         spotEntity.setAddress(stuff.get(2));
         spotEntity.setGeo_latitude(stuff.get(3));
         spotEntity.setGeo_longitude(stuff.get(4));
+        spotEntity.setDescription(stuff.get(5));
 
 
         //set EditText pre-update
@@ -68,7 +69,7 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
         spotAddres.setText(spotEntity.getAddress());
 
         EditText spotinfo = (EditText) findViewById(R.id.spotInfo_edit);
-        spotinfo.setText(spotEntity.getAddress());
+        spotinfo.setText(spotEntity.getDescription());
 
         //Spinner
         addAttribute = (EditText) findViewById(R.id.addSpotAttr);
