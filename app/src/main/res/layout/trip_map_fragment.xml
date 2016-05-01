@@ -6,73 +6,162 @@ xmlns:tools="http://schemas.android.com/tools"
 android:layout_width="match_parent"
 android:layout_height="match_parent">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <fragment
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:id="@+id/map_direction"
-        android:layout_gravity="center_horizontal"
-        tools:context="com.example.tripacker.tripacker.view.fragment.TripMapPageFragment"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
+        <fragment
+            android:layout_width="match_parent"
+            android:layout_height="450dp"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:id="@+id/map_direction"
+            android:layout_gravity="center_horizontal"
+            tools:context="com.example.tripacker.tripacker.view.fragment.TripMapPageFragment"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Map Goes Here!"
-        android:id="@+id/textView4" />
-</LinearLayout>
-
-<FrameLayout
-    android:id="@+id/fab_frame_layout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/transparent">
-
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/fab_trip_spot"
-        android:src="@drawable/ic_add_white_24dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right|bottom"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        fab:fab_addButtonColorNormal="@color/primary"
-        fab:fab_addButtonColorPressed="@color/primary_darker"
-        fab:fab_addButtonPlusIconColor="@color/white"
-        fab:fab_addButtonStrokeVisible="false"
-        fab:fab_labelStyle="@style/menu_labels_style"
-        fab:fab_labelsPosition="left">
-
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab_event"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/primary_dark"
-            fab:fab_colorPressed="@color/primary_darker"
-            fab:fab_plusIconColor="@color/white"
-            fab:fab_icon="@drawable/ic_place_white_24dp"
-            fab:fab_size="mini"
-            fab:fab_title="Add Spot" />
+            android:paddingLeft="30dp"
+            android:paddingTop="10dp">
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_spot"
+                    android:gravity="center"
+                    android:id="@+id/spotNameIcon"
+                    android:backgroundTint="@color/primary" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:paddingLeft="5dp"
+                    android:text="Trip Name"
+                    style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                    android:id="@+id/SpotName"
+                    android:textColor="@color/primary" />
+            </LinearLayout>
 
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:id="@+id/create_trip_map"
-            android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="San Francisco"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/spotName_show" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            fab:fab_colorNormal="@color/primary_dark"
-            fab:fab_colorPressed="@color/primary_darker"
-            fab:fab_plusIconColor="@color/white"
-            fab:fab_icon="@drawable/ic_trip_white_24dp"
-            fab:fab_size="mini"
-            fab:fab_title="Add Trip" />
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_tel"
+                    android:gravity="center"
+                    android:backgroundTint="@color/primary"
+                    android:id="@+id/imageView3" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:paddingLeft="5dp"
+                    android:text="Spots of Trip"
+                    style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                    android:id="@+id/address"
+                    android:textColor="@color/primary" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Spot1"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/spot1_show" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:padding="5dp"
+                android:text="Spot2"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/spot2_show" />
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:padding="5dp"
+                android:text="Spot3"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/spot3_show" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingTop="15dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_email"
+                    android:gravity="center"
+                    android:backgroundTint="@color/primary"
+                    android:id="@+id/imageView4" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:paddingLeft="5dp"
+                    android:text="Trip Info"
+                    style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                    android:id="@+id/description"
+                    android:textColor="@color/primary" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="trip info"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/tripInfo" />
+
+        </LinearLayout>
 
 
+    </LinearLayout>
 
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
-</FrameLayout>
 </FrameLayout>

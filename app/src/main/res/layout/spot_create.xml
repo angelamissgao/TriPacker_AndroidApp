@@ -21,7 +21,7 @@
         <!--android:background="#6d6a6a" />-->
     <fragment
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="300dp"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:id="@+id/mapCreate"
         android:layout_gravity="center_horizontal"
@@ -60,7 +60,7 @@
         <EditText
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/spotNameInput"
+            android:id="@+id/tripNameInput"
             android:gravity="center_horizontal"
             android:layout_weight="1" />
     </LinearLayout>
@@ -95,13 +95,26 @@
                 android:textColor="@color/primary" />
         </LinearLayout>
 
-
-        <EditText
-            android:layout_width="fill_parent"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_weight="1"
-            android:id="@+id/spotAddressInput" />
+            android:padding="5dp">
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_weight="1"
+                android:id="@+id/startDate" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="show Map"
+                android:id="@+id/showSpotMap"
+                android:backgroundTint="@color/primary"
+                android:textColor="#171313" />
+        </LinearLayout>
 
 
     </LinearLayout>
@@ -116,15 +129,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="5dp">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="show Map"
-            android:id="@+id/showSpotMap"
-            android:backgroundTint="@color/primary"
-            android:textColor="@color/secondary_text_default_material_dark" />
 
             <!--<Button-->
                 <!--android:layout_width="wrap_content"-->
@@ -172,20 +176,24 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:layout_weight="1"
-            android:id="@+id/spotDescInput"/>
+            android:id="@+id/endDate"/>
 
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Add Spot"
-        android:id="@+id/addSpot"
-        android:backgroundTint="@color/primary"
-        android:textColor="@color/secondary_text_default_material_dark" />
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="30dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Spot"
+            android:id="@+id/addSpot"
+            android:backgroundTint="#d98a67"
+            android:textColor="#171313" />
+    </LinearLayout>
 
 </LinearLayout>
 

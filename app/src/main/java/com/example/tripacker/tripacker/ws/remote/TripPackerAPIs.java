@@ -36,6 +36,8 @@ public class TripPackerAPIs {
 
     // Get Trip
 
+    public static String createTrip() { return API_BASE_URL+"/trip/create"; }
+
     public static String getPopularTrips(){
         return API_BASE_URL+"/trips/polular";
     }

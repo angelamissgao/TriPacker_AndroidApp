@@ -96,7 +96,10 @@ public class APIConnection{
     public void getTripDetail(int trip_id) {
     }
 
-    // Spots request
+    /**
+     * Spots Request
+     *
+     */
     public static void getSpotsList(String id, List<NameValuePair> params) {
         getSpotsListFromApi(id, params);
     }
@@ -109,14 +112,16 @@ public class APIConnection{
         createSpotFromApi(params);
     }
 
-    public void getPopularSpots() {
-    }
-
-    public void getPopularSpotsByPage() {
-    }
-
     public static void getSpotDetail(String spotId, List<NameValuePair> params) {
         getSpotDetailFromApi(spotId, params);
+    }
+
+    /**
+     * Trip Request
+     */
+
+    public static void createTrip(List<NameValuePair> params){
+        createTripFromApi(params);
     }
 
     public void getConfiguration() {
@@ -150,7 +155,11 @@ public class APIConnection{
     }
 
     private static void getSpotDetailFromApi(String spotId, List<NameValuePair> params) {
-        createGetReq(TripPackerAPIs.getSpotDetail(spotId) , params);
+        createGetReq(TripPackerAPIs.getSpotDetail(spotId), params);
+    }
+
+    private static void createTripFromApi(List<NameValuePair> params){
+        createPostReq(TripPackerAPIs.createTrip(), params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {
@@ -170,7 +179,8 @@ public class APIConnection{
     }
 
 
-    private static void createDeleteReq(String url, List<NameValuePair> params){}
+    private static void createDeleteReq(String url, List<NameValuePair> params){
+    }
 
     private static void createPutReq(String url, List<NameValuePair> params){
         if (true) {
