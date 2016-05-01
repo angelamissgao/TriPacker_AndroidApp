@@ -27,6 +27,7 @@ import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.PageAdapter;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.TripTabsViewPagerAdapter;
+import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
 import com.example.tripacker.tripacker.view.fragment.ExploreFragment;
 import com.example.tripacker.tripacker.view.fragment.FavoritesFragment;
@@ -78,19 +79,25 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.trip_tab);
         viewPager = (ViewPager) findViewById(R.id.trip_view_pager);
 
+        //Http Request to get Trip details with TripID
+        getContent(2);
 
         // create a fragment list in order.
         fragments = new ArrayList<Fragment>();
         TripMapPageFragment map_frag = new TripMapPageFragment();
         TripListPageFragment list_frag = new TripListPageFragment();
 
+        //send data with intent to Fragments
+        TripEntity trip_info = new TripEntity();
+        trip_info.setName("Trip1inSF");
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("trip_info", trip_info);
+
+        list_frag.setArguments(bundle);
+        map_frag.setArguments(bundle);
 
         fragments.add(map_frag);
         fragments.add(list_frag);
-
-        //Http Request to get Trip details with TripID
-        getContent(2);
-
 
         // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
         // and ViewPager (different pages of fragment) together.

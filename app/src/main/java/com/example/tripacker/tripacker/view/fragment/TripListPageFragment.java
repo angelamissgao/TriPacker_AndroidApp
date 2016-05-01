@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
+import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.SpotListView;
@@ -36,6 +37,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.Serializable;
+import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +62,9 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
     private ListView trip_spotlistView;
     private ImageView editProfileButton;
 
+    //TripEntity
+    private TripEntity tripEntity;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +74,14 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         thiscontext = container.getContext();
 
         View view = inflater.inflate(R.layout.trip_list_fragment, container, false);
+
+        //Get Trip
+        TripEntity bundle = (TripEntity) getArguments().getSerializable("trip_info");
+        Log.e("Get BUNDEL ---->", bundle.getName());
+
+
+        //get setSpotID
+
 
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 

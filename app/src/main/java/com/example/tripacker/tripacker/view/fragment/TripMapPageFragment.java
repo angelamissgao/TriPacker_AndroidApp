@@ -88,6 +88,11 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
         View view = inflater.inflate(R.layout.trip_map_fragment, container, false);
 
+        //Get Trip Bundle
+        TripEntity bundle = (TripEntity) getArguments().getSerializable("trip_info");
+        Log.e("Get BUNDLE ---->", bundle.getName());
+
+
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
         setUpViewById(view);
