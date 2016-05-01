@@ -23,9 +23,12 @@ import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.SpotListView;
+import com.example.tripacker.tripacker.view.activity.TripCreateActivity;
 import com.example.tripacker.tripacker.view.adapter.TripSpotTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -90,14 +93,10 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         linearLayout.addView(addSpotButton);
         container.addView(linearLayout);
 
-
-
         Log.e(TAG, "-------> " + pref.getString("name", null));
         Log.e(TAG, "-------> " + pref.getString("cookies", null));
 
      //   getContent();
-
-
 
 
         // Or even append an entire new collection
@@ -108,9 +107,24 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         //adapter.addAll(newUsers);
 
 
-
-
-
+        //Add Spots to Trip by ownerID
+        FloatingActionsMenu TripModifiation = (FloatingActionsMenu) view.findViewById(R.id.tripModify);
+        FloatingActionButton ButtonAddTrip = (FloatingActionButton) view.findViewById(R.id.AddSpotInTrip);
+        TripModifiation.setVisibility(View.INVISIBLE);
+//        ButtonAddTrip.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent mainInten = new Intent(getActivity(), TripCreateActivity.class);
+//                ArrayList<String> spot_info = new ArrayList<String>();
+//                //Todo: added spot json
+//                spot_info.add("user_id");
+//                Bundle bundle = new Bundle();
+//                bundle.putStringArrayList("user_id", spot_info);
+//                mainInten.putExtras(bundle);
+//
+//                startActivity(mainInten);
+//            }
+//        });
 
         return view;
     }

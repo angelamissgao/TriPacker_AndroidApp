@@ -93,9 +93,6 @@ public class APIConnection{
     public void getPopularTripsByPage() {
     }
 
-    public void getTripDetail(int trip_id) {
-    }
-
     /**
      * Spots Request
      *
@@ -125,6 +122,10 @@ public class APIConnection{
     }
 
     public void getConfiguration() {
+    }
+
+    public static void getTripDetail(int trip_id, List<NameValuePair> params) {
+        getTripDetailFromApi(trip_id, params);
     }
 
 
@@ -160,6 +161,10 @@ public class APIConnection{
 
     private static void createTripFromApi(List<NameValuePair> params){
         createPostReq(TripPackerAPIs.createTrip(), params);
+    }
+
+    private static void getTripDetailFromApi(int tripId, List<NameValuePair> params){
+        createGetReq(TripPackerAPIs.getTripDetail(tripId), params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {

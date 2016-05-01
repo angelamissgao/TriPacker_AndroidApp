@@ -50,7 +50,7 @@ import java.util.List;
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDetailsView{
+public class TripMapPageFragment extends Fragment implements UserDetailsView{
     private static final String TAG = "TripMapPageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -95,8 +95,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         Log.e("From Session", "-------> " + pref.getString("name", null));
         Log.e("From Session", "-------> " + pref.getString("cookies", null));
 
- //       getContent();
-
         // Or even append an entire new collection
         // Fetching some data, data has now returned
         // If data was JSON, convert to ArrayList of User objects.
@@ -134,56 +132,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
     }
 
-    private void getContent(){
-        showLoading();
-        Log.e(TAG , "-------> Get Content");
-
-        // the request
-        try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
-            APIConnection.SetAsyncCaller(this, thiscontext);
-
-            APIConnection.getUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
-
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
-
-    }
-
-    @Override
-    public void onBackgroundTaskCompleted(int requestCode, Object result) {
-
-        String response = result.toString();
-
-        JSONTokener tokener = new JSONTokener(response);
-        try {
-            JSONObject finalResult = new JSONObject(tokener);
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
-
-            if(finalResult.getString("success").equals("true")){
-                hideLoading();
-
-                Log.i(TAG, "RESPONSE BODY= " + response);
-                // Parse user json object
-                UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
-                Log.i(TAG, "User Info= " + user.toString());
-                renderUser(user);
-
-            }else{
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -312,7 +260,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            Log.e("Logofroutesresult --->", result);
             new ParserTask().execute(result);
         }
     }
