@@ -37,6 +37,7 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -64,13 +65,17 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
     private TextView username_view;
     private ListView trip_listView;
     private ImageView editProfileButton;
+    private TextView durationShow;
 
     // Google Map
     GoogleMap googleMap;
-    private static final LatLng LOWER_MANHATTAN = new LatLng(40.722543,
-            -73.998585);
-    private static final LatLng BROOKLYN_BRIDGE = new LatLng(40.7057, -73.9964);
-    private static final LatLng WALL_STREET = new LatLng(40.7064, -74.0094);
+    private static final LatLng Spot1_GPS = new LatLng(37.4219999,
+            -122.0840575);
+    private static final LatLng Spot2_GPS = new LatLng(37.41043, -122.059753);
+    private static final LatLng Spot3_GPS = new LatLng(37.4852152, -122.059753);
+
+    //TripModel
+    TripEntity tripEntity = new TripEntity();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -106,16 +111,16 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
 
         MarkerOptions options = new MarkerOptions();
-        options.position(LOWER_MANHATTAN);
-        options.position(BROOKLYN_BRIDGE);
-        options.position(WALL_STREET);
+        options.position(Spot1_GPS);
+        options.position(Spot2_GPS);
+        options.position(Spot3_GPS);
         googleMap.addMarker(options);
 
         String url = getMapsApiDirectionsUrl();
         ReadTask downloadTask = new ReadTask();
         downloadTask.execute(url);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(BROOKLYN_BRIDGE,
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Spot2_GPS,
                 13));
         addMarkers();
 
@@ -133,7 +138,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         showLoading();
         Log.e(TAG , "-------> Get Content");
 
-
         // the request
         try{
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -149,7 +153,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         }
 
     }
-
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
@@ -214,38 +217,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         trip_listView.setAdapter(adapter);
 
 
-        // Add item to adapter
-/*
-        try {
-
-           JSONObject js_trip1 = new JSONObject();
-            js_trip1.put("name", "San Diego Trip");
-            js_trip1.put("gmt_create", "04/10/2015");
-            TripEntity newTrip1 = new TripEntity(js_trip1);
-            adapter.add(newTrip1);
-
-            JSONObject js_trip2 = new JSONObject();
-            js_trip2.put("name", "SFMA");
-            js_trip2.put("gmt_create", "06/12/2015");
-            TripEntity newTrip2 = new TripEntity(js_trip2);
-            adapter.add(newTrip2);
-
-            JSONObject js_trip3 = new JSONObject();
-            js_trip3.put("name", "Stanford University");
-            js_trip3.put("gmt_create", "08/12/2015");
-            TripEntity newTrip3 = new TripEntity(js_trip3);
-            adapter.add(newTrip3);
-
-            JSONObject js_trip4 = new JSONObject();
-            js_trip4.put("name", "NASA Research Park");
-            js_trip4.put("gmt_create", "12/12/2015");
-            TripEntity newTrip4 = new TripEntity(js_trip4);
-            adapter.add(newTrip4);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     @Override
@@ -287,28 +258,40 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
     //Google Maps
     private String getMapsApiDirectionsUrl() {
         String waypoints = "waypoints=optimize:true|"
-                + LOWER_MANHATTAN.latitude + "," + LOWER_MANHATTAN.longitude
-                + "|" + "|" + BROOKLYN_BRIDGE.latitude + ","
-                + BROOKLYN_BRIDGE.longitude + "|" + WALL_STREET.latitude + ","
-                + WALL_STREET.longitude;
+                + Spot1_GPS.latitude + "," + Spot1_GPS.longitude
+                + "|" + "|" + Spot2_GPS.latitude + ","
+                + Spot2_GPS.longitude + "|" + Spot3_GPS.latitude + ","
+                + Spot3_GPS.longitude;
 
-        String sensor = "sensor=false";
-        String params = waypoints + "&" + sensor;
         String output = "json";
         String key = "AIzaSyC25VtN-MdlR24RTttecKVurefMWiKoubU";
-//        String url = "https://maps.googleapis.com/maps/api/directions/"
-//                + output + "?" + params;
-        String url = "https://maps.googleapis.com/maps/api/directions/json?origin=WALL%20STREET,New%20York&destination=BROOKLYN%20BRIDGE,New%20York&waypoints=LOWER%20MANHATTAN,New%20York|Manhattan,New%20York&key=" + key;
+        String base_url = "https://maps.googleapis.com/maps/api/directions/";
+
+        String origin_lat = "37.4219999";
+        String origin_long = "-122.0840575";
+        String origin_url = origin_lat + "%2C" + origin_long;
+
+        String destination_lat = "37.41043";
+        String destination_long = "-122.059753";
+        String destination_url = destination_lat + "%2C" + destination_long;
+
+        String waypoints_url = "via:37.4852152%2C-122.2363548" + "%7C" + "via:37.4852151%2C-122.2363547";
+
+        String url = base_url + output + "?" +
+                "origin="+ origin_url + "&" +
+                "destination="+ destination_url +
+                "&"+"waypoints=" + waypoints_url +
+                "&" + "key=" + key;
         return url;
     }
 
     private void addMarkers() {
         if (googleMap != null) {
-            googleMap.addMarker(new MarkerOptions().position(BROOKLYN_BRIDGE)
+            googleMap.addMarker(new MarkerOptions().position(Spot2_GPS)
                     .title("First Point"));
-            googleMap.addMarker(new MarkerOptions().position(LOWER_MANHATTAN)
+            googleMap.addMarker(new MarkerOptions().position(Spot1_GPS)
                     .title("Second Point"));
-            googleMap.addMarker(new MarkerOptions().position(WALL_STREET)
+            googleMap.addMarker(new MarkerOptions().position(Spot3_GPS)
                     .title("Third Point"));
         }
     }
@@ -329,6 +312,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            Log.e("Logofroutesresult --->", result);
             new ParserTask().execute(result);
         }
     }
@@ -345,8 +329,16 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
             try {
                 jObject = new JSONObject(jsonData[0]);
+
+                // Get estimated time duration
+                JSONArray legs = ((JSONObject) (jObject.getJSONArray("routes").get(0))).getJSONArray("legs");
+                String time = ((JSONObject)legs.get(0)).getJSONObject("duration").getString("text");
+                Log.e("duration------>", time);
+                tripEntity.setEstimateDuration(time);
+
                 PathJSONParser parser = new PathJSONParser();
                 routes = parser.parse(jObject);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -357,8 +349,6 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
         protected void onPostExecute(List<List<HashMap<String, String>>> routes) {
             ArrayList<LatLng> points = null;
             PolylineOptions polyLineOptions = null;
-
-            Log.e("Logofroutesresult --->", routes.toString());
 
             // traversing through routes
             for (int i = 0; i < routes.size(); i++) {
@@ -378,8 +368,12 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
 
                 polyLineOptions.addAll(points);
                 polyLineOptions.width(5);
-                polyLineOptions.color(R.color.path);
+                polyLineOptions.color(Color.BLUE);
             }
+
+            //Duration
+            durationShow = (TextView) getView().findViewById(R.id.tripDuration);
+            durationShow.setText(tripEntity.getDuration());
 
             googleMap.addPolyline(polyLineOptions);
             Log.e("PolylnAddedToMap --->",polyLineOptions.toString());
