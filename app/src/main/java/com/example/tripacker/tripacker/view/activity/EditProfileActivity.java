@@ -74,6 +74,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
@@ -146,6 +147,8 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+
+
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
             updateProfile();
@@ -153,7 +156,8 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
             finish();
         }
 
-        if (id == R.id.action_cancel) {
+        if (id == android.R.id.home) {
+            Log.e(TAG, "-> click!"+ item.getItemId()+"");
             setResult(400, null);
             finish();
         }

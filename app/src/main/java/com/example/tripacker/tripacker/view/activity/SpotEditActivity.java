@@ -3,8 +3,11 @@ package com.example.tripacker.tripacker.view.activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +28,10 @@ import java.util.List;
 /**
  * Created by angelagao on 4/28/16.
  */
-public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
+public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
+    private static final String TAG = "SpotEditActivity";
+
+
     private SpotEntity spotEntity = new SpotEntity();
 
     @Override
@@ -34,6 +40,7 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
         setContentView(R.layout.spot_edit);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
@@ -69,6 +76,40 @@ public class SpotEditActivity extends AppCompatActivity implements AsyncCaller {
         });
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.action_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_done) {
+            updateContent(spotEntity.getSpotId());
+            setResult(200, null);
+            finish();
+        }
+
+        if (id == android.R.id.home) {
+            setResult(400, null);
+            finish();
+        }
+
+
+        return super.onOptionsItemSelected(item);
+    }
     private void updateContent(String spotId) {
 
         EditText NewSpotName = (EditText) findViewById(R.id.spotName_edit);

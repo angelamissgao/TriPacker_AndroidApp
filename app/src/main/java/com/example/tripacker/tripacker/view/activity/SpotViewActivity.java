@@ -21,6 +21,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -55,6 +56,8 @@ import java.util.List;
  */
 public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,OnMapReadyCallback {
 
+    private static final String TAG = "SpotViewActivity";
+
     //GetSpotAPI - // TODO: 4/11/16
     private static final String SendSpot_URL = "";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
@@ -82,6 +85,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
@@ -126,7 +130,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
                 spot_info.add(spotEntity.getGeo_latitude());
                 spot_info.add(spotEntity.getGeo_longitude());
 
-                Log.e("get SpotID in SpotView:------>", spotEntity.getSpotId());
+                Log.e("get SpotID in SpotView:>", spotEntity.getSpotId());
 
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("spotId", spot_info);
@@ -137,6 +141,22 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
             }
         });
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        if( id == android.R.id.home){
+            this.finish();
+            return true;
+        }
+
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void getContent(String spotId) {

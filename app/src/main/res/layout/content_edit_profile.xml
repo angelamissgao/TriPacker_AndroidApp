@@ -43,19 +43,23 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:id="@+id/row1"
-                    android:padding="10dp">
+                    android:paddingLeft="10dp"
+                    android:paddingBottom="20dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="10dp">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:paddingRight="10dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/row1icon"
                             android:layout_gravity="right"
-                            android:background="@android:drawable/ic_menu_edit"
+                            android:background="@drawable/ic_user_profile_normal_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true"
@@ -83,19 +87,23 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row2"
                     android:layout_below="@+id/row1"
-                    android:padding="5dp">
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:paddingRight="10dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/row2icon"
                             android:layout_gravity="right"
-                            android:background="@android:drawable/ic_menu_edit"
+                            android:background="@drawable/ic_location_normal_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true"
@@ -123,19 +131,23 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row3"
                     android:layout_below="@+id/row2"
-                    android:padding="5dp">
+                    android:paddingTop="20dp"
+                    android:paddingBottom="20dp"
+                    android:paddingRight="10dp"
+                    android:paddingLeft="10dp">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical">
+                        android:layout_gravity="center_vertical"
+                        android:paddingRight="10dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/row3icon"
-                            android:background="@drawable/ic_email_black_24dp"
+                            android:background="@drawable/ic_email_normal_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true"
@@ -165,19 +177,23 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row4"
                     android:layout_below="@+id/row3"
-                    android:padding="5dp">
+                    android:paddingLeft="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="20dp">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:paddingRight="20dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/row4icon"
                             android:layout_gravity="right"
-                            android:background="@drawable/ic_cake_black_24dp"
+                            android:background="@drawable/ic_cake_normal_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true"
@@ -193,7 +209,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="date"
-                            android:ems="10"
                             android:id="@+id/row4editText"
                             android:layout_gravity="bottom" />
                     </LinearLayout>
@@ -205,19 +220,23 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row5"
                     android:layout_below="@+id/row4"
-                    android:padding="5dp">
+                    android:paddingLeft="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="20dp">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:paddingRight="10dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/row5icon"
                             android:layout_gravity="right"
-                            android:background="@android:drawable/ic_menu_edit"
+                            android:background="@drawable/ic_gender_normal_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true" />
@@ -242,7 +261,10 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row6"
                     android:layout_below="@+id/row5"
-                    android:padding="5dp">
+                    android:paddingLeft="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="20dp">
 
                     <LinearLayout
                         android:orientation="vertical"
@@ -254,11 +276,12 @@
                             android:layout_height="wrap_content"
                             android:id="@+id/row6icon"
                             android:layout_gravity="right"
-                            android:background="@drawable/ic_stay_primary_portrait_black_24dp"
+                            android:background="@drawable/ic_stay_primary_portrait_normal_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true"
-                            android:backgroundTint="@color/monsoon"/>
+                            android:backgroundTint="@color/monsoon"
+                            android:paddingRight="10dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -284,19 +307,23 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/row7"
                     android:layout_below="@+id/row6"
-                    android:padding="5dp">
+                    android:paddingLeft="10dp"
+                    android:paddingTop="20dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="20dp">
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent">
+                        android:layout_height="match_parent"
+                        android:paddingRight="10dp">
 
                         <ImageView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:id="@+id/row7icon"
                             android:layout_gravity="right"
-                            android:background="@android:drawable/ic_menu_edit"
+                            android:background="@drawable/ic_comment_normal_24dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginRight="10dp"
                             android:clickable="true" />
