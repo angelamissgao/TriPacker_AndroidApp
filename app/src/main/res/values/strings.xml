@@ -8,8 +8,13 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_trip_view">Trip View</string>
+    <string name="title_activity_trip">My Trip</string>
+    <string name="title_activity_trip_edit_view">Edit Trip</string>
     <string name="title_activity_view_following_view">FOLLOWING</string>
     <string name="title_activity_view_follower_view">FOLLOWER</string>
+    <string name="title_activity_search_results">Result</string>
+
+
 
 
     <string-array name="gender_value">
@@ -27,6 +32,24 @@
         <item>Historical</item>
         <item>Museum</item>
         <item>Others</item>
+    </string-array>
+
+
+    <string-array name="navDrawerItems">
+        <item>Profile</item>
+        <item>My Spot</item>
+        <item>My Trip</item>
+        <item>Bookmark</item>
+        <item>Logout</item>
+    </string-array>
+
+    <string-array name="navDrawerIcons">
+
+        <item>@drawable/ic_profile_normal_24dp</item>
+        <item>@drawable/ic_place_normal_24dp</item>
+        <item>@drawable/ic_trip_normal_24dp</item>
+        <item>@drawable/ic_favorite_normal_24dp</item>
+        <item>@drawable/ic_logout_normal_24dp</item>
     </string-array>
 
 </resources>

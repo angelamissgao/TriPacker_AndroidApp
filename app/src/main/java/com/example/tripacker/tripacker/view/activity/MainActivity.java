@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.design.widget.TabLayout;
@@ -14,24 +15,19 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import com.activeandroid.ActiveAndroid;
 
 import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.entity.TripEntity;
-import com.example.tripacker.tripacker.entity.UserEntity;
-import com.example.tripacker.tripacker.view.adapter.NaviDrawerAdapter;
+import com.example.tripacker.tripacker.view.adapter.DrawerItemCustomAdapter;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
@@ -67,12 +63,15 @@ public class MainActivity extends ActionBarActivity {
 
 
     //menu drawer
-    private RecyclerView mDrawerList;
-    private DrawerLayout mDrawerLayout;
+    String navTitles[];
+    TypedArray navIcons;
+    RecyclerView mDrawerListView;
+    public DrawerLayout mDrawerLayout;
     RecyclerView.Adapter mAdapter;
-    RecyclerView.LayoutManager mLayoutManager;
-    private ActionBarDrawerToggle mDrawerToggle;
+    ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+
+
 
 
 
@@ -146,8 +145,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         // Setup the menu bar
-        mDrawerList = (RecyclerView)findViewById(R.id.navList);
-        mDrawerList.setHasFixedSize(true);
+        mDrawerListView = (RecyclerView)findViewById(R.id.navList);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
@@ -156,6 +154,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         addDrawerItems();
+        //Finally setup ActionBarDrawerToggle
         setupDrawer();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -172,17 +171,28 @@ public class MainActivity extends ActionBarActivity {
 
     // menu drawer
     private void addDrawerItems() {
-        String[] osArray = { "Profile", "My Spot", "My Trip", "Bookmark", "Logout" };
-        int ICONS[] = {R.drawable.ic_profile_normal_24dp,R.drawable.ic_place_normal_24dp,R.drawable.ic_trip_normal_24dp,R.drawable.ic_favorite_normal_24dp,R.drawable.ic_logout_normal_24dp};
+        //Setup Titles and Icons of Navigation Drawer
+        navTitles = getResources().getStringArray(R.array.navDrawerItems);
+        navIcons = getResources().obtainTypedArray(R.array.navDrawerIcons);
 
-        mAdapter = new NaviDrawerAdapter(osArray,ICONS,pref.getString("username", null),pref.getString("username", null), R.drawable.profile_picture);
+        /**
+         *Here , pass the titles and icons array to the adapter .
+         *Additionally , pass the context of 'this' activity .
+         *So that , later we can use the fragmentManager of this activity to add/replace fragments.
+         */
 
-        mDrawerList.setAdapter(mAdapter);
+        mAdapter = new DrawerItemCustomAdapter(navTitles,navIcons,this);
+        mDrawerListView.setAdapter(mAdapter);
 
-        mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
+        /**
+         *It is must to set a Layout Manager For Recycler View
+         *As per docs ,
+         *RecyclerView allows client code to provide custom layout arrangements for child views.
+         *These arrangements are controlled by the RecyclerView.LayoutManager.
+         *A LayoutManager must be provided for RecyclerView to function.
+         */
 
-        mDrawerList.setLayoutManager(mLayoutManager);
-
+        mDrawerListView.setLayoutManager(new LinearLayoutManager(this));
 
     }
 
@@ -207,6 +217,49 @@ public class MainActivity extends ActionBarActivity {
         mDrawerToggle.setDrawerIndicatorEnabled(true);
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+
+    }
+
+    private void selectItem(int position) {
+
+        Fragment fragment = null;
+        Log.e("Navi ", "->" +position);
+        switch (position) {
+            case 0:
+                //fragment = new ConnectFragment();
+                break;
+            case 1:
+               // fragment = new FixturesFragment();
+                break;
+            case 2:
+               // fragment = new TableFragment();
+                break;
+
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+ /*           FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+            mDrawerList.setItemChecked(position, true);
+            mDrawerList.setSelection(position);
+            setTitle(mNavigationDrawerItemTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);*/
+
+        } else {
+            Log.e("MainActivity", "Error in creating fragment");
+        }
+    }
+
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -253,5 +306,7 @@ public class MainActivity extends ActionBarActivity {
         public ImageView mIcon;
 
     }
+
+
 
 }

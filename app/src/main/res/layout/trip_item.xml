@@ -23,7 +23,8 @@
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="04/06/2016"
                 android:id="@+id/trip_date"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp" />
         </LinearLayout>
 
         <LinearLayout

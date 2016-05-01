@@ -5,54 +5,45 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
-import com.example.tripacker.tripacker.PageAdapter;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.TripTabsViewPagerAdapter;
+import com.example.tripacker.tripacker.entity.TripEntity;
+import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
-import com.example.tripacker.tripacker.view.fragment.ExploreFragment;
-import com.example.tripacker.tripacker.view.fragment.FavoritesFragment;
-import com.example.tripacker.tripacker.view.fragment.ProfilePageFragment;
-import com.example.tripacker.tripacker.view.fragment.SpotFragment;
-import com.example.tripacker.tripacker.view.fragment.TripFragment;
+import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.view.fragment.TripListPageFragment;
 import com.example.tripacker.tripacker.view.fragment.TripMapPageFragment;
-import com.example.tripacker.tripacker.ws.remote.WebServices;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class TripViewActivity extends ActionBarActivity {
+public class TripActivity extends ActionBarActivity implements  AdapterView.OnItemClickListener{
     // Runner IO for calling external APIs
 
-    //new added
-    private SlidingTabLayout slidingTabLayout;
-    private ViewPager viewPager;
-    private ArrayList<Fragment> fragments;
-    private TripTabsViewPagerAdapter myViewPageAdapter;
+
+
+    private ListView trip_listView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_trip_view);
+        setContentView(R.layout.activity_trip);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -63,38 +54,69 @@ public class TripViewActivity extends ActionBarActivity {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
-        // Define SlidingTabLayout (shown at top)
-        // and ViewPager (shown at bottom) in the layout.
-        // Get their instances.
+        trip_listView = (ListView) findViewById(R.id.triplistview);
 
-        slidingTabLayout = (SlidingTabLayout) findViewById(R.id.trip_tab);
-        viewPager = (ViewPager) findViewById(R.id.trip_view_pager);
-
-
-        // create a fragment list in order.
-        fragments = new ArrayList<Fragment>();
-        TripMapPageFragment map_frag = new TripMapPageFragment();
-        TripListPageFragment list_frag = new TripListPageFragment();
-
-
-        fragments.add(map_frag);
-        fragments.add(list_frag);
-
-
-
-
-        // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
-        // and ViewPager (different pages of fragment) together.
-        myViewPageAdapter =new TripTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
-        viewPager.setAdapter(myViewPageAdapter);
-        slidingTabLayout.setCustomTabView(R.layout.custom_tab_tripiew, R.id.title, R.id.icon);
-        // make sure the tabs are equally spaced.
-        slidingTabLayout.setDistributeEvenly(true);
-        slidingTabLayout.setViewPager(viewPager);
-
+        renderTrip(null);
 
     }
 
+
+    public void renderTrip(ArrayList<TripEntity> TripEntities) {
+        // Construct the data source
+        ArrayList<TripEntity> arrayOfTrips = new ArrayList<TripEntity>();
+        // Create the adapter to convert the array to views
+        TripsTimelineAdapter adapter = new TripsTimelineAdapter(this, arrayOfTrips);
+        // Attach the adapter to a ListView
+        trip_listView.setAdapter(adapter);
+
+
+        // Add item to adapter
+
+        try {
+
+           JSONObject js_trip1 = new JSONObject();
+            js_trip1.put("name", "San Diego Trip");
+            js_trip1.put("gmt_create", "04/10/2015");
+            TripEntity newTrip1 = new TripEntity(js_trip1);
+            js_trip1.toString();
+            adapter.add(newTrip1);
+
+            JSONObject js_trip2 = new JSONObject();
+            js_trip2.put("name", "SFMA");
+            js_trip2.put("gmt_create", "06/12/2015");
+            TripEntity newTrip2 = new TripEntity(js_trip2);
+            js_trip2.toString();
+            adapter.add(newTrip2);
+
+            JSONObject js_trip3 = new JSONObject();
+            js_trip3.put("name", "Stanford University");
+            js_trip3.put("gmt_create", "08/12/2015");
+            TripEntity newTrip3 = new TripEntity(js_trip3);
+            adapter.add(newTrip3);
+
+            JSONObject js_trip4 = new JSONObject();
+            js_trip4.put("name", "NASA Research Park");
+            js_trip4.put("gmt_create", "12/12/2015");
+            TripEntity newTrip4 = new TripEntity(js_trip4);
+            adapter.add(newTrip4);
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        trip_listView.setOnItemClickListener(this);
+
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+        // TODO Auto-generated method stub
+        TripEntity item = (TripEntity) adapter.getItemAtPosition(position);
+        Toast.makeText(this, "CLICK: " + item, Toast.LENGTH_SHORT).show();
+
+        Intent tripIntent = new Intent(this, TripViewActivity.class);
+        //tripIntent.putExtra("trip_id", item.getUserId());
+        startActivity(tripIntent);
+    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -143,9 +165,5 @@ public class TripViewActivity extends ActionBarActivity {
     }
 
 
-    private class TabViewHolder {
-        public ImageView mIcon;
-
-    }
 
 }

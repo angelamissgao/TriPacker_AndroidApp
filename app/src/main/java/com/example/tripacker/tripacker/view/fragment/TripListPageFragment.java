@@ -10,7 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,6 +71,26 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         setUpViewById(view);
 
         renderSpotList(null);
+
+        //Set a linearLayout to add buttons
+        LinearLayout linearLayout = new LinearLayout(getActivity());
+        // Set the layout full width, full height
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        linearLayout.setLayoutParams(params);
+        linearLayout.setOrientation(LinearLayout.HORIZONTAL); //or VERTICAL
+
+        Button addSpotButton = new Button(thiscontext);
+        addSpotButton.setText("+ Add Spot");
+        addSpotButton.setTextColor(getResources().getColor(R.color.white));
+        addSpotButton.setBackgroundColor(getResources().getColor(R.color.primary));
+        addSpotButton.setPadding(10, 10, 10, 10);
+
+        addSpotButton.setLayoutParams(params);
+
+        linearLayout.addView(addSpotButton);
+        container.addView(linearLayout);
+
+
 
         Log.e(TAG, "-------> " + pref.getString("name", null));
         Log.e(TAG, "-------> " + pref.getString("cookies", null));

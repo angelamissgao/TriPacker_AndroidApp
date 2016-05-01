@@ -60,6 +60,27 @@
         <activity
             android:name=".view.activity.TripCreateActivity"
             android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".view.activity.TripActivity"
+            android:label="@string/title_activity_trip"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".view.activity.TripEditActivity"
+            android:label="@string/title_activity_trip_edit_view"
+            android:theme="@style/AppTheme"></activity>
+        <activity
+            android:name=".view.activity.SearchResultsActivity"
+            android:label="@string/title_activity_search_results">
+
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+
+        </activity>
     </application>
 
 </manifest>

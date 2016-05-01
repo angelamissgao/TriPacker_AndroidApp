@@ -51,13 +51,13 @@ public class TripEntity {
 
         try {
             this.name = object.getString("name");
-            this.owner = object.getString("owner");
+     /*       this.owner = object.getString("owner");
             this.cover_photo = object.getString("cover_photo");
             this.tip = object.getString("tip");
             this.status = object.getString("status");
-            this.score = object.getString("score");
+            this.score = object.getString("score");*/
             this.gmt_create = object.getString("gmt_create");
-            this.gmt_modified = object.getString("gmt_modified");
+          //  this.gmt_modified = object.getString("gmt_modified");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -117,6 +117,15 @@ public class TripEntity {
         this.gmt_create = gmt_create;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("***** Trip Entity Details *****\n");
+        stringBuilder.append("name=" + this.getName() + "\n");
+        stringBuilder.append("created_at=" + this.getGmt_create() + "\n");
+        stringBuilder.append("*******************************");
 
+        return stringBuilder.toString();
+    }
 
 }

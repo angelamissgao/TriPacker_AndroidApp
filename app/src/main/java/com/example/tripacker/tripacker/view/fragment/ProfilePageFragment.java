@@ -108,7 +108,6 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent mainInten = new Intent(getActivity(), SpotCreateActivity.class);
 
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 startActivityForResult(intent, REQUEST_EDIT);

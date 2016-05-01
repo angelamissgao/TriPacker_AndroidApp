@@ -34,15 +34,15 @@ android:layout_height="match_parent">
 
 <!-- Side navigation drawer UI -->
 
+
+
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/navList"
-        android:layout_width="250dp"
+        android:layout_width="240dp"
         android:layout_height="match_parent"
+        android:id="@+id/navList"
+        android:scrollbars="vertical"
+        android:background="#FFFFFF"
         android:layout_gravity="left|start"
-
-        android:background="#ffffff"
-        android:scrollbars="vertical">
-
-    </android.support.v7.widget.RecyclerView>
+        />
 
 </android.support.v4.widget.DrawerLayout>

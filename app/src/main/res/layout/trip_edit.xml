@@ -9,26 +9,26 @@
 </RelativeLayout-->
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:fab="http://schemas.android.com/apk/res-auto"
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="match_parent"
-android:layout_height="match_parent">
-
-<LinearLayout
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:id="@+id/tripspotlistlayout">
+    android:layout_height="match_parent">
 
-    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/tripspotlistview"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="@null"
-        android:dividerHeight="0dp"
-        android:layout_marginTop="20dp"/>
+        android:orientation="horizontal"
+        android:id="@+id/tripspotlistlayout">
 
-</LinearLayout>
+        <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/tripspotlistview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_marginTop="20dp"/>
+
+    </LinearLayout>
 
 
     <FrameLayout
@@ -39,7 +39,7 @@ android:layout_height="match_parent">
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:id="@+id/fab_trip_spot"
-            android:src="@drawable/ic_add_white_24dp"
+            android:src="@drawable/ic_mode_edit_white_24dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="right|bottom"
@@ -72,7 +72,7 @@ android:layout_height="match_parent">
                 fab:fab_plusIconColor="@color/white"
                 fab:fab_icon="@drawable/ic_trip_white_24dp"
                 fab:fab_size="mini"
-                fab:fab_title="Add Trip" />
+                fab:fab_title="Delete Trip" />
 
 
 

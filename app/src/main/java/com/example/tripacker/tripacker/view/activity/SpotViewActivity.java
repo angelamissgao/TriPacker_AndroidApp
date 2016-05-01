@@ -155,6 +155,12 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
             return true;
         }
 
+        if( id == R.id.action_search){
+            Log.e("Spot view", "search");
+            this.finish();
+            return true;
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
