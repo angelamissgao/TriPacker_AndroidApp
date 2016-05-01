@@ -129,6 +129,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
                 spot_info.add(spotEntity.getAddress());
                 spot_info.add(spotEntity.getGeo_latitude());
                 spot_info.add(spotEntity.getGeo_longitude());
+                spot_info.add(spotEntity.getDescription());
 
                 Log.e("get SpotID in SpotView:>", spotEntity.getSpotId());
 
@@ -234,6 +235,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
         String spot_info = finalResult.getString("description");
         TextView tv_spotInfo = (TextView) findViewById(R.id.spot_show3);
+        spotEntity.setDescription(spot_info);
         tv_spotInfo.setText(spot_info);
 
         String geoLati = finalResult.getString("geoLatitude");

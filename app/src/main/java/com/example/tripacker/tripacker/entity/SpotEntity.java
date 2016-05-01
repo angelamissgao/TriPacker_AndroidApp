@@ -42,6 +42,8 @@ public class SpotEntity {
     String gmt_modified;
     @SerializedName("gmt_approved")
     String gmt_approved;
+    @SerializedName("description")
+    String description;
 
     Integer image_local;
 
@@ -125,6 +127,7 @@ public class SpotEntity {
         return gmt_approved;
     }
     public Integer getImage_local() { return image_local;}
+    public String getDescription() { return description;}
 
     //Setters
     public void setName(String name) { this.name = name; }
@@ -134,6 +137,7 @@ public class SpotEntity {
     public void setGeo_longitude(String longitude) {this.geo_longitude = longitude;}
     public void setImage_source_local(int postion){this.image_local = postion; }
     public void setCategory_id(String category_id) {this.category_id = category_id;}
+    public void setDescription(String description) {this.description = description;}
 
     @Override
     public String toString() {
