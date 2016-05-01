@@ -13,7 +13,7 @@ android:layout_height="match_parent">
 
         <fragment
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="400dp"
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:id="@+id/map_direction"
             android:layout_gravity="center_horizontal"
@@ -64,7 +64,7 @@ android:layout_height="match_parent">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
-            android:paddingTop="15dp">
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -124,7 +124,7 @@ android:layout_height="match_parent">
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="30dp"
-            android:paddingTop="15dp">
+            android:paddingTop="10dp">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -144,7 +144,7 @@ android:layout_height="match_parent">
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:paddingLeft="5dp"
-                    android:text="Trip Info"
+                    android:text="Trip Duration"
                     style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
                     android:id="@+id/description"
                     android:textColor="@color/primary" />
@@ -158,7 +158,48 @@ android:layout_height="match_parent">
                 android:textAlignment="center"
                 android:gravity="center_horizontal"
                 android:id="@+id/tripInfo" />
+        </LinearLayout>
 
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="30dp"
+            android:paddingTop="5dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_email"
+                    android:gravity="center"
+                    android:backgroundTint="@color/primary"
+                    android:id="@+id/imageView5" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:paddingLeft="5dp"
+                    android:text="Estimated Duration of this Trip"
+                    style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                    android:id="@+id/trip_duration"
+                    android:textColor="@color/primary" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="trip info"
+                android:textAlignment="center"
+                android:gravity="center_horizontal"
+                android:id="@+id/tripDuration" />
         </LinearLayout>
 
 

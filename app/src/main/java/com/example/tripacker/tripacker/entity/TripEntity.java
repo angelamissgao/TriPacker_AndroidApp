@@ -30,6 +30,8 @@ public class TripEntity {
     String gmt_create;
     @SerializedName("gmt_modified")
     String gmt_modified;
+    @SerializedName("duration")
+    String duration;
 
 
     // Make sure to always define this constructor with no arguments
@@ -107,11 +109,13 @@ public class TripEntity {
     public String getGmt_modified() {
         return gmt_modified;
     }
+    public String getDuration() { return duration;}
 
     // Setters
     public void setName(String name) {
         this.name = name;
     }
+    public void setEstimateDuration(String time) {this.duration = time; }
     public void setCover_photo(String cover_photo) {this.cover_photo = cover_photo;}
     public void SetGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;

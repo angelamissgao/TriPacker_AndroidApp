@@ -80,8 +80,6 @@ public class TripViewActivity extends ActionBarActivity {
         fragments.add(list_frag);
 
 
-
-
         // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
         // and ViewPager (different pages of fragment) together.
         myViewPageAdapter =new TripTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
