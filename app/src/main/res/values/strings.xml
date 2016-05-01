@@ -8,6 +8,8 @@
     <string name="drawer_close">Close navigation drawer</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="title_activity_trip_view">Trip View</string>
+    <string name="title_activity_view_following_view">FOLLOWING</string>
+    <string name="title_activity_view_follower_view">FOLLOWER</string>
 
 
     <string-array name="gender_value">

@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         Log.d(TAG, "Login");
 
         if (!validate()) {
-            onLoginFailed();
+            onLoginFailed("Invalid input");
             return;
         }
 
@@ -166,8 +166,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         finish();
     }
 
-    public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+    public void onLoginFailed(String message) {
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
 
         loginButton.setEnabled(true);
     }
@@ -237,15 +237,16 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
 
             if(finalResult.getString("success").equals("true")){
-                onLoginSuccess();
+
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse session json object
                 user_username = finalResult.getString("username");
                 user_id = finalResult.getString("uid");
+                onLoginSuccess();
 
             }else{
-                onLoginFailed();
+                onLoginFailed(finalResult.getString("message"));
             }
 
         } catch (JSONException e) {

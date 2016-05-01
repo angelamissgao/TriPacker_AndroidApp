@@ -140,7 +140,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
             nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
             APIConnection.SetAsyncCaller(this, thiscontext);
 
-            APIConnection.getUserProfile(nameValuePairs);
+            APIConnection.getUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
 
         }
         catch (Exception e)
@@ -358,7 +358,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
             ArrayList<LatLng> points = null;
             PolylineOptions polyLineOptions = null;
 
-            Log.e("Log of routes result --->", routes.toString());
+            Log.e("Logofroutesresult --->", routes.toString());
 
             // traversing through routes
             for (int i = 0; i < routes.size(); i++) {
@@ -382,7 +382,7 @@ public class TripMapPageFragment extends Fragment implements AsyncCaller, UserDe
             }
 
             googleMap.addPolyline(polyLineOptions);
-            Log.e("Polyline added to map --->",polyLineOptions.toString());
+            Log.e("PolylnAddedToMap --->",polyLineOptions.toString());
         }
     }
 

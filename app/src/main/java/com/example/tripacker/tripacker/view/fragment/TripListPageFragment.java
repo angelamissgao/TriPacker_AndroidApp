@@ -107,7 +107,7 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
             nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
             APIConnection.SetAsyncCaller(this, thiscontext);
 
-            APIConnection.getUserProfile(nameValuePairs);
+            APIConnection.getUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
 
         }
         catch (Exception e)

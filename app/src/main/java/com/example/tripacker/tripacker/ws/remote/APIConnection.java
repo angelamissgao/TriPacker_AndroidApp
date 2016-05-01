@@ -2,6 +2,7 @@ package com.example.tripacker.tripacker.ws.remote;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
@@ -34,6 +35,7 @@ public class APIConnection{
     private final UserEntityJsonMapper userEntityJsonMapper;
     private static AsyncCaller caller;
     private static String cookies = "";
+    private static SharedPreferences pref;
 
     /**
      * Constructor of the class
@@ -47,6 +49,7 @@ public class APIConnection{
         }
         this.context = context.getApplicationContext();
         this.userEntityJsonMapper = userEntityJsonMapper;
+        pref = context.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
     }
 
     public static void setCookies(String thiscookies){
@@ -60,17 +63,28 @@ public class APIConnection{
         context = thecontext;
     }
 
+    public static void registerUser(List<NameValuePair> params) {
+        registerUserFromApi(params);
+    }
 
     public static void authenticateUser(List<NameValuePair> params) {
         authenticateUserFromApi(params);
     }
 
-    public static void getUserProfile(List<NameValuePair> params) {
-        getUserProfileFromApi(params);
+    public static void signoutUser(String user_id, List<NameValuePair> params) {
+        signouteUserFromApi(user_id, params);
     }
 
-    public static void updateUserProfile(List<NameValuePair> params) {
-        updateUserProfileFromApi(params);
+    public static void getUserPublicProfile(int user_id, List<NameValuePair> params) {
+        getUserPublicProfileFromApi(user_id, params);
+    }
+
+    public static void getUserProfile(int user_id, List<NameValuePair> params) {
+        getUserProfileFromApi(user_id, params);
+    }
+
+    public static void updateUserProfile(int user_id, List<NameValuePair> params) {
+        updateUserProfileFromApi(user_id, params);
     }
 
     public void getPopularTrips() {
@@ -113,8 +127,14 @@ public class APIConnection{
      * each function to get Api and call Restful request
      * @param params
      */
+    private static void registerUserFromApi(List<NameValuePair> params){
+        createPostReq(TripPackerAPIs.registerUser(), params);
+    }
     private static void authenticateUserFromApi(List<NameValuePair> params){
         createPostReq(TripPackerAPIs.loginUser(), params);
+    }
+    private static void signouteUserFromApi(String user_id, List<NameValuePair> params){
+        createPostReq(TripPackerAPIs.logoutUser(user_id), params);
     }
 
     private static void getSpotsListFromApi(String id, List<NameValuePair> params){
@@ -137,12 +157,16 @@ public class APIConnection{
         return ApiConnection.createGET(RestApi.API_URL_GET_USER_LIST).requestSyncCall();
     }*/
 
-    private static void getUserProfileFromApi(List<NameValuePair> params){
-        createGetReq(TripPackerAPIs.getUserProfile(4), params);
+    private static void getUserPublicProfileFromApi(int user_id, List<NameValuePair> params){
+        createGetReq(TripPackerAPIs.getUserPublicProfile(user_id), params);
+    }
+    // Current user
+    private static void getUserProfileFromApi(int user_id, List<NameValuePair> params){
+        createGetReq(TripPackerAPIs.getUserProfile(user_id), params);
     }
 
-    private static void updateUserProfileFromApi(List<NameValuePair> params){
-        createPutReq(TripPackerAPIs.getUserProfile(0), params);
+    private static void updateUserProfileFromApi(int user_id, List<NameValuePair> params){
+        createPutReq(TripPackerAPIs.getUserProfile(user_id), params);
     }
 
 

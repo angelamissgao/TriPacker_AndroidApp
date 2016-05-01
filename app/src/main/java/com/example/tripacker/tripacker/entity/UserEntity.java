@@ -11,10 +11,12 @@ import org.json.JSONObject;
 public class UserEntity {
 
 
-    @SerializedName("id")
-    String id;
+    @SerializedName("uid")
+    String uid;
     @SerializedName("username")
     String username;
+    @SerializedName("nickname")
+    String nickname;
     @SerializedName("gender")
     String gender;
     @SerializedName("email")
@@ -39,6 +41,12 @@ public class UserEntity {
     public UserEntity() {
         //empty
     }
+    //follower
+    public UserEntity(String uid, String username, String nickname ) {
+        this.uid = uid;
+        this.username = username;
+        this.nickname = nickname;
+    }
 
     // Parse model from JSON
     public UserEntity(JSONObject object){
@@ -46,6 +54,7 @@ public class UserEntity {
 
         try {
             this.username = object.getString("username");
+            this.nickname = object.getString("nickname");
             this.email = object.getString("email");
             this.tel = object.getString("tel");
             this.birthday = object.getString("birthday");
@@ -63,7 +72,10 @@ public class UserEntity {
 
     // Getters
     public String getUserId() {
-        return id;
+        return uid;
+    }
+    public String getNickname() {
+        return nickname;
     }
     public String getUsername() {
         return username;
@@ -95,10 +107,13 @@ public class UserEntity {
 
     // Setters
     public void setUserId(String id) {
-        this.id = id;
+        this.uid = id;
     }
     public void setUsername(String username) {
         this.username = username;
+    }
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
     public void setEmail(String email) {
         this.email = email;
@@ -132,6 +147,7 @@ public class UserEntity {
         stringBuilder.append("***** User Entity Details *****\n");
         stringBuilder.append("id=" + this.getUserId() + "\n");
         stringBuilder.append("username=" + this.getUsername() + "\n");
+        stringBuilder.append("nickname=" + this.getNickname() + "\n");
         stringBuilder.append("email=" + this.getEmail() + "\n");
         stringBuilder.append("tel=" + this.getTel() + "\n");
         stringBuilder.append("birthday=" + this.getBirthday() + "\n");

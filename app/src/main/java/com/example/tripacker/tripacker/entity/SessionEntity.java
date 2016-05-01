@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker.entity.mapper;
+package com.example.tripacker.tripacker.entity;
 
 import com.google.gson.annotations.SerializedName;
 

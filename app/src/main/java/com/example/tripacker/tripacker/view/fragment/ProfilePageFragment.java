@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +21,14 @@ import android.widget.Toast;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
+import com.example.tripacker.tripacker.entity.UserProfileEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
+import com.example.tripacker.tripacker.entity.mapper.UserProfileEntityJsonMapper;
 import com.example.tripacker.tripacker.view.UserDetailsView;
+import com.example.tripacker.tripacker.view.UserProfileView;
 import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
 import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
+import com.example.tripacker.tripacker.view.activity.ViewFollowingActivity;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
@@ -43,7 +48,7 @@ import java.util.List;
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDetailsView {
+public class ProfilePageFragment extends Fragment implements AsyncCaller, UserProfileView {
     private static final String TAG = "PofilePageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -58,6 +63,12 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
     private TextView username_view;
     private ListView trip_listView;
     private ImageView editProfileButton;
+    private LinearLayout viewFollowingBtn;
+
+    private TextView tripnum_view;
+    private TextView followingnum_view;
+    private TextView followernum_view;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,9 +86,9 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
 
 
         //From session
-        Log.e("From Session", "-------> " + pref.getString("username", null));
-        Log.e("From Session", "-------> " + pref.getString("uid", null));
-        Log.e("From Session", "-------> " + pref.getString("cookies", null));
+        Log.e(TAG+" sess", "->" + pref.getString("username", null));
+        Log.e(TAG+" sess", "->" + pref.getString("uid", null));
+        Log.e(TAG+" sess", "->" + pref.getString("cookies", null));
 
         getContent();
 
@@ -139,6 +150,21 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
         username_view = (TextView) view.findViewById(R.id.user_name);
         trip_listView = (ListView) view.findViewById(R.id.triplistview);
         editProfileButton = (ImageView) view.findViewById(R.id.edit_profile_btn);
+        viewFollowingBtn = (LinearLayout) view.findViewById(R.id.view_following_btn);
+
+
+        tripnum_view = (TextView) view.findViewById(R.id.trip_num);
+        followingnum_view = (TextView) view.findViewById(R.id.following_num);
+        followernum_view = (TextView) view.findViewById(R.id.follower_num);
+
+        View.OnClickListener button_click = new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                viewFollowing();
+            }
+        };
+        viewFollowingBtn.setOnClickListener(button_click);
     }
 
     private void getContent(){
@@ -148,11 +174,10 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
 
         // the request
         try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
+
             APIConnection.SetAsyncCaller(this, thiscontext);
 
-            APIConnection.getUserProfile(nameValuePairs);
+            APIConnection.getUserPublicProfile(Integer.parseInt(pref.getString("uid", null).trim()), null);
 
         }
         catch (Exception e)
@@ -173,17 +198,15 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
             JSONObject finalResult = new JSONObject(tokener);
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
 
             if(finalResult.getString("success").equals("true")){
                 hideLoading();
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse user json object
-                UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
+                UserProfileEntity user = (new UserProfileEntityJsonMapper()).transformUserProfileEntity(response);
                 Log.i(TAG, "User Info= " + user.toString());
-                renderUser(user);
+                renderUserProfile(user);
 
             }else{
 
@@ -207,8 +230,11 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
     }
 
     @Override
-    public void renderUser(UserEntity user) {
-        username_view.setText(pref.getString("name", null));
+    public void renderUserProfile(UserProfileEntity user) {
+        username_view.setText(user.getNickname());
+        tripnum_view.setText(user.getTotalTrips());
+        followernum_view.setText(user.getTotalFollowers());
+        followingnum_view.setText(user.getTotalFollowings());
         Picasso
                 .with(thiscontext)
                 .load("http://weknowyourdreamz.com/images/minions/minions-07.jpg")
@@ -294,5 +320,13 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserDe
     @Override
     public Context context() {
         return null;
+    }
+
+
+    public void viewFollowing() {
+
+            Intent followingInten = new Intent(getActivity(), ViewFollowingActivity.class);
+            startActivity(followingInten);
+
     }
 }

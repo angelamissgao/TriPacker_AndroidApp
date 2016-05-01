@@ -6,14 +6,27 @@ public class TripPackerAPIs {
     final static String API_BASE_URL = WebServices.getBaseUrl();
 
 
+    // api/v1/member/register
+    public static String registerUser(){
+        return API_BASE_URL+"/member/register";
+    }
+
     public static String loginUser(){
         return API_BASE_URL+"/member/login";
     }
+    // api/v1/member/:id/logout
+    public static String logoutUser(String user_id){
+        return API_BASE_URL+"/member/"+user_id+"/logout";
+    }
     // Get User
 
+    // api/v1/member/:id
+    public static String getUserPublicProfile(int user_id){
+        return API_BASE_URL+"/member/"+user_id;
+    }
     // api/v1/member/:id/profile
     public static String getUserProfile(int user_id){
-        return API_BASE_URL+"/member/"+user_id+"profile";
+        return API_BASE_URL+"/member/"+user_id+"/profile";
     }
 
     // api/v1/member/:id/profile

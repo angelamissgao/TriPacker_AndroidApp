@@ -10,24 +10,27 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.UserEditProfileDetailsView;
+import com.example.tripacker.tripacker.view.adapter.FollowerListAdapter;
+import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
@@ -43,66 +46,84 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-public class EditProfileActivity extends ActionBarActivity implements View.OnClickListener, AsyncCaller, UserEditProfileDetailsView {
+public class ViewFollowingActivity extends ActionBarActivity implements View.OnClickListener, AsyncCaller, UserEditProfileDetailsView, AdapterView.OnItemClickListener {
 
-    private static final String TAG = "EditProfileActivity";
+    private static final String TAG = "ViewFollowingActivity";
 
-    private  EditText usernameEtxt;
-    private  EditText locationEtxt;
-    private  EditText emailEtxt;
-    private  EditText birthdayEtxt;
-    private  EditText phoneEtxt;
-    private  EditText introductionEtxt;
-    private Spinner gender_spinner;
-    private DatePickerDialog datePickerDialog;
-    private SimpleDateFormat dateFormatter;
+
 
     private ProgressDialog progressDialog;
     private AlertDialog errorDialog;
 
     private static SharedPreferences pref;
 
-    private ArrayAdapter<CharSequence> gender_arr_adapter;
+    private ListView following_listView;
+
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(R.layout.activity_view_following);
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Edit Profile");
-        setSupportActionBar(toolbar);
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
         initializeDialog();
-        showLoading();
+        //showLoading();
 
         pref = getApplicationContext().getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
-        getProfile();
 
-        dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+
+
 
         setUpViewById();
 
 
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        gender_arr_adapter = ArrayAdapter.createFromResource(this,
-                R.array.gender_value, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        gender_arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-     // Apply the adapter to the spinner
-        gender_spinner.setAdapter(gender_arr_adapter);
 
-        setDateTimeField();
+        ArrayList<UserEntity> arrayOfFollowers = new ArrayList<UserEntity>();
+        // Create the adapter to convert the array to views
+        FollowerListAdapter adapter = new FollowerListAdapter(this, arrayOfFollowers);
+        // Attach the adapter to a ListView
+        following_listView.setAdapter(adapter);
+
+        UserEntity user0 = new UserEntity("16", "angela", "Angela Gao");
+        adapter.add(user0);
+        UserEntity user1 = new UserEntity("1", "eileen", "Eileen Wei");
+        adapter.add(user1);
+        UserEntity user2 = new UserEntity("2", "eileen2", "Eileen Wei 2");
+        adapter.add(user2);
+        UserEntity user3 = new UserEntity("3", "eileen3", "Eileen Wei 3");
+        adapter.add(user3);
+        UserEntity user4 = new UserEntity("4", "eileen4", "Eileen Wei 4");
+        adapter.add(user4);
+
+        // Setup listerner for clicks
+        following_listView.setOnItemClickListener(this);
 
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+        // TODO Auto-generated method stub
+        UserEntity item = (UserEntity) adapter.getItemAtPosition(position);
+        Toast.makeText(this, "CLICK: " + item, Toast.LENGTH_SHORT).show();
+
+        Intent userIntent = new Intent(this, ViewProfileActivity.class);
+        userIntent.putExtra("profile_id", item.getUserId());
+        startActivity(userIntent);
+    }
     public void initializeDialog(){
-        progressDialog = new ProgressDialog(EditProfileActivity.this,
+        progressDialog = new ProgressDialog(ViewFollowingActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
@@ -122,13 +143,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         });
     }
     private void setUpViewById(){
-        usernameEtxt = (EditText) findViewById(R.id.row1editText);
-        locationEtxt = (EditText) findViewById(R.id.row2editText);
-        emailEtxt = (EditText) findViewById(R.id.row3editText);
-        birthdayEtxt = (EditText) findViewById(R.id.row4editText);
-        phoneEtxt = (EditText) findViewById(R.id.row6editText);
-        introductionEtxt = (EditText) findViewById(R.id.row7editText);
-        gender_spinner = (Spinner) findViewById(R.id.row5spinner);
+        following_listView = (ListView) findViewById(R.id.followinglistview);
     }
 
 
@@ -146,38 +161,16 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_done) {
-            updateProfile();
-            setResult(200, null);
-            finish();
-        }
-
-        if (id == R.id.action_cancel) {
-            setResult(400, null);
-            finish();
+        if( id == android.R.id.home){
+            this.finish();
+            return true;
         }
 
 
         return super.onOptionsItemSelected(item);
     }
 
-    private void setDateTimeField() {
-        birthdayEtxt.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
-        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                Calendar newDate = Calendar.getInstance();
-                newDate.set(year, monthOfYear, dayOfMonth);
-                birthdayEtxt.setText(dateFormatter.format(newDate.getTime()));
-            }
-
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
-    }
 
     private void getProfile(){
         Log.e("Get User Profile Edit", "-> Get Content");
@@ -199,60 +192,30 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     }
 
-    private void updateProfile(){
-        Log.e("Update User Profile", "-> Update Profile");
 
-        // the request
-        try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
-            nameValuePairs.add(new BasicNameValuePair("uid", pref.getString("uid", null)));
-            nameValuePairs.add(new BasicNameValuePair("gender", gender_spinner.getSelectedItemPosition()+""));
-            nameValuePairs.add(new BasicNameValuePair("tel", phoneEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("birthday", birthdayEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("nickname", usernameEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("email", emailEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("introduction", introductionEtxt.getText().toString()));
-
-            APIConnection.SetAsyncCaller(this, getApplicationContext());
-            APIConnection.updateUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
-
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
-    }
 
 
     @Override
     public void onClick(View view) {
-        if(view == birthdayEtxt) {
-            datePickerDialog.show();
-        }
+
     }
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
         String response = result.toString();
-        Log.i(TAG, "requestCode= " + requestCode);
 
         JSONTokener tokener = new JSONTokener(response);
         try {
             JSONObject finalResult = new JSONObject(tokener);
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-            Log.i(TAG, "RESPONSE BODY= " + response);
 
             if(finalResult.getString("success").equals("true")){
-                if(finalResult.getString("code").equals("150")){
-                    hideLoading();
-                    // Parse user json object
-                    UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
-                    Log.i(TAG, "User Info= " + user.toString());
-                    renderUser(user); //Render user
-                }else if(finalResult.getString("code").equals("140")){
-                    Log.i(TAG, finalResult.getString("message"));
-                }
-
+                hideLoading();
+                Log.i(TAG, "RESPONSE BODY= " + response);
+                // Parse user json object
+                UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
+                Log.i(TAG, "User Info= " + user.toString());
+                renderUser(user); //Render user
             }else{
 
             }
@@ -265,13 +228,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void renderUser(UserEntity user) {
-        usernameEtxt.setText(user.getNickname());
-        locationEtxt.setText("");
-        emailEtxt.setText(user.getEmail());
-        birthdayEtxt.setText(user.getBirthday());
-        phoneEtxt.setText(user.getTel());
-        introductionEtxt.setText(user.getIntroduction());
-        gender_spinner.setSelection(Integer.parseInt(user.getGender()));
+
     }
 
     @Override

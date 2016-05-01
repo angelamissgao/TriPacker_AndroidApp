@@ -99,35 +99,10 @@ android:layout_height="match_parent">
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="120"
-                android:id="@+id/spot_num"
-                android:layout_gravity="center_horizontal" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Spots"
-                android:id="@+id/spot_txt"
-                android:layout_gravity="center_horizontal" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="20"
                 android:layout_gravity="center_horizontal"
-                android:id="@+id/trip_num" />
+                android:id="@+id/trip_num"
+                android:textStyle="bold" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -143,7 +118,38 @@ android:layout_height="match_parent">
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp">
+            android:paddingBottom="10dp"
+            android:clickable="true"
+            android:id="@+id/view_following_btn"
+            android:nestedScrollingEnabled="false">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="120"
+                android:id="@+id/following_num"
+                android:layout_gravity="center_horizontal"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="Following"
+                android:id="@+id/following_txt"
+                android:layout_gravity="center_horizontal" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:id="@+id/view_follower_btn">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -151,7 +157,8 @@ android:layout_height="match_parent">
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="12"
                 android:layout_gravity="center_horizontal"
-                android:id="@+id/follower_num" />
+                android:id="@+id/follower_num"
+                android:textStyle="bold" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -160,6 +167,8 @@ android:layout_height="match_parent">
                 android:layout_gravity="center_horizontal"
                 android:id="@+id/follower_txt" />
         </LinearLayout>
+
+
 
     </LinearLayout>
 

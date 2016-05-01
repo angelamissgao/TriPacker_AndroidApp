@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.UserSessionManager;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
@@ -23,6 +25,9 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.net.URI;
@@ -32,33 +37,34 @@ import java.util.List;
 
 public class SignupActivity extends AppCompatActivity implements AsyncCaller {
     private static final String TAG = "SignupActivity";
-/*
-    @InjectView(R.id.input_name) EditText _nameText;
-    @InjectView(R.id.input_email) EditText _emailText;
-    @InjectView(R.id.input_password) EditText _passwordText;
-    @InjectView(R.id.btn_signup) Button _signupButton;
-    @InjectView(R.id.link_login) TextView _loginLink;
-*/
-
 
     private EditText usernameText;
+    private EditText nameText;
     private EditText passwordText;
-    private EditText emailText;
     private Button signupButton;
     private TextView loginLink;
 
     private ProgressDialog progressDialog;
+
+    // User Session Manager Class
+    private UserSessionManager session;
+
+    private String user_username = "";
+    private String user_id = "";
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-//      ButterKnife.inject(this);
+
+
+        // User Session Manager
+        session = new UserSessionManager(getApplicationContext());
 
         // Setup view elements
         usernameText = (EditText) findViewById(R.id.input_username);
-        emailText = (EditText) findViewById(R.id.input_email);
+        nameText = (EditText) findViewById(R.id.input_name);
         passwordText = (EditText) findViewById(R.id.input_password);
         signupButton = (Button) findViewById(R.id.btn_signup);
         loginLink = (TextView) findViewById(R.id.link_login);
@@ -83,7 +89,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
-            onSignupFailed();
+            onSignupFailed("Invalid input");
             return;
         }
 
@@ -95,7 +101,6 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
         progressDialog.show();
 
         String username = usernameText.getText().toString();
-        String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
 
         // TODO: Implement your own signup logic here.
@@ -106,12 +111,13 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
 
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
+        session.createUserLoginSession(user_username, user_id, APIConnection.getCookies());
         setResult(RESULT_OK, null);
         finish();
     }
 
-    public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+    public void onSignupFailed(String message) {
+        Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
 
         signupButton.setEnabled(true);
     }
@@ -120,7 +126,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
         boolean valid = true;
 
         String username = usernameText.getText().toString();
-        String email = emailText.getText().toString();
+        String name = nameText.getText().toString();
         String password = passwordText.getText().toString();
 
         if (username.isEmpty() || username.length() < 3) {
@@ -130,12 +136,19 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
             usernameText.setError(null);
         }
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+        if (name.isEmpty() || name.length() < 3) {
+            nameText.setError("at least 3 characters");
+            valid = false;
+        } else {
+            nameText.setError(null);
+        }
+
+/*        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
             emailText.setError("enter a valid email address");
             valid = false;
         } else {
             emailText.setError(null);
-        }
+        }*/
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
             passwordText.setError("between 4 and 10 alphanumeric characters");
@@ -149,33 +162,23 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
 
     private void getContent(){
         String username = usernameText.getText().toString();
+        String name = nameText.getText().toString();
         String password = passwordText.getText().toString();
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("username", username));
+        nameValuePairs.add(new BasicNameValuePair("nickname", name));
+        nameValuePairs.add(new BasicNameValuePair("password", password));
+
         // the request
         try{
-        /*    HttpPost httpPost = new HttpPost(new URI(TEST_URL));
-            // Add your data
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("username", "eileen"));
-            nameValuePairs.add(new BasicNameValuePair("password", "111111"));
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            RestTask task = new RestTask(this, ACTION_FOR_INTENT_CALLBACK);
-            task.execute(httpPost); //doInBackground runs*/
-
-
-            HttpPost httpPost = new HttpPost(new URI(WebServices.getBaseUrl()+"/member/register/doregister"));
-            AsyncJsonPostTask postTask = new AsyncJsonPostTask(this);
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-            nameValuePairs.add(new BasicNameValuePair("username", username));
-            nameValuePairs.add(new BasicNameValuePair("password", password));
-            httpPost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-
-            postTask.execute(httpPost, "");
+            APIConnection.SetAsyncCaller(this, getApplicationContext());
+            APIConnection.registerUser(nameValuePairs);
 
         }
         catch (Exception e)
         {
-            Log.e(TAG, e.getMessage());
+            e.printStackTrace();
         }
 
     }
@@ -183,39 +186,34 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
 
-        progressDialog.dismiss();
-
         // clear the progress indicator
         if (progressDialog != null){
             progressDialog.dismiss();
         }
+        String response = result.toString();
 
-        HttpResponse response = (HttpResponse) result;
-        int code = response.getStatusLine().getStatusCode();
-        Log.i(TAG, "RESPONSE CODE= " + code);
-        if(code == 200){
-            onSignupSuccess();
+        JSONTokener tokener = new JSONTokener(response);
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-            // Get cookie
-            Header[] cookie = response.getHeaders("Set-Cookie");
-            for (int i=0; i < cookie.length; i++) {
-                Header h = cookie[i];
-                Log.i(TAG, "Cookie Header names: "+h.getName());
-                Log.i(TAG, "Cookie Header Value: "+h.getValue());
-            }
-            ResponseHandler<String> responseHandler = new BasicResponseHandler();
-            String responseBody = "";
-            // Response Body
-            try {
-                responseBody = responseHandler.handleResponse(response);
-            } catch (IOException e) {
-                e.printStackTrace();
+
+            if(finalResult.getString("success").equals("true")){
+
+
+                Log.i(TAG, "RESPONSE BODY= " + response);
+                // Parse session json object
+                user_username = finalResult.getString("username");
+                user_id = finalResult.getString("uid");
+                onSignupSuccess();
+
+            }else{
+                onSignupFailed(finalResult.getString("message"));
             }
 
-            Log.i(TAG, "RESPONSE BODY= " + responseBody);
-            // Parse user json object
-        }else{
-            onSignupFailed();
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
     }
 }

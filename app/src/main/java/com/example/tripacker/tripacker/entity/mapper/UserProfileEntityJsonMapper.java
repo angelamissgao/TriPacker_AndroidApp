@@ -2,24 +2,24 @@ package com.example.tripacker.tripacker.entity.mapper;
 
 import android.util.Log;
 
+import com.example.tripacker.tripacker.entity.UserEntity;
+import com.example.tripacker.tripacker.entity.UserProfileEntity;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.List;
-
-
-import com.example.tripacker.tripacker.entity.UserEntity;
 
 /**
  * Class used to transform from Strings representing json to valid objects.
  */
-public class UserEntityJsonMapper {
-    private static final String TAG = "UserEntityJsonMapper";
+public class UserProfileEntityJsonMapper {
+    private static final String TAG = "UserProfileJsMapper";
     private final Gson gson;
 
 
-    public UserEntityJsonMapper() {
+    public UserProfileEntityJsonMapper() {
         this.gson = new Gson();
     }
 
@@ -28,14 +28,12 @@ public class UserEntityJsonMapper {
      *
      * @param userJsonResponse A json representing a user profile.
      * @return {@link UserEntity}.
-     * @throws com.google.gson.JsonSyntaxException if the json string is not a valid json structure.
+     * @throws JsonSyntaxException if the json string is not a valid json structure.
      */
-    public UserEntity transformUserEntity(String userJsonResponse) throws JsonSyntaxException {
-        Log.i(TAG, "Json String= " + userJsonResponse);
+    public UserProfileEntity transformUserProfileEntity(String userJsonResponse) throws JsonSyntaxException {
+        Log.i(TAG, "" + userJsonResponse);
         try {
-            String sample = "{\"id\":4,\"gender\":0,\"grade\":0,\"tel\":\"\",\"birthday\":\"04-21-2016\",\"nickname\":\"\",\"selfie\":\"\",\"introduction\":\"\"}";
-            sample = userJsonResponse;
-            UserEntity userEntity = this.gson.fromJson(sample, UserEntity.class);
+            UserProfileEntity userEntity = this.gson.fromJson(userJsonResponse, UserProfileEntity.class);
 
             return userEntity;
         } catch (JsonSyntaxException jsonException) {
@@ -48,14 +46,14 @@ public class UserEntityJsonMapper {
      *
      * @param userListJsonResponse A json representing a collection of users.
      * @return List of {@link UserEntity}.
-     * @throws com.google.gson.JsonSyntaxException if the json string is not a valid json structure.
+     * @throws JsonSyntaxException if the json string is not a valid json structure.
      */
-    public List<UserEntity> transformUserEntityCollection(String userListJsonResponse)
+    public List<UserProfileEntity> transformUserEntityCollection(String userListJsonResponse)
             throws JsonSyntaxException {
 
-        List<UserEntity> userEntityCollection;
+        List<UserProfileEntity> userEntityCollection;
         try {
-            Type listOfUserEntityType = new TypeToken<List<UserEntity>>() {}.getType();
+            Type listOfUserEntityType = new TypeToken<List<UserProfileEntity>>() {}.getType();
             userEntityCollection = this.gson.fromJson(userListJsonResponse, listOfUserEntityType);
 
             return userEntityCollection;
