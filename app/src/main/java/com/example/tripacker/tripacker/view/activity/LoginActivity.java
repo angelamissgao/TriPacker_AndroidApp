@@ -67,6 +67,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private UserSessionManager session;
 
     private String user_username = "";
+    private String user_nickname = "";
     private String user_id = "";
 
 
@@ -161,7 +162,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
     public void onLoginSuccess() {
         // Creating user login session
-        session.createUserLoginSession(user_username, user_id, APIConnection.getCookies());
+        session.createUserLoginSession(user_username, user_nickname, user_id, APIConnection.getCookies());
         loginButton.setEnabled(true);
         finish();
     }
@@ -242,6 +243,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse session json object
                 user_username = finalResult.getString("username");
+                user_nickname = finalResult.getString("nickname");
                 user_id = finalResult.getString("uid");
                 onLoginSuccess();
 

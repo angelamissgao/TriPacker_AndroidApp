@@ -31,6 +31,9 @@ public class UserSessionManager {
     // User name (make variable public to access from outside)
     public static final String KEY_USERNAME = "username";
 
+    // User name (make variable public to access from outside)
+    public static final String KEY_NICKNAME = "nickname";
+
     // User id (make variable public to access from outside)
     public static final String KEY_UID = "uid";
 
@@ -47,12 +50,15 @@ public class UserSessionManager {
     }
 
     //Create login session
-    public void createUserLoginSession(String username, String uid, String cookies){
+    public void createUserLoginSession(String username, String nickname, String uid, String cookies){
         // Storing login value as TRUE
         editor.putBoolean(IS_USER_LOGIN, true);
 
         // Storing name in pref
         editor.putString(KEY_USERNAME, username);
+
+        editor.putString(KEY_NICKNAME, nickname);
+
 
         // Storing name in pref
         editor.putString(KEY_UID, uid);
@@ -106,6 +112,8 @@ public class UserSessionManager {
 
         // user name
         user.put(KEY_USERNAME, pref.getString(KEY_USERNAME, null));
+
+        user.put(KEY_NICKNAME, pref.getString(KEY_NICKNAME, null));
 
         // user name
         user.put(KEY_UID, pref.getString(KEY_UID, null));
