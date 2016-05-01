@@ -1,6 +1,8 @@
 package com.example.tripacker.tripacker.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -10,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -27,6 +31,7 @@ import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
+import com.example.tripacker.tripacker.view.adapter.NaviDrawerAdapter;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
@@ -62,11 +67,17 @@ public class MainActivity extends ActionBarActivity {
 
 
     //menu drawer
-    private ListView mDrawerList;
+    private RecyclerView mDrawerList;
     private DrawerLayout mDrawerLayout;
-    private ArrayAdapter<String> mAdapter;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
     private ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
+
+
+
+    private static SharedPreferences pref;
+
 
 
     //new added
@@ -99,7 +110,7 @@ public class MainActivity extends ActionBarActivity {
 //        Intent intent = new Intent(this, MainActivity.class);
 //        startActivity(intent);
 
-
+        pref = this.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
         // Define SlidingTabLayout (shown at top)
         // and ViewPager (shown at bottom) in the layout.
         // Get their instances.
@@ -135,9 +146,14 @@ public class MainActivity extends ActionBarActivity {
 
 
         // Setup the menu bar
-        mDrawerList = (ListView)findViewById(R.id.navList);
+        mDrawerList = (RecyclerView)findViewById(R.id.navList);
+        mDrawerList.setHasFixedSize(true);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
+
+
+
+
 
         addDrawerItems();
         setupDrawer();
@@ -157,15 +173,17 @@ public class MainActivity extends ActionBarActivity {
     // menu drawer
     private void addDrawerItems() {
         String[] osArray = { "Profile", "My Spot", "My Trip", "Bookmark", "Logout" };
-        mAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, osArray);
+        int ICONS[] = {R.drawable.ic_profile_normal_24dp,R.drawable.ic_place_normal_24dp,R.drawable.ic_trip_normal_24dp,R.drawable.ic_favorite_normal_24dp,R.drawable.ic_logout_normal_24dp};
+
+        mAdapter = new NaviDrawerAdapter(osArray,ICONS,pref.getString("username", null),pref.getString("username", null), R.drawable.profile_picture);
+
         mDrawerList.setAdapter(mAdapter);
 
-        mDrawerList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "Time for an upgrade!", Toast.LENGTH_SHORT).show();
-            }
-        });
+        mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
+
+        mDrawerList.setLayoutManager(mLayoutManager);
+
+
     }
 
     private void setupDrawer() {
