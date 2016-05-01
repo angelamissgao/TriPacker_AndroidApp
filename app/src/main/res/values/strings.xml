@@ -17,4 +17,16 @@
         <item>Female</item>
         <item>Male</item>
     </string-array>
+
+    <string name="country_prompt">Add One Attribute to Spot:</string>
+    <string-array name="country_arrays">
+        <item>Select One Attribute:</item>
+        <item>Category</item>
+        <item>Restaurant</item>
+        <item>Movie Theater</item>
+        <item>Historical</item>
+        <item>Museum</item>
+        <item>Others</item>
+    </string-array>
+
 </resources>

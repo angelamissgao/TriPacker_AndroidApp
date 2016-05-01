@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
-        android:paddingTop="40dp">
+        android:paddingTop="10dp">
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -63,7 +63,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
-        android:paddingTop="40dp">
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -106,7 +106,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingLeft="30dp"
-        android:paddingTop="40dp">
+        android:paddingTop="10dp">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -144,6 +144,60 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="30dp"
+        android:paddingTop="10dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_email"
+                android:gravity="center"
+                android:backgroundTint="@color/primary"
+                android:id="@+id/imageView5" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:paddingLeft="5dp"
+                android:text="Add One Attribute"
+                style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
+                android:id="@+id/attribute"
+                android:textColor="@color/primary" />
+        </LinearLayout>
+
+        <Spinner
+            android:id="@+id/spinner1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:entries="@array/country_arrays"
+            android:prompt="@string/country_prompt"
+            style="@style/Widget.AppCompat.TextView.SpinnerItem"
+            android:textColor="@color/primary"
+            android:textSize ="20sp"/>
+
+        <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Add Attribute"
+            android:textAlignment="center"
+            android:gravity="center_horizontal"
+            android:id="@+id/addSpotAttr"
+            android:textColor="@color/primary_text_disabled_material_light"/>
+
+    </LinearLayout>
+
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -151,6 +205,9 @@
         android:text="Edit Spot"
         android:id="@+id/editSpot"
         android:backgroundTint="@color/primary"
-        android:textColor="@color/secondary_text_default_material_dark" />
+        android:textColor="@android:color/background_dark"
+        android:contextClickable="false" />
+
+
 
 </LinearLayout>

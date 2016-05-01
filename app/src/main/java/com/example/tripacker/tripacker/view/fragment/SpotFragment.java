@@ -169,6 +169,10 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
                 String spotName = childJSONObject.getString("spotName");
                 String spotId = childJSONObject.getString("spotId");
 
+                if(spotName.length()==0){
+                    continue;
+                }
+
                 JSONObject spoti = new JSONObject();
                 spoti.put("name", spotName);
                 spoti.put("spotId", spotId);
