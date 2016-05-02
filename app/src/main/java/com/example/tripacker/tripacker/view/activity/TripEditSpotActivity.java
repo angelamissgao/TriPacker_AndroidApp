@@ -19,6 +19,7 @@ import android.widget.Toast;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.view.SpotListView;
+import com.example.tripacker.tripacker.view.adapter.SpotsListAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
@@ -183,8 +184,9 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
     }
 
     @Override
-    public void renderSpotList(ArrayList<SpotEntity> Spot) {
-
+    public void renderSpotList(ArrayList<SpotEntity> Spots) {
+        SpotsListAdapter adapter = new SpotsListAdapter(getApplicationContext(), Spots);
+        addSpotListView.setAdapter(adapter);
     }
 
     @Override
