@@ -75,27 +75,27 @@ public class TripActivity extends ActionBarActivity implements  AdapterView.OnIt
         try {
 
            JSONObject js_trip1 = new JSONObject();
-            js_trip1.put("name", "San Diego Trip");
+            js_trip1.put("tripName", "San Diego Trip");
             js_trip1.put("gmt_create", "04/10/2015");
             TripEntity newTrip1 = new TripEntity(js_trip1);
             js_trip1.toString();
             adapter.add(newTrip1);
 
             JSONObject js_trip2 = new JSONObject();
-            js_trip2.put("name", "SFMA");
+            js_trip2.put("tripName", "SFMA");
             js_trip2.put("gmt_create", "06/12/2015");
             TripEntity newTrip2 = new TripEntity(js_trip2);
             js_trip2.toString();
             adapter.add(newTrip2);
 
             JSONObject js_trip3 = new JSONObject();
-            js_trip3.put("name", "Stanford University");
+            js_trip3.put("tripName", "Stanford University");
             js_trip3.put("gmt_create", "08/12/2015");
             TripEntity newTrip3 = new TripEntity(js_trip3);
             adapter.add(newTrip3);
 
             JSONObject js_trip4 = new JSONObject();
-            js_trip4.put("name", "NASA Research Park");
+            js_trip4.put("tripName", "NASA Research Park");
             js_trip4.put("gmt_create", "12/12/2015");
             TripEntity newTrip4 = new TripEntity(js_trip4);
             adapter.add(newTrip4);

@@ -63,7 +63,7 @@ public class TripEntity implements Serializable {
         super();
 
         try {
-            this.name = object.getString("name");
+            this.name = object.getString("tripName");
      /*       this.owner = object.getString("owner");
             this.cover_photo = object.getString("cover_photo");
             this.tip = object.getString("tip");

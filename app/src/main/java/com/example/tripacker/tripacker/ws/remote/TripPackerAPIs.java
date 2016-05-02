@@ -1,6 +1,10 @@
 package com.example.tripacker.tripacker.ws.remote;
 
 
+import org.apache.http.NameValuePair;
+
+import java.util.List;
+
 public class TripPackerAPIs {
 
     final static String API_BASE_URL = WebServices.getBaseUrl();
@@ -50,11 +54,39 @@ public class TripPackerAPIs {
         return API_BASE_URL+"/trip/"+trip_id;
     }
 
-    public static String getTripsByRate() { return  API_BASE_URL+"/trip/getByRate";}
+    public static String getTripsByRate(List<NameValuePair> params) {
+        String url =  API_BASE_URL+"/trip/getByRate";
+        if(params.size()!=0){
+            url += "?";
+            for(int i = 0; i < params.size(); i++){
+                url += params.get(i).getName();
+                url += "=";
+                url += params.get(i).getValue();
+                if(i != params.size()-1){
+                    url += "&";
+                }
+            }
+        }
+        return url;
+    }
 
     // Get Spot
 
-    public static String getSpotsList(String id) {return API_BASE_URL + "/spot/getByCity/" + id;}
+    public static String getSpotsList(String id, List<NameValuePair> params) {
+        String url =  API_BASE_URL + "/spot/getByCity/" + id;
+        if(params.size()!=0){
+            url += "?";
+            for(int i = 0; i < params.size(); i++){
+                url += params.get(i).getName();
+                url += "=";
+                url += params.get(i).getValue();
+                if(i != params.size()-1){
+                    url += "&";
+                }
+            }
+        }
+        return url;
+    }
 
     public static String createSpot() {return API_BASE_URL + "/spot/create";}
 

@@ -24,7 +24,7 @@ public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnC
     public TripViewHolders(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
-        tripName = (TextView) itemView.findViewById(R.id.trip_name);
+        tripName = (TextView) itemView.findViewById(R.id.trip_name_trips);
         tripCoverPhoto = (ImageView) itemView.findViewById(R.id.trip_cover_photo);
         context = itemView.getContext();
     }

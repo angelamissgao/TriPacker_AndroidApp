@@ -42,10 +42,7 @@ public class TripRecyclerViewAdapter  extends RecyclerView.Adapter<TripViewHolde
      //       layoutParams.setFullSpan(true);
 
         holder.tripName.setText(tripList.get(position).getName());
-        holder.tripCoverPhoto.setImageResource(tripList.get(position).getCover_photo_id());
-
-
-
+//        holder.tripCoverPhoto.setImageResource(tripList.get(position).getCover_photo_id());
     }
 
     @Override
