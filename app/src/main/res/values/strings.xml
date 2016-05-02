@@ -10,6 +10,7 @@
     <string name="title_activity_trip_view">Trip View</string>
     <string name="title_activity_trip">My Trip</string>
     <string name="title_activity_trip_edit_view">Edit Trip</string>
+    <string name="title_activity_trip_edit_spot">Add Spot to Trip</string>
     <string name="title_activity_view_following_view">FOLLOWING</string>
     <string name="title_activity_view_follower_view">FOLLOWER</string>
     <string name="title_activity_search_results">Result</string>
