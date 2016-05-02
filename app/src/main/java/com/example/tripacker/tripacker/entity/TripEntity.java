@@ -12,7 +12,7 @@ import java.util.ArrayList;
 /**
  * Created by EILEENWEI on 4/13/16.
  */
-public class TripEntity implements Serializable{
+public class TripEntity implements Serializable {
     @SerializedName("name")
     String name;
     @SerializedName("owner")

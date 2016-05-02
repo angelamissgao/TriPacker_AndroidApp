@@ -85,8 +85,8 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
         //Get Trip
         tripEntity = (TripEntity) getArguments().getSerializable("trip_info");
-        Log.e("Get BUNDEL in map spots--->", String.valueOf(tripEntity.getSpots()));
-        Log.e("Get Bundel trip Name in map--->", tripEntity.getName());
+        Log.i( TAG + "Get BUNDEL in map spots--->", String.valueOf(tripEntity.getSpots()));
+        Log.i( TAG + "Get Bundel trip Name in map--->", tripEntity.getName());
         spotsOfTrip = tripEntity.getSpots();
 
         //Views with data
@@ -118,9 +118,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
         //Maker
         MarkerOptions options = new MarkerOptions();
-//        options.position(Spot1_GPS);
-//        options.position(Spot2_GPS);
-//        options.position(Spot3_GPS);
+        spotsGPS.clear();
         for(int i = 0; i < spotsOfTrip.size(); i++) {
             LatLng spot_GPS = new LatLng(Double.parseDouble(spotsOfTrip.get(i).getGeo_latitude()),
                     Double.parseDouble(spotsOfTrip.get(i).getGeo_longitude()));
@@ -137,8 +135,6 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spotsGPS.get(0),
                 13));
         addMarkers();
-
-        //Locations
 
         return view;
     }
@@ -299,7 +295,6 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
                 // Get estimated time duration
                 JSONArray legs = ((JSONObject) (jObject.getJSONArray("routes").get(0))).getJSONArray("legs");
                 String time = ((JSONObject)legs.get(0)).getJSONObject("duration").getString("text");
-                Log.e("duration------>", time);
                 tripEntity.setEstimateDuration(time);
 
                 PathJSONParser parser = new PathJSONParser();
@@ -342,7 +337,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
             durationShow.setText(tripEntity.getDuration());
 
             googleMap.addPolyline(polyLineOptions);
-            Log.e("PolylnAddedToMap --->",polyLineOptions.toString());
+            Log.i( TAG +"PolylnAddedToMap --->",polyLineOptions.toString());
         }
     }
 

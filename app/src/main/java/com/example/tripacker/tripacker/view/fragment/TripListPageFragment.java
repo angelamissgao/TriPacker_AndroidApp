@@ -25,6 +25,7 @@ import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.view.activity.TripCreateActivity;
+import com.example.tripacker.tripacker.view.activity.TripEditSpotActivity;
 import com.example.tripacker.tripacker.view.adapter.TripSpotTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
@@ -46,7 +47,7 @@ import java.util.List;
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class TripListPageFragment extends Fragment implements AsyncCaller, SpotListView {
+public class TripListPageFragment extends Fragment implements SpotListView {
     private static final String TAG = "TripListPageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -64,6 +65,7 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
 
     //TripEntity
     private TripEntity tripEntity;
+    ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,12 +78,8 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         View view = inflater.inflate(R.layout.trip_list_fragment, container, false);
 
         //Get Trip
-        TripEntity tripEntiry = (TripEntity) getArguments().getSerializable("trip_info");
-        Log.e("Get BUNDEL in List ---->", tripEntiry.getName());
-        Log.e("Get BUNDEL in List id---->", String.valueOf(tripEntiry.getTrip_id()));
-        Log.e("Get BUNDEL in List spots--->", String.valueOf(tripEntiry.getSpots()));
-
-
+        tripEntity = (TripEntity) getArguments().getSerializable("trip_info");
+        spotsOfTrip = tripEntity.getSpots();
 
         //get setSpotID
 
@@ -90,7 +88,7 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
 
         setUpViewById(view);
 
-        renderSpotList(null);
+        renderSpotList(spotsOfTrip);
 
         //Set a linearLayout to add buttons
         LinearLayout linearLayout = new LinearLayout(getActivity());
@@ -113,7 +111,6 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         Log.e(TAG, "-------> " + pref.getString("name", null));
         Log.e(TAG, "-------> " + pref.getString("cookies", null));
 
-     //   getContent();
 
 
         // Or even append an entire new collection
@@ -127,80 +124,27 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         //Add Spots to Trip by ownerID
         FloatingActionsMenu TripModifiation = (FloatingActionsMenu) view.findViewById(R.id.tripModify);
         FloatingActionButton ButtonAddTrip = (FloatingActionButton) view.findViewById(R.id.AddSpotInTrip);
-        TripModifiation.setVisibility(View.INVISIBLE);
-//        ButtonAddTrip.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent mainInten = new Intent(getActivity(), TripCreateActivity.class);
-//                ArrayList<String> spot_info = new ArrayList<String>();
-//                //Todo: added spot json
-//                spot_info.add("user_id");
-//                Bundle bundle = new Bundle();
-//                bundle.putStringArrayList("user_id", spot_info);
-//                mainInten.putExtras(bundle);
-//
-//                startActivity(mainInten);
-//            }
-//        });
+//        TripModifiation.setVisibility(View.INVISIBLE);
+        ButtonAddTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getActivity(), TripEditSpotActivity.class);
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("user_id");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("user_id", spot_info);
+                mainInten.putExtras(bundle);
+
+                startActivity(mainInten);
+            }
+        });
 
         return view;
     }
 
     private void setUpViewById(View view){
         trip_spotlistView = (ListView) view.findViewById(R.id.tripspotlistview);
-    }
-
-    private void getContent(){
-        showLoading();
-        Log.e("Get All spots of a trip", "-------> Get Content");
-
-
-        // the request
-        try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
-            APIConnection.SetAsyncCaller(this, thiscontext);
-
-            APIConnection.getUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
-
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
-
-    }
-
-
-    @Override
-    public void onBackgroundTaskCompleted(int requestCode, Object result) {
-
-        String response = result.toString();
-
-        JSONTokener tokener = new JSONTokener(response);
-        try {
-            JSONObject finalResult = new JSONObject(tokener);
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
-            Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
-
-
-            if(finalResult.getString("success").equals("true")){
-                hideLoading();
-
-                Log.i(TAG, "RESPONSE BODY= " + response);
-                // Parse user json object
-                UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
-                Log.i(TAG, "User Info= " + user.toString());
-                //renderUser(user);
-
-            }else{
-
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -217,38 +161,8 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
 
     @Override
     public void renderSpotList(ArrayList<SpotEntity> Spots) {
-        // Construct the data source
-        ArrayList<SpotEntity> arrayOfSpots = new ArrayList<SpotEntity>();
-        // Create the adapter to convert the array to views
-        TripSpotTimelineAdapter adapter = new TripSpotTimelineAdapter(thiscontext, arrayOfSpots);
-        // Attach the adapter to a ListView
+        TripSpotTimelineAdapter adapter = new TripSpotTimelineAdapter(thiscontext, Spots);
         trip_spotlistView.setAdapter(adapter);
-
-
-        // Add item to adapter
-
-        try {
-
-           JSONObject js_spot1 = new JSONObject();
-            js_spot1.put("name", "Stanford University");
-            js_spot1.put("city_id", "Palo Alto, CA");
-            js_spot1.put("gmt_create", "04/10/2015");
-            SpotEntity newSpot1 = new SpotEntity(js_spot1);
-            adapter.add(newSpot1);
-
-            JSONObject js_spot2 = new JSONObject();
-            js_spot2.put("name", "Stanford Shopping Mall");
-            js_spot2.put("city_id", "Palo Alto, CA");
-            js_spot2.put("gmt_create", "04/10/2015");
-            SpotEntity newSpot2 = new SpotEntity(js_spot2);
-            adapter.add(newSpot2);
-
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
     }
 
 

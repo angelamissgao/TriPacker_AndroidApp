@@ -4,11 +4,13 @@ import com.google.gson.annotations.SerializedName;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * User Entity used in the data layer.
  */
 
-public class UserEntity {
+public class UserEntity implements Serializable {
 
 
     @SerializedName("uid")

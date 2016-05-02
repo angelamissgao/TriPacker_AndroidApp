@@ -7,12 +7,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by EILEENWEI on 4/13/16.
  */
-public class SpotEntity {
+public class SpotEntity implements Serializable {
 
     @SerializedName("name")
     String name;
