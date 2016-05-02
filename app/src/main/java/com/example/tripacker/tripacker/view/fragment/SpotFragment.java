@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -23,7 +22,7 @@ import com.example.tripacker.tripacker.presenter.SpotListPresenter;
 import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
-import com.example.tripacker.tripacker.view.adapter.SpotsTimelineAdapter;
+import com.example.tripacker.tripacker.view.adapter.SpotsGridViewAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
@@ -213,7 +212,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
     @Override
     public void renderSpotList(ArrayList<SpotEntity> Spots) {
-        SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, Spots);
+        SpotsGridViewAdapter gridAdapter = new SpotsGridViewAdapter(thiscontext, Spots);
         gridView.setAdapter(gridAdapter);
     }
 

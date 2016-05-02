@@ -17,9 +17,9 @@ import java.util.ArrayList;
 /**
  * Created by angelagao on 4/11/16.
  */
-public class SpotsTimelineAdapter extends ArrayAdapter<SpotEntity> {
+public class SpotsGridViewAdapter extends ArrayAdapter<SpotEntity> {
 
-    public SpotsTimelineAdapter(Context context, ArrayList<SpotEntity> spots) {
+    public SpotsGridViewAdapter(Context context, ArrayList<SpotEntity> spots) {
         super(context, 0, spots);
     }
 

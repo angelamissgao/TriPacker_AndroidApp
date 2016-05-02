@@ -81,17 +81,18 @@ public class TripListPageFragment extends Fragment implements SpotListView {
         tripEntity = (TripEntity) getArguments().getSerializable("trip_info");
         spotsOfTrip = tripEntity.getSpots();
 
-        //get setSpotID
-
-
+        //get user ID
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
+        // Set Up List View
         setUpViewById(view);
 
+        // Render data to view
         renderSpotList(spotsOfTrip);
 
         //Set a linearLayout to add buttons
         LinearLayout linearLayout = new LinearLayout(getActivity());
+
         // Set the layout full width, full height
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         linearLayout.setLayoutParams(params);

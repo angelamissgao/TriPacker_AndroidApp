@@ -13,14 +13,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.SpotEntity;
+import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,13 +35,23 @@ import java.util.List;
 /**
  * Created by angelagao on 4/29/16.
  */
-public class TripEditSpotActivity extends AppCompatActivity implements AsyncCaller {
+public class TripEditSpotActivity extends AppCompatActivity implements SpotListView, AsyncCaller {
 
     String TAG = "TripEditSpotActivity";
     //View Element
     EditText tripNameInput;
     EditText beginDateInput;
     EditText endDateInput;
+    private ListView addSpotListView;
+    private ArrayList<SpotEntity> arrayOfSpots = new ArrayList<>();
+
+    private Integer[] imagesource = {
+            R.drawable.paris,
+            R.drawable.thai_temple,
+            R.drawable.new_zealand,
+            R.drawable.sf_night,
+            R.drawable.sf_museum
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +65,12 @@ public class TripEditSpotActivity extends AppCompatActivity implements AsyncCall
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
+
+        // Set Up List View
+        addSpotListView = (ListView) findViewById(R.id.addSpotListView);
+
+        //HTTP GET requests
+        getContent();
 
 
     }
@@ -104,37 +127,93 @@ public class TripEditSpotActivity extends AppCompatActivity implements AsyncCall
         return true;
     }
 
-    private void getContent(){
-        //showLoading();
-        Log.e("Get User Profile", "-------> Get Content");
+    private void getContent() {
+        // Http Call
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        String cityId = "1";
+        String pageId = "1";
+        String pageSize = "30";
 
+        nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
+        nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
 
-        // the request
         try{
+            APIConnection.SetAsyncCaller(this, getApplicationContext());
 
-            //APIConnection.SetAsyncCaller(this, thiscontext);
+            APIConnection.getSpotsList(cityId, nameValuePairs);
 
-            //APIConnection.getUserPublicProfile(Integer.parseInt(pref.getString("uid", null).trim()), null);
-
+        } catch (Exception e) {
+            Log.e("getSpots", e.toString());
+            e.printStackTrace();
         }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
-
     }
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
+        arrayOfSpots.clear();
         String  response = result.toString();
-//        JSONTokener tokener = new JSONTokener(response);
+        JSONTokener tokener = new JSONTokener(response);
+        Log.e( TAG + "Get All Spots to Add to Trip ----->", response);
 
         try {
-//            JSONObject finalResult = new JSONObject(tokener);
-            Log.e("Trip Post result------>", response);
-            Toast.makeText(getApplicationContext(), "create spots success", Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
+            JSONObject finalResult = new JSONObject(tokener);
+            JSONArray Spots = finalResult.getJSONArray("spotList");
+            for (int i = 0; i < Spots.length(); i++) {  // **line 2**
+                JSONObject childJSONObject = Spots.getJSONObject(i);
+                if(childJSONObject.getString("spotName").length() == 0) {
+                    continue;
+                }
+                SpotEntity spotEntity = new SpotEntity(childJSONObject);
+
+                //get image
+                int postion = (int)(Math.random() * imagesource.length);
+                int img_main = imagesource[postion];
+                spotEntity.setImage_source_local(img_main);
+
+                //add Spot Entity to array
+                arrayOfSpots.add(spotEntity);
+                renderSpotList(arrayOfSpots);
+
+            }
+
+            Toast.makeText(getApplicationContext(), "Get spots success", Toast.LENGTH_LONG).show();
+        } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void renderSpotList(ArrayList<SpotEntity> Spot) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void showRetry() {
+
+    }
+
+    @Override
+    public void hideRetry() {
+
+    }
+
+    @Override
+    public void showError(String message) {
+
+    }
+
+    @Override
+    public Context context() {
+        return null;
     }
 }
