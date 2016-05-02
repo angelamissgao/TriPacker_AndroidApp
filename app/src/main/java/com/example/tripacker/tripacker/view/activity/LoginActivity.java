@@ -93,7 +93,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
 
         // User Session Manager
-        session = new UserSessionManager(getApplicationContext());
+        //session = new UserSessionManager(getApplicationContext());
+        session = UserSessionManager.getSingleInstance(getApplicationContext());
+
 
 //        ButterKnife.inject(this);
 

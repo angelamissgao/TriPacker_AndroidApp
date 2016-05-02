@@ -10,6 +10,8 @@ import android.content.SharedPreferences.Editor;
 import com.example.tripacker.tripacker.view.activity.LoginActivity;
 
 public class UserSessionManager {
+
+    private static UserSessionManager singleInstance;
     // Shared Preferences reference
     SharedPreferences pref;
 
@@ -47,6 +49,13 @@ public class UserSessionManager {
         this._context = context;
         pref = _context.getSharedPreferences(PREFER_NAME, PRIVATE_MODE);
         editor = pref.edit();
+    }
+
+    public static UserSessionManager getSingleInstance(Context context) {
+        if (singleInstance == null) {
+            singleInstance = new UserSessionManager(context);
+        }
+        return singleInstance;
     }
 
     //Create login session

@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.view.activity.MainActivity;
 import com.example.tripacker.tripacker.view.activity.TripActivity;
 import com.example.tripacker.tripacker.view.activity.ViewFollowingActivity;
@@ -89,6 +90,12 @@ public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCust
                     Intent tripIntent = new Intent(context, TripActivity.class);
                     context.startActivity(tripIntent);
                     break;
+                case 4:
+
+                    break;
+                case 5:
+                    logout();
+                    break;
             }
         }
     }
@@ -157,6 +164,11 @@ public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCust
     public int getItemViewType(int position) {
         if(position==0)return 0;
         else return 1;
+    }
+
+    public void logout(){
+        Log.e("Log out ->", " Now log out and start the activity login");
+        UserSessionManager.getSingleInstance(context).logoutUser();
     }
 
 

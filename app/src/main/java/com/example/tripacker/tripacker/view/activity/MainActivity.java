@@ -27,6 +27,7 @@ import android.widget.ListView;
 
 import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.view.adapter.DrawerItemCustomAdapter;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
@@ -73,8 +74,6 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-
-
     private static SharedPreferences pref;
 
     //new added
@@ -97,15 +96,16 @@ public class MainActivity extends ActionBarActivity {
         WebServices.setURL(TEST_URL);
 
 
-//         start login activity
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
+//      start login activity
+//        if(UserSessionManager.getSingleInstance(this).isUserLoggedIn()){
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
+//        }
+        UserSessionManager.getSingleInstance(this).checkLogin();
 
-//        //test
-//        Intent intent = new Intent(this, MainActivity.class);
-//        startActivity(intent);
 
-        pref = this.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
+
+        //pref = this.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
         // Define SlidingTabLayout (shown at top)
         // and ViewPager (shown at bottom) in the layout.
         // Get their instances.
@@ -209,47 +209,7 @@ public class MainActivity extends ActionBarActivity {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectItem(position);
-        }
-
-    }
-
-    private void selectItem(int position) {
-
-        Fragment fragment = null;
-        Log.e("Navi ", "->" +position);
-        switch (position) {
-            case 0:
-                //fragment = new ConnectFragment();
-                break;
-            case 1:
-               // fragment = new FixturesFragment();
-                break;
-            case 2:
-               // fragment = new TableFragment();
-                break;
-
-            default:
-                break;
-        }
-
-        if (fragment != null) {
- /*           FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-            mDrawerList.setItemChecked(position, true);
-            mDrawerList.setSelection(position);
-            setTitle(mNavigationDrawerItemTitles[position]);
-            mDrawerLayout.closeDrawer(mDrawerList);*/
-
-        } else {
-            Log.e("MainActivity", "Error in creating fragment");
-        }
-    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -297,6 +257,8 @@ public class MainActivity extends ActionBarActivity {
         public ImageView mIcon;
 
     }
+
+
 
 
 
