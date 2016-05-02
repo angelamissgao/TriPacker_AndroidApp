@@ -110,6 +110,8 @@ public class TripListPageFragment extends Fragment implements SpotListView {
 
         Log.e(TAG, "-------> " + pref.getString("name", null));
         Log.e(TAG, "-------> " + pref.getString("cookies", null));
+        pref.getString("uid", null);
+        Log.e(TAG + " sess", "->" + pref.getString("uid", null));
 
 
 
@@ -124,7 +126,13 @@ public class TripListPageFragment extends Fragment implements SpotListView {
         //Add Spots to Trip by ownerID
         FloatingActionsMenu TripModifiation = (FloatingActionsMenu) view.findViewById(R.id.tripModify);
         FloatingActionButton ButtonAddTrip = (FloatingActionButton) view.findViewById(R.id.AddSpotInTrip);
-//        TripModifiation.setVisibility(View.INVISIBLE);
+
+        // Set Visibility of THe menu;
+        if(Integer.parseInt(pref.getString("uid", null)) == tripEntity.getOwnerId()){
+            TripModifiation.setVisibility(View.VISIBLE);
+        } else {
+            TripModifiation.setVisibility(View.INVISIBLE);
+        }
         ButtonAddTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
