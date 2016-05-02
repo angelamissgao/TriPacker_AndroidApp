@@ -55,7 +55,7 @@ android:layout_height="match_parent">
                 android:text="San Francisco"
                 android:textAlignment="center"
                 android:gravity="center_horizontal"
-                android:id="@+id/spotName_show" />
+                android:id="@+id/tripName_show" />
 
         </LinearLayout>
 
@@ -98,7 +98,7 @@ android:layout_height="match_parent">
                 android:text="Spot1"
                 android:textAlignment="center"
                 android:gravity="center_horizontal"
-                android:id="@+id/spot1_show" />
+                android:id="@+id/spotOfTrip1" />
             <TextView
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

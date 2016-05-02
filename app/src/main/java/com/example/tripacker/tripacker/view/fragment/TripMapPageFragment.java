@@ -22,11 +22,8 @@ import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.PathJSONParser;
-import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
-import com.example.tripacker.tripacker.ws.remote.APIConnection;
-import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.PathHttpConnection;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -36,12 +33,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.squareup.picasso.Picasso;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -67,19 +60,17 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
     private ListView trip_listView;
     private ImageView editProfileButton;
     private TextView durationShow;
+    private TextView tripName;
+    private TextView spotOfTrip;
 
     // Google Map
     GoogleMap googleMap;
-    private static final LatLng Spot1_GPS = new LatLng(37.4219999,
-            -122.0840575);
-    private static final LatLng Spot2_GPS = new LatLng(37.41043, -122.059753);
-    private static final LatLng Spot3_GPS = new LatLng(37.4852152, -122.059753);
 
     private static final ArrayList<LatLng> spotsGPS = new ArrayList<>();
 
-    //TripModel
-    TripEntity tripEntity = new TripEntity();
-    ArrayList<SpotEntity> SpotsOfTrip = new ArrayList<>();
+    //Trip and Spots Model
+    private TripEntity tripEntity;
+    private ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,15 +84,16 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         View view = inflater.inflate(R.layout.trip_map_fragment, container, false);
 
         //Get Trip
-        TripEntity tripEntiry = (TripEntity) getArguments().getSerializable("trip_info");
-        Log.e("Get BUNDEL in map spots--->", String.valueOf(tripEntiry.getSpots()));
-        SpotsOfTrip = tripEntiry.getSpots();
+        tripEntity = (TripEntity) getArguments().getSerializable("trip_info");
+        Log.e("Get BUNDEL in map spots--->", String.valueOf(tripEntity.getSpots()));
+        Log.e("Get Bundel trip Name in map--->", tripEntity.getName());
+        spotsOfTrip = tripEntity.getSpots();
 
-        //Example of get Spot geo
-        SpotEntity spot1 = SpotsOfTrip.get(0);
-        Log.e("Get spot in map Frag spots--->", spot1.toString());
-        String spot1_latitude = SpotsOfTrip.get(0).getGeo_latitude();
-        Log.e("Get BUNDEL LAT in map spots--->", spot1.getGeo_latitude());
+        //Views with data
+        tripName = (TextView) view.findViewById(R.id.tripName_show);
+        tripName.setText(tripEntity.getName());
+        spotOfTrip = (TextView) view.findViewById(R.id.spotOfTrip1);
+        spotOfTrip.setText(spotsOfTrip.get(0).getName());
 
         //get User preference
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
@@ -129,9 +121,9 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 //        options.position(Spot1_GPS);
 //        options.position(Spot2_GPS);
 //        options.position(Spot3_GPS);
-        for(int i = 0; i < SpotsOfTrip.size(); i++) {
-            LatLng spot_GPS = new LatLng(Double.parseDouble(SpotsOfTrip.get(i).getGeo_latitude()),
-                    Double.parseDouble(SpotsOfTrip.get(i).getGeo_longitude()));
+        for(int i = 0; i < spotsOfTrip.size(); i++) {
+            LatLng spot_GPS = new LatLng(Double.parseDouble(spotsOfTrip.get(i).getGeo_latitude()),
+                    Double.parseDouble(spotsOfTrip.get(i).getGeo_longitude()));
             options.position(spot_GPS);
             spotsGPS.add(spot_GPS);
         }
@@ -229,25 +221,30 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
     //Google Maps
     private String getMapsApiDirectionsUrl() {
-        String waypoints = "waypoints=optimize:true|"
-                + Spot1_GPS.latitude + "," + Spot1_GPS.longitude
-                + "|" + "|" + Spot2_GPS.latitude + ","
-                + Spot2_GPS.longitude + "|" + Spot3_GPS.latitude + ","
-                + Spot3_GPS.longitude;
 
         String output = "json";
         String key = "AIzaSyC25VtN-MdlR24RTttecKVurefMWiKoubU";
         String base_url = "https://maps.googleapis.com/maps/api/directions/";
 
-        String origin_lat = "37.4219999";
-        String origin_long = "-122.0840575";
+        String origin_lat = spotsOfTrip.get(0).getGeo_latitude();
+        String origin_long = spotsOfTrip.get(0).getGeo_longitude();
         String origin_url = origin_lat + "%2C" + origin_long;
 
-        String destination_lat = "37.41043";
-        String destination_long = "-122.059753";
+        String destination_lat =  spotsOfTrip.get(spotsOfTrip.size()-1).getGeo_latitude();
+        String destination_long = spotsOfTrip.get(spotsOfTrip.size()-1).getGeo_longitude();
         String destination_url = destination_lat + "%2C" + destination_long;
 
-        String waypoints_url = "via:37.4852152%2C-122.2363548" + "%7C" + "via:37.4852151%2C-122.2363547";
+        String waypoints_url = new String();
+        for(int i = 1; i < spotsOfTrip.size() - 1; i++ ) {
+            waypoints_url += "via:";
+            waypoints_url += spotsOfTrip.get(i).getGeo_latitude();
+            waypoints_url += "%2C";
+            waypoints_url += spotsOfTrip.get(i).getGeo_longitude();
+            if(i != spotsOfTrip.size() - 2 ) {
+                waypoints_url += "%7C";
+            }
+        }
+//        String waypoints_url = "via:37.4852152%2C-122.2363548" + "%7C" + "via:37.4852151%2C-122.2363547";
 
         String url = base_url + output + "?" +
                 "origin="+ origin_url + "&" +
@@ -261,12 +258,8 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         if (googleMap != null) {
             for(int i = 0; i < spotsGPS.size(); i++){
                 googleMap.addMarker(new MarkerOptions().position(spotsGPS.get(i))
-                        .title(SpotsOfTrip.get(i).getName()));
+                        .title(spotsOfTrip.get(i).getName()));
             }
-//            googleMap.addMarker(new MarkerOptions().position(Spot1_GPS)
-//                    .title("Second Point"));
-//            googleMap.addMarker(new MarkerOptions().position(Spot3_GPS)
-//                    .title("Third Point"));
         }
     }
 
