@@ -133,7 +133,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         String cityId = "1";
         String pageId = "1";
-        String pageSize = "12";
+        String pageSize = "30";
 
         nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
         nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
@@ -165,19 +165,11 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             JSONArray Spots = finalResult.getJSONArray("spotList");
             for (int i = 0; i < Spots.length(); i++) {  // **line 2**
                 JSONObject childJSONObject = Spots.getJSONObject(i);
-
-//                String spotName = childJSONObject.getString("spotName");
-//                String spotId = childJSONObject.getString("spotId");
-//
-//                if(spotName.length()==0){
-//                    continue;
-//                }
-//
-//                JSONObject spoti = new JSONObject();
-//                spoti.put("spotName", spotName);
-//                spoti.put("spotId", spotId);
-
+                if(childJSONObject.getString("spotName").length() == 0) {
+                    continue;
+                }
                 SpotEntity spotEntity = new SpotEntity(childJSONObject);
+
                 //get image
                 int postion = (int)(Math.random() * imagesource.length);
                 int img_main = imagesource[postion];
@@ -185,13 +177,9 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
                 //add Spot Entity to array
                 arrayOfSpots.add(spotEntity);
+                renderSpotList(arrayOfSpots);
 
             }
-
-            GridView gridView = (GridView) getView().findViewById(R.id.gridView_spot);
-            SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, arrayOfSpots);
-            gridView.setAdapter(gridAdapter);
-
 
             Toast.makeText(getContext(), "Get spots success", Toast.LENGTH_LONG).show();
         } catch (JSONException e) {
@@ -224,8 +212,9 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
 
     @Override
-    public void renderSpotList(ArrayList<SpotEntity> Spot) {
-
+    public void renderSpotList(ArrayList<SpotEntity> Spots) {
+        SpotsTimelineAdapter gridAdapter = new SpotsTimelineAdapter(thiscontext, Spots);
+        gridView.setAdapter(gridAdapter);
     }
 
     @Override
