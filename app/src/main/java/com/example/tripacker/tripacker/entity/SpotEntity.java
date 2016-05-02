@@ -57,12 +57,16 @@ public class SpotEntity {
         super();
 
         try {
-            this.name = object.getString("name");
+            this.name = object.getString("spotName");
             this.spotId = object.getString("spotId");
 //            this.category_id = object.getString("category_id");
 //            this.city_id = object.getString("city_id");
-//            this.geo_latitude = object.getString("geo_latitude");
-//            this.geo_longitude = object.getString("geo_longitude");
+            if(object.has("geoLatitude")) {
+                this.geo_latitude = object.getString("geoLatitude");
+            }
+            if(object.has("geoLongitude")){
+                this.geo_longitude = object.getString("geoLongitude");
+            }
 //            this.image_main = object.getString("image_main");
 //            this.image_rest = object.getString("image_rest");
 //            this.status = object.getString("status");

@@ -33,6 +33,16 @@ public class TripEntity implements Serializable{
     String gmt_modified;
     @SerializedName("duration")
     String duration;
+    @SerializedName("trip_id")
+    int trip_id;
+    @SerializedName("beginDate")
+    String beginDate;
+    @SerializedName("endDate")
+    String endDate;
+    @SerializedName("ownerId")
+    int ownerId;
+    @SerializedName("spots")
+    ArrayList<SpotEntity> spots;
 
 
     // Make sure to always define this constructor with no arguments
@@ -111,16 +121,26 @@ public class TripEntity implements Serializable{
         return gmt_modified;
     }
     public String getDuration() { return duration;}
+    public int getTrip_id() { return trip_id; }
+    public String getBeginDate() { return beginDate; }
+    public String getEndDate() { return endDate;}
+    public int getOwnerId() { return ownerId; }
+    public ArrayList<SpotEntity> getSpots() { return spots; }
 
     // Setters
     public void setName(String name) {
         this.name = name;
     }
     public void setEstimateDuration(String time) {this.duration = time; }
+    public void setTrip_id(int id) {this.trip_id = id;}
     public void setCover_photo(String cover_photo) {this.cover_photo = cover_photo;}
     public void SetGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;
     }
+    public void setBeginDate(String beginDate) {this.beginDate = beginDate;}
+    public void setEndDate(String endDate) {this.endDate = endDate;}
+    public void setOwnerId(int ownerId) { this.ownerId = ownerId;}
+    public void setSpots(ArrayList<SpotEntity> spots) {this.spots = spots; }
 
     @Override
     public String toString() {

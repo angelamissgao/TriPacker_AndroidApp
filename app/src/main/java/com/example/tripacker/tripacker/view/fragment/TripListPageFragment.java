@@ -76,8 +76,11 @@ public class TripListPageFragment extends Fragment implements AsyncCaller, SpotL
         View view = inflater.inflate(R.layout.trip_list_fragment, container, false);
 
         //Get Trip
-        TripEntity bundle = (TripEntity) getArguments().getSerializable("trip_info");
-        Log.e("Get BUNDEL ---->", bundle.getName());
+        TripEntity tripEntiry = (TripEntity) getArguments().getSerializable("trip_info");
+        Log.e("Get BUNDEL in List ---->", tripEntiry.getName());
+        Log.e("Get BUNDEL in List id---->", String.valueOf(tripEntiry.getTrip_id()));
+        Log.e("Get BUNDEL in List spots--->", String.valueOf(tripEntiry.getSpots()));
+
 
 
         //get setSpotID

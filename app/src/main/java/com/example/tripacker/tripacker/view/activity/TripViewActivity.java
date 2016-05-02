@@ -27,6 +27,7 @@ import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.PageAdapter;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.TripTabsViewPagerAdapter;
+import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
 import com.example.tripacker.tripacker.view.fragment.ExploreFragment;
@@ -41,6 +42,7 @@ import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import org.apache.http.NameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -85,14 +87,6 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         //Http Request to get Trip details with TripID
         getContent(2);
 
-        // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
-        // and ViewPager (different pages of fragment) together.
-        myViewPageAdapter =new TripTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
-        viewPager.setAdapter(myViewPageAdapter);
-        slidingTabLayout.setCustomTabView(R.layout.custom_tab_tripiew, R.id.title, R.id.icon);
-        // make sure the tabs are equally spaced.
-        slidingTabLayout.setDistributeEvenly(true);
-        slidingTabLayout.setViewPager(viewPager);
 
     }
 
@@ -158,7 +152,6 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         return super.onOptionsItemSelected(item);
     }
 
-
     private class TabViewHolder {
         public ImageView mIcon;
 
@@ -170,23 +163,53 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         String response = result.toString();
 
         JSONTokener tokener = new JSONTokener(response);
+
         try {
             JSONObject finalResult = new JSONObject(tokener);
-            Log.e("Get Trip detail in Map------>",response);
+            String trip_name = finalResult.getString("tripName");
+            String trip_id = finalResult.getString("tripId");
+            String trip_beginDate = finalResult.getString("beginDate");
+            String trip_endDate = finalResult.getString("endDate");
+            String trip_ownerId = finalResult.getString("ownerId");
 
+            JSONArray Spots = finalResult.getJSONArray("spots");
+            ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
+            for (int i = 0; i < Spots.length(); i++) {
+                JSONObject spoti = Spots.getJSONObject(i);
+                SpotEntity spotEntity = new SpotEntity(spoti);
+                spotsOfTrip.add(spotEntity);
+            }
+
+            trip_info.setName(trip_name);
+            trip_info.setTrip_id(Integer.parseInt(trip_id));
+            trip_info.setBeginDate(trip_beginDate);
+            trip_info.setEndDate(trip_endDate);
+            trip_info.setOwnerId(Integer.parseInt(trip_ownerId));
+            trip_info.setSpots(spotsOfTrip);
+
+            Log.e("Get Trip detail------>",response);
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         //send data with intent to Fragments
-        trip_info.setName("Trip1inSF");
         Bundle bundle = new Bundle();
         bundle.putSerializable("trip_info", trip_info);
         list_frag.setArguments(bundle);
         map_frag.setArguments(bundle);
         fragments.add(map_frag);
         fragments.add(list_frag);
+
+        // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
+        // and ViewPager (different pages of fragment) together.
+        myViewPageAdapter =new TripTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
+        viewPager.setAdapter(myViewPageAdapter);
+        slidingTabLayout.setCustomTabView(R.layout.custom_tab_tripiew, R.id.title, R.id.icon);
+        // make sure the tabs are equally spaced.
+        slidingTabLayout.setDistributeEvenly(true);
+        slidingTabLayout.setViewPager(viewPager);
+
     }
 
 }

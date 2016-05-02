@@ -222,7 +222,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         JSONTokener tokener = new JSONTokener(response);
         JSONObject finalResult = new JSONObject(tokener);
 
-        // Set spot infor mation to view
+        // Set spot information to view
         String spot_name = finalResult.getString("spotName");
         TextView tv_spotName = (TextView) findViewById(R.id.spotName_show);
         spotEntity.setName(spot_name);

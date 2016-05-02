@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.PathJSONParser;
@@ -74,8 +75,11 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
     private static final LatLng Spot2_GPS = new LatLng(37.41043, -122.059753);
     private static final LatLng Spot3_GPS = new LatLng(37.4852152, -122.059753);
 
+    private static final ArrayList<LatLng> spotsGPS = new ArrayList<>();
+
     //TripModel
     TripEntity tripEntity = new TripEntity();
+    ArrayList<SpotEntity> SpotsOfTrip = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,11 +92,18 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
         View view = inflater.inflate(R.layout.trip_map_fragment, container, false);
 
-        //Get Trip Bundle
-        TripEntity bundle = (TripEntity) getArguments().getSerializable("trip_info");
-        Log.e("Get BUNDLE ---->", bundle.getName());
+        //Get Trip
+        TripEntity tripEntiry = (TripEntity) getArguments().getSerializable("trip_info");
+        Log.e("Get BUNDEL in map spots--->", String.valueOf(tripEntiry.getSpots()));
+        SpotsOfTrip = tripEntiry.getSpots();
 
+        //Example of get Spot geo
+        SpotEntity spot1 = SpotsOfTrip.get(0);
+        Log.e("Get spot in map Frag spots--->", spot1.toString());
+        String spot1_latitude = SpotsOfTrip.get(0).getGeo_latitude();
+        Log.e("Get BUNDEL LAT in map spots--->", spot1.getGeo_latitude());
 
+        //get User preference
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
         setUpViewById(view);
@@ -113,17 +124,25 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         googleMap = mapFragment.getMap();
 
 
+        //Maker
         MarkerOptions options = new MarkerOptions();
-        options.position(Spot1_GPS);
-        options.position(Spot2_GPS);
-        options.position(Spot3_GPS);
+//        options.position(Spot1_GPS);
+//        options.position(Spot2_GPS);
+//        options.position(Spot3_GPS);
+        for(int i = 0; i < SpotsOfTrip.size(); i++) {
+            LatLng spot_GPS = new LatLng(Double.parseDouble(SpotsOfTrip.get(i).getGeo_latitude()),
+                    Double.parseDouble(SpotsOfTrip.get(i).getGeo_longitude()));
+            options.position(spot_GPS);
+            spotsGPS.add(spot_GPS);
+        }
+
         googleMap.addMarker(options);
 
         String url = getMapsApiDirectionsUrl();
         ReadTask downloadTask = new ReadTask();
         downloadTask.execute(url);
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Spot2_GPS,
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spotsGPS.get(0),
                 13));
         addMarkers();
 
@@ -240,12 +259,14 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
     private void addMarkers() {
         if (googleMap != null) {
-            googleMap.addMarker(new MarkerOptions().position(Spot2_GPS)
-                    .title("First Point"));
-            googleMap.addMarker(new MarkerOptions().position(Spot1_GPS)
-                    .title("Second Point"));
-            googleMap.addMarker(new MarkerOptions().position(Spot3_GPS)
-                    .title("Third Point"));
+            for(int i = 0; i < spotsGPS.size(); i++){
+                googleMap.addMarker(new MarkerOptions().position(spotsGPS.get(i))
+                        .title(SpotsOfTrip.get(i).getName()));
+            }
+//            googleMap.addMarker(new MarkerOptions().position(Spot1_GPS)
+//                    .title("Second Point"));
+//            googleMap.addMarker(new MarkerOptions().position(Spot3_GPS)
+//                    .title("Third Point"));
         }
     }
 

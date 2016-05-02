@@ -158,8 +158,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         arrayOfSpots.clear();
         String  response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
-
-        Log.e("Spots Get result------>", response);
+        Log.e("Get All Spots----->", response);
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
@@ -167,18 +166,18 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             for (int i = 0; i < Spots.length(); i++) {  // **line 2**
                 JSONObject childJSONObject = Spots.getJSONObject(i);
 
-                String spotName = childJSONObject.getString("spotName");
-                String spotId = childJSONObject.getString("spotId");
+//                String spotName = childJSONObject.getString("spotName");
+//                String spotId = childJSONObject.getString("spotId");
+//
+//                if(spotName.length()==0){
+//                    continue;
+//                }
+//
+//                JSONObject spoti = new JSONObject();
+//                spoti.put("spotName", spotName);
+//                spoti.put("spotId", spotId);
 
-                if(spotName.length()==0){
-                    continue;
-                }
-
-                JSONObject spoti = new JSONObject();
-                spoti.put("name", spotName);
-                spoti.put("spotId", spotId);
-
-                SpotEntity spotEntity = new SpotEntity(spoti);
+                SpotEntity spotEntity = new SpotEntity(childJSONObject);
                 //get image
                 int postion = (int)(Math.random() * imagesource.length);
                 int img_main = imagesource[postion];
