@@ -181,7 +181,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         }
         catch (Exception e)
         {
-            Log.e(TAG, e.getMessage());
+//            Log.e(TAG, e.getMessage());
         }
 
     }

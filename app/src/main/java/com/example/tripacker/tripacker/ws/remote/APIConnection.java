@@ -233,6 +233,18 @@ public class APIConnection{
 
 
     private static void createGetReq(String url, List<NameValuePair> params) {
+        if(params.size()!=0){
+            url += "?";
+            for(int i = 0; i < params.size(); i++){
+                url += params.get(i).getName();
+                url += "=";
+                url += params.get(i).getValue();
+                if(i != params.size()-1){
+                    url += "&";
+                }
+            }
+        }
+
         if (true) {
             HttpGet httpGet = new HttpGet(url);
             Log.e("GET URL----->",url);
