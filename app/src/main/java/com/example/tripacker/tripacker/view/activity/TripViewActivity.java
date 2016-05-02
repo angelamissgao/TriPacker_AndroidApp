@@ -54,8 +54,12 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
     //new added
     private SlidingTabLayout slidingTabLayout;
     private ViewPager viewPager;
-    private ArrayList<Fragment> fragments;
+    private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     private TripTabsViewPagerAdapter myViewPageAdapter;
+
+    TripMapPageFragment map_frag = new TripMapPageFragment();
+    TripListPageFragment list_frag = new TripListPageFragment();
+    private TripEntity trip_info = new TripEntity();
 
 
     @Override
@@ -64,7 +68,6 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         setContentView(R.layout.activity_trip_view);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
 
        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
@@ -82,23 +85,6 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         //Http Request to get Trip details with TripID
         getContent(2);
 
-        // create a fragment list in order.
-        fragments = new ArrayList<Fragment>();
-        TripMapPageFragment map_frag = new TripMapPageFragment();
-        TripListPageFragment list_frag = new TripListPageFragment();
-
-        //send data with intent to Fragments
-        TripEntity trip_info = new TripEntity();
-        trip_info.setName("Trip1inSF");
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("trip_info", trip_info);
-
-        list_frag.setArguments(bundle);
-        map_frag.setArguments(bundle);
-
-        fragments.add(map_frag);
-        fragments.add(list_frag);
-
         // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
         // and ViewPager (different pages of fragment) together.
         myViewPageAdapter =new TripTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
@@ -108,11 +94,9 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         slidingTabLayout.setDistributeEvenly(true);
         slidingTabLayout.setViewPager(viewPager);
 
-
     }
 
     private void getContent(int tripId){
-
         // the request
         try{
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -194,6 +178,15 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        //send data with intent to Fragments
+        trip_info.setName("Trip1inSF");
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("trip_info", trip_info);
+        list_frag.setArguments(bundle);
+        map_frag.setArguments(bundle);
+        fragments.add(map_frag);
+        fragments.add(list_frag);
     }
 
 }
