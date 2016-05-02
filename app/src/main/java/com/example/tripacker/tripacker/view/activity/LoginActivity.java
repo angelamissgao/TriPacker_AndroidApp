@@ -48,16 +48,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
-
-/*  @InjectView(R.id.input_username) EditText _usernameText;
-    @InjectView(R.id.input_password) EditText _passwordText;
-    @InjectView(R.id.btn_login) Button _loginButton;
-    @InjectView(R.id.link_signup) TextView _signupLink;
-*/
-
-
-//    private TextInputEditText usernameText;
-//    private TextInputEditText passwordText;
     private EditText usernameText;
     private EditText passwordText;
     private Button loginButton;
@@ -72,7 +62,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
 
     // Configuration for calling a REST service
-    //private static final String TEST_URL                   = "http://47.88.12.177/api/member/login/dologin";
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
     private ProgressDialog progressDialog;
 
@@ -83,8 +72,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
 
         // Setup view elements
-//        usernameText = (TextInputEditText) findViewById(R.id.input_username);
-//        passwordText = (TextInputEditText) findViewById(R.id.input_password);
         usernameText = (EditText) findViewById(R.id.input_username);
         passwordText = (EditText) findViewById(R.id.input_password);
         loginButton = (Button) findViewById(R.id.btn_login);

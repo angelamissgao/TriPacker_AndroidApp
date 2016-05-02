@@ -251,10 +251,9 @@ public class APIConnection{
                 }
             }
         }
-
+        Log.e("GET URL----->",url);
         if (true) {
             HttpGet httpGet = new HttpGet(url);
-            Log.e("GET URL----->",url);
 
             AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
             getTask.execute(httpGet, "");

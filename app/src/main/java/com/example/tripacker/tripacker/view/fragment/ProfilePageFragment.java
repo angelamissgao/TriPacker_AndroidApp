@@ -81,6 +81,8 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         View view = inflater.inflate(R.layout.profile_fragment, container, false);
 
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
+        Log.e(TAG, "-------> Get Public profile");
+
 
         setUpViewById(view);
 
@@ -93,14 +95,6 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         getContent();
 
 
-
-
-        // Or even append an entire new collection
-        // Fetching some data, data has now returned
-        // If data was JSON, convert to ArrayList of User objects.
-        //JSONArray jsonArray = ...;
-        //ArrayList<User> newUsers = User.fromJson(jsonArray)
-        //adapter.addAll(newUsers);
 
 
         // Edit button
@@ -168,7 +162,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
     private void getContent(){
         showLoading();
-        Log.e("Get User Profile", "-------> Get Content");
+        Log.e(TAG, "-------> Call API");
 
 
         // the request
@@ -181,7 +175,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         }
         catch (Exception e)
         {
-//            Log.e(TAG, e.getMessage());
+            Log.e(TAG, e.toString());
         }
 
     }
