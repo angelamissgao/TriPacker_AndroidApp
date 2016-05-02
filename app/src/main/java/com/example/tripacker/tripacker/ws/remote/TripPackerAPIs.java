@@ -50,6 +50,8 @@ public class TripPackerAPIs {
         return API_BASE_URL+"/trip/"+trip_id;
     }
 
+    public static String getTripsByRate() { return  API_BASE_URL+"/trip/getByRate";}
+
     // Get Spot
 
     public static String getSpotsList(String id) {return API_BASE_URL + "/spot/getByCity/" + id;}

@@ -2,6 +2,7 @@ package com.example.tripacker.tripacker.view.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,6 +42,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
     private StaggeredGridLayoutManager gaggeredGridLayoutManager;
+    private static SharedPreferences pref;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,8 @@ public class TripFragment extends Fragment implements AsyncCaller {
         thiscontext = container.getContext();
         View view = inflater.inflate(R.layout.trip_main, container, false);
 
+        //get user ID
+        pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
         RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recycler_trip_view);
         recyclerView.setHasFixedSize(true);
@@ -59,6 +64,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
         recyclerView.setLayoutManager(gaggeredGridLayoutManager);
 
         //HTTP get all trips
+        getContent();
         List<TripEntity> gaggeredList = getListItemData();
 
         TripRecyclerViewAdapter rcAdapter = new TripRecyclerViewAdapter(thiscontext, gaggeredList);
@@ -108,8 +114,6 @@ public class TripFragment extends Fragment implements AsyncCaller {
     }
 
     private List<TripEntity> getListItemData(){
-        //Get trip Detail
-        getContent(9);
 
         //
         List<TripEntity> listViewItems = new ArrayList<TripEntity>();
@@ -124,13 +128,18 @@ public class TripFragment extends Fragment implements AsyncCaller {
         return listViewItems;
     }
 
-    private void getContent(int tripId){
+    private void getContent(){
         // the request
         try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            String pageId = "1";
+            String pageSize = "5";
+
+            nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
+            nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
 
             APIConnection.SetAsyncCaller(this, getContext());
-            APIConnection.getTripDetail(tripId, nameValuePairs);
+            APIConnection.getTripsByRate(nameValuePairs);
 
         }
         catch (Exception e)
@@ -145,29 +154,30 @@ public class TripFragment extends Fragment implements AsyncCaller {
         String response = result.toString();
 
         JSONTokener tokener = new JSONTokener(response);
+        Log.e("Get Gall Trips------>",response);
 
-        try {
-            JSONObject finalResult = new JSONObject(tokener);
-            String trip_name = finalResult.getString("tripName");
-            String trip_id = finalResult.getString("tripId");
-            String trip_beginDate = finalResult.getString("beginDate");
-            String trip_endDate = finalResult.getString("endDate");
-            String trip_ownerId = finalResult.getString("ownerId");
-
-            JSONArray Spots = finalResult.getJSONArray("spots");
-            ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
-            for (int i = 0; i < Spots.length(); i++) {
-                JSONObject spoti = Spots.getJSONObject(i);
-                SpotEntity spotEntity = new SpotEntity(spoti);
-                spotsOfTrip.add(spotEntity);
-            }
-
-
-            Log.e("Get Trip detail------>",response);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            JSONObject finalResult = new JSONObject(tokener);
+//            String trip_name = finalResult.getString("tripName");
+//            String trip_id = finalResult.getString("tripId");
+//            String trip_beginDate = finalResult.getString("beginDate");
+//            String trip_endDate = finalResult.getString("endDate");
+//            String trip_ownerId = finalResult.getString("ownerId");
+//
+//            JSONArray Spots = finalResult.getJSONArray("spots");
+//            ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
+//            for (int i = 0; i < Spots.length(); i++) {
+//                JSONObject spoti = Spots.getJSONObject(i);
+//                SpotEntity spotEntity = new SpotEntity(spoti);
+//                spotsOfTrip.add(spotEntity);
+//            }
+//
+//
+//
+//
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
 
     }
 }

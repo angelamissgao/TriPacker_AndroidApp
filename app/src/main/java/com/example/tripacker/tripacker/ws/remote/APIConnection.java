@@ -127,6 +127,9 @@ public class APIConnection{
     public static void getTripDetail(int trip_id, List<NameValuePair> params) {
         getTripDetailFromApi(trip_id, params);
     }
+    public static void getTripsByRate(List<NameValuePair> params){
+        getTripsByRateFromApi(params);
+    }
 
 
     /**
@@ -165,6 +168,10 @@ public class APIConnection{
 
     private static void getTripDetailFromApi(int tripId, List<NameValuePair> params){
         createGetReq(TripPackerAPIs.getTripDetail(tripId), params);
+    }
+
+    private static void getTripsByRateFromApi(List<NameValuePair> params){
+        createGetReq(TripPackerAPIs.getTripsByRate(),params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {
