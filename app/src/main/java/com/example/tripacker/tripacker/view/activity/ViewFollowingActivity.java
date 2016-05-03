@@ -58,6 +58,7 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
     private static SharedPreferences pref;
 
     private ListView following_listView;
+    private int profile_id;
 
 
 
@@ -78,10 +79,15 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
         getSupportActionBar().setElevation(0);
 
         initializeDialog();
+
         //showLoading();
 
         pref = getApplicationContext().getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
+
+        Intent intent = getIntent();
+
+        profile_id  = Integer.parseInt(intent.getStringExtra("profile_id"));
 
 
 

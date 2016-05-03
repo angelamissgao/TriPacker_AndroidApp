@@ -62,21 +62,24 @@ public class UserSessionManagerTest {
     @Mock
     SharedPreferences.Editor mMockBrokenEditor;
 
-    @Before
+  /*  @Before
     public void initMocks() {
         context = new MockContext();
 
 
         // Create a mocked SharedPreferences.
-        mMockUserSessionManager = UserSessionManager.getSingleInstance(context);
+        //mMockUserSessionManager = new UserSessionManager(context);
+        //mMockUserSessionManager = UserSessionManager.getSingleInstance(context);
 
         // Create a mocked SharedPreferences that fails at saving data.
         //mMockBrokenUserSessionManager = createBrokenUserSessionManager();
-    }
+    }*/
 
     @Test
     public void UserSessionManager_CreateUserLoginSession() {
         // Save the personal information to SharedPreferences
+        context = new MockContext();
+        mMockUserSessionManager = UserSessionManager.getSingleInstance(context);
         mMockUserSessionManager.createUserLoginSession(TEST_USERNAME, TEST_NAME, TEST_UID, TEST_COOKIES);
         boolean success = mMockUserSessionManager.isUserLoggedIn();
 
@@ -99,7 +102,7 @@ public class UserSessionManagerTest {
                 is(equalTo(mMockUserSessionManager.getUserDetails().get("cookies"))));
     }
 
-    @Test
+    //@Test
    /* public void UserSessionManager_CreateUserLoginSessionFailed_ReturnsFalse() {
         // Read personal information from a broken SharedPreferencesHelper
         mMockUserSessionManager.createUserLoginSession(TEST_USERNAME, TEST_NAME, TEST_UID, TEST_COOKIES);
@@ -111,7 +114,7 @@ public class UserSessionManagerTest {
     /**
      * Creates a mocked UserSessionManager.
      */
-      private UserSessionManager createMockUserSessionManager() {
+     /* private void createMockUserSessionManager() {
          // UserSessionManager sessionManager = UserSessionManager(context);
         // Mocking reading the SharedPreferences as if mMockSharedPreferences was previously written
         // correctly.
@@ -132,12 +135,12 @@ public class UserSessionManagerTest {
         // Return the MockEditor when requesting it.
         when(UserSessionManager.getSingleInstance(context).pref.edit()).thenReturn(UserSessionManager.getSingleInstance(context).editor);
         return UserSessionManager.getSingleInstance(context);
-    }
+    }*/
 
     /**
      * Creates a mocked UserSessionManager that fails when writing.
      */
-
+/*
     private UserSessionManager createBrokenUserSessionManager() {
         // Mocking a commit that fails.
       when(mMockBrokenEditor.commit()).thenReturn(false);
@@ -145,6 +148,6 @@ public class UserSessionManagerTest {
         // Return the broken MockEditor when requesting it.
         when(mMockBrokenSharedPreferences.edit()).thenReturn(mMockBrokenEditor);
         return new UserSessionManager(context, mMockBrokenSharedPreferences);
-    }
+    }*/
 
 }

@@ -109,6 +109,10 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
 
 
     }
+
+    public int getProfile_id(){
+        return profile_id;
+    }
     public void initializeDialog(){
         progressDialog = new ProgressDialog(ViewProfileActivity.this,
                 R.style.AppTheme_Dark_Dialog);
@@ -287,6 +291,7 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
     public void viewFollowing() {
 
         Intent followingInten = new Intent(this, ViewFollowingActivity.class);
+        followingInten.putExtra("profile_id", profile_id);
         startActivity(followingInten);
 
     }

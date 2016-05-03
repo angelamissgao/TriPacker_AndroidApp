@@ -78,5 +78,8 @@ dependencies {
     androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
     // Optional -- UI testing with UI Automator
 
+    //API tests
+    compile 'com.squareup.retrofit2:retrofit:2.0.2'
+
 
 }
