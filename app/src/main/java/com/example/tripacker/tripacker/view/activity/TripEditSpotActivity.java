@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
@@ -203,6 +204,10 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
         addSpotListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView addbn = (TextView) view.findViewById(R.id.spotsToAdd);
+                addbn.setText("added already");
+                addbn.setBackgroundColor(Color.GRAY);
+
                 selectedSpotID.add(arrayOfSpots.get(position).getSpotId());
                 Log.e(TAG + "selectedSpotID are: ", selectedSpotID.toString());
             }
