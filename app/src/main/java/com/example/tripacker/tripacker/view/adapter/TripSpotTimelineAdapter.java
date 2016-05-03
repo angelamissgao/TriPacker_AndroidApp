@@ -38,7 +38,6 @@ public class TripSpotTimelineAdapter extends ArrayAdapter<SpotEntity> {
 
         //    // Populate the data into the template view using the data object
         tripspotDate.setText(spot.getGmt_create());
-        Log.i("TripSpotTimeline", spot.toString());
         tripspotLocation.setText(spot.getCity_id());
         tripspotName.setText(spot.getName());
         // Return the completed view to render on screen

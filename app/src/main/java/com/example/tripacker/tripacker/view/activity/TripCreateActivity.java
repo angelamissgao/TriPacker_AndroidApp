@@ -96,7 +96,7 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         String tripName = tripNameInput.getText().toString();
         String beginDate = beginDateInput.getText().toString();
         String endDate = endDateInput.getText().toString();
-        String spots = "19,27,32";
+        String spots = "19,27,32,20";
 
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);

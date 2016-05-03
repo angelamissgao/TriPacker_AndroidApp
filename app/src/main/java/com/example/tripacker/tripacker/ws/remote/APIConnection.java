@@ -133,6 +133,10 @@ public class APIConnection{
         getTripsByOwnerFromApi(uid, params);
     }
 
+    public static void editTrip(int tripId, List<NameValuePair> params ){
+        editTripFromApi(tripId, params);
+    }
+
 
     /**
      * each function to get Api and call Restful request
@@ -178,6 +182,10 @@ public class APIConnection{
 
     private static void getTripsByOwnerFromApi(int uid, List<NameValuePair> params) {
         createGetReq(TripPackerAPIs.getTripsByOwner(uid), params);
+    }
+
+    private static void editTripFromApi(int tripID,List<NameValuePair> params ){
+        createPutReq(TripPackerAPIs.editTrip(tripID), params);
     }
 
 /*    private String getUserEntitiesFromApi() throws MalformedURLException {

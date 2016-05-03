@@ -140,11 +140,17 @@ public class TripListPageFragment extends Fragment implements SpotListView {
             @Override
             public void onClick(View v) {
                 Intent mainInten = new Intent(getActivity(), TripEditSpotActivity.class);
-                ArrayList<String> spot_info = new ArrayList<String>();
-                //Todo: added spot json
-                spot_info.add("user_id");
+//                Bundle bundle = new Bundle();
+//                bundle.putSerializable("trip_info", tripEntity);
+//                mainInten.putExtras(bundle);
+
+                // bundle data to the spot view activity
+                ArrayList<Integer> trip_info = new ArrayList<>();
+
+                trip_info.add(tripEntity.getTrip_id());
+
                 Bundle bundle = new Bundle();
-                bundle.putStringArrayList("user_id", spot_info);
+                bundle.putIntegerArrayList("tripID", trip_info);
                 mainInten.putExtras(bundle);
 
                 startActivity(mainInten);
