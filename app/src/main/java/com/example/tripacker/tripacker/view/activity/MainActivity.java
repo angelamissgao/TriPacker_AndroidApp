@@ -104,6 +104,11 @@ public class MainActivity extends ActionBarActivity {
         Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("cookies"));
 
 
+
+//        if(UserSessionManager.getSingleInstance(this).isUserLoggedIn()){
+//            Intent intent = new Intent(this, LoginActivity.class);
+//            startActivity(intent);
+//        }
         UserSessionManager.getSingleInstance(this).checkLogin();
 
 

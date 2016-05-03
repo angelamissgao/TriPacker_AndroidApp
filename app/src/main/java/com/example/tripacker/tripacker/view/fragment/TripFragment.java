@@ -45,6 +45,12 @@ public class TripFragment extends Fragment implements AsyncCaller {
     private ArrayList<TripEntity> arrayOfTrips = new ArrayList<>();
     RecyclerView recyclerView;
     TripRecyclerViewAdapter rcAdapter;
+    private Integer[] imagesource = {
+            R.drawable.new_zealand,
+            R.drawable.thai_temple,
+            R.drawable.paris,
+            R.drawable.profile_cover,
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,7 +152,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
         }
         catch (Exception e)
         {
-            Log.e("GetTripException", e.getMessage());
+            Log.e("GetTripException", e.toString());
         }
 
     }
@@ -164,6 +170,12 @@ public class TripFragment extends Fragment implements AsyncCaller {
             for(int i = 0; i < Trips.length(); i++ ) {
                 JSONObject childJSONObject = Trips.getJSONObject(i);
                 TripEntity tripEntity = new TripEntity(childJSONObject);
+
+                //get image
+                int postion = (int)(Math.random() * imagesource.length);
+                int img_main = imagesource[postion];
+                tripEntity.setImage_local(img_main);
+
                 arrayOfTrips.add(tripEntity);
             }
             renderSpotList(arrayOfTrips);

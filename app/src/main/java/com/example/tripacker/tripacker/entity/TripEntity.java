@@ -44,6 +44,8 @@ public class TripEntity implements Serializable {
     @SerializedName("spots")
     ArrayList<SpotEntity> spots;
 
+    Integer image_local;
+
 
     // Make sure to always define this constructor with no arguments
     public TripEntity() {
@@ -64,7 +66,9 @@ public class TripEntity implements Serializable {
 
         try {
             this.name = object.getString("tripName");
-            this.trip_id = object.getInt("tripId");
+            if(object.has("tripId")){
+                this.trip_id = object.getInt("tripId");
+            }
      /*       this.owner = object.getString("owner");
             this.cover_photo = object.getString("cover_photo");
             this.tip = object.getString("tip");
@@ -129,6 +133,7 @@ public class TripEntity implements Serializable {
     public String getEndDate() { return endDate;}
     public int getOwnerId() { return ownerId; }
     public ArrayList<SpotEntity> getSpots() { return spots; }
+    public Integer getImage_local() { return image_local; }
 
     // Setters
     public void setName(String name) {
@@ -144,6 +149,7 @@ public class TripEntity implements Serializable {
     public void setEndDate(String endDate) {this.endDate = endDate;}
     public void setOwnerId(int ownerId) { this.ownerId = ownerId;}
     public void setSpots(ArrayList<SpotEntity> spots) {this.spots = spots; }
+    public void setImage_local(Integer image_local) {this.image_local = image_local; }
 
     @Override
     public String toString() {

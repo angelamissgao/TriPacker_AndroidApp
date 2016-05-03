@@ -1,6 +1,8 @@
 package com.example.tripacker.tripacker.view.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,25 +22,28 @@ import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.TripTabsViewPagerAdapter;
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.view.fragment.TripListPageFragment;
 import com.example.tripacker.tripacker.view.fragment.TripMapPageFragment;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
+import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
+import org.apache.http.NameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class TripActivity extends ActionBarActivity implements  AdapterView.OnItemClickListener{
+public class TripActivity extends ActionBarActivity implements AsyncCaller,AdapterView.OnItemClickListener{
     // Runner IO for calling external APIs
-
-
-
     private ListView trip_listView;
-
+    private String TAG = "TripActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +52,12 @@ public class TripActivity extends ActionBarActivity implements  AdapterView.OnIt
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
+        //get user ID
+        String user_id = UserSessionManager.getSingleInstance(this).getUserDetails().get("uid");
+        Log.e(TAG + "user_id is:? = ", user_id);
+
+        //Get Trips by UserID
+        getContent(Integer.parseInt(user_id));
 
        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
@@ -164,6 +175,25 @@ public class TripActivity extends ActionBarActivity implements  AdapterView.OnIt
         return super.onOptionsItemSelected(item);
     }
 
+    public void getContent(int uid) {
+        try{
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+
+            APIConnection.SetAsyncCaller(this, getApplicationContext());
+            APIConnection.getTripsByOwner(uid, nameValuePairs);
+
+        }
+        catch (Exception e)
+        {
+            Log.e("GetTripException", e.getMessage());
+        }
+    }
 
 
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
+        String response = result.toString();
+        JSONTokener tokener = new JSONTokener(response);
+        Log.e( TAG + "Get Gall Trips------>", response);
+    }
 }

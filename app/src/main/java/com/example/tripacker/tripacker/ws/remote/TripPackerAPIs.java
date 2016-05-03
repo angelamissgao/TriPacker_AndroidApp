@@ -70,6 +70,8 @@ public class TripPackerAPIs {
         return url;
     }
 
+    public static String getTripsByOwner(int uid ) { return API_BASE_URL+"/trip/getByOwner/"+ uid;}
+
     // Get Spot
 
     public static String getSpotsList(String id, List<NameValuePair> params) {
