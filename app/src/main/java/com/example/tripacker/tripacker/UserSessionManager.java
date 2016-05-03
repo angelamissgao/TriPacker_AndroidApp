@@ -51,6 +51,12 @@ public class UserSessionManager {
         editor = pref.edit();
     }
 
+    public UserSessionManager(Context context, SharedPreferences pref){
+        this._context = context;
+        this.pref = pref;
+        editor = pref.edit();
+    }
+
     public static UserSessionManager getSingleInstance(Context context) {
         if (singleInstance == null) {
             singleInstance = new UserSessionManager(context);
