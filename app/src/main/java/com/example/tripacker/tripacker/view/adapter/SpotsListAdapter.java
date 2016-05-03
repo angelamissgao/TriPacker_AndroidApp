@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.tripacker.tripacker.R;
@@ -34,12 +35,15 @@ public class SpotsListAdapter extends ArrayAdapter<SpotEntity> {
         TextView tripspotDate = (TextView) convertView.findViewById(R.id.tripspot_date);
         TextView tripspotLocation = (TextView) convertView.findViewById(R.id.tripspot_location);
         TextView tripspotName = (TextView) convertView.findViewById(R.id.tripspot_name);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.spot_pic);
 
         //    // Populate the data into the template view using the data object
-        tripspotDate.setText(spot.getGmt_create());
+//        tripspotDate.setText(spot.getGmt_create());
         Log.i("TripSpotTimeline", spot.toString());
 //        tripspotLocation.setText(spot.getCity_id());
         tripspotName.setText(spot.getName());
+        imageView.setBackgroundResource(spot.getImage_local());
+
         // Return the completed view to render on screen
 
         return convertView;

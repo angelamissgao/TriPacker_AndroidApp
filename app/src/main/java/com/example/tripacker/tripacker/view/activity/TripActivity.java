@@ -168,7 +168,7 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller,Adapt
         }
         catch (Exception e)
         {
-            Log.e("GetTripException", e.getMessage());
+            Log.e("GetTripException", e.toString());
         }
     }
 

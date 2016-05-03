@@ -168,7 +168,10 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
-            JSONArray Spots = finalResult.getJSONArray("spotList");
+            JSONArray Spots = new JSONArray();
+            if(finalResult.has("spotList")){
+                Spots = finalResult.getJSONArray("spotList");
+            }
             for (int i = 0; i < Spots.length(); i++) {  // **line 2**
                 JSONObject childJSONObject = Spots.getJSONObject(i);
                 if(childJSONObject.getString("spotName").length() == 0) {

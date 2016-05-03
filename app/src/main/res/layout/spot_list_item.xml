@@ -34,13 +34,13 @@
 
             <LinearLayout
                 android:orientation="horizontal"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:id="@+id/imageView9"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:id="@+id/spot_pic"
                     android:background="@color/monsoon" />
 
             </LinearLayout>
@@ -86,11 +86,12 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Seattle, WA"
                 android:id="@+id/tripspot_name"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginLeft="10dp"
+                android:textColor="@color/common_google_signin_btn_text_dark_focused" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -117,5 +118,14 @@
                     android:layout_marginLeft="5dp" />
             </LinearLayout>
         </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+ Add Spots"
+            android:id="@+id/spotsToAdd"
+            android:background="@color/primary"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:layout_gravity="center_vertical" />
     </LinearLayout>
 </RelativeLayout>
