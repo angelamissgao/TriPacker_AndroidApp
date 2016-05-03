@@ -10,8 +10,17 @@ import android.util.Log;
 public class NetworkConnectionException extends Exception {
     private Context context;
     private String exceptionTitle;
+
+    private AlertDialog.Builder builder;
+    private AlertDialog dialog;
+
     public NetworkConnectionException() {
         super();
+    }
+
+    public NetworkConnectionException(Context context) {
+        super();
+        this.context = context;
     }
 
     public NetworkConnectionException(Context context, final String message) {
@@ -25,14 +34,15 @@ public class NetworkConnectionException extends Exception {
     public NetworkConnectionException(Context context, final Throwable cause) {
         super(cause);
     }
-    public void displayMessageBox(String exceptionTitle, String message) {
+    public AlertDialog.Builder displayMessageBox() {
+        String message = "Sorry there was an error getting data from the Internet. Network Unavailable!";
         Log.d("EXCEPTION: " + exceptionTitle, message);
 
-        AlertDialog.Builder messageBox = new AlertDialog.Builder(context);
-        messageBox.setTitle(exceptionTitle);
-        messageBox.setMessage(message);
-        messageBox.setCancelable(false);
-        messageBox.setNeutralButton("OK", null);
-        messageBox.show();
+        builder = new AlertDialog.Builder(context);
+        dialog = builder.create();
+
+        builder.setTitle("ERROR !!");
+        builder.setMessage(message);
+        return builder;
     }
 }

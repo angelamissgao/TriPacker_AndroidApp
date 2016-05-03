@@ -2,7 +2,11 @@ package com.example.tripacker.tripacker.view.activity;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.app.ProgressDialog;
@@ -19,6 +23,7 @@ import android.widget.Toast;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.UserSessionManager;
+import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
 import com.example.tripacker.tripacker.ws.remote.WebServices;
@@ -65,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
     private ProgressDialog progressDialog;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,9 +84,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         signupLink = (TextView) findViewById(R.id.link_signup);
 
 
-
         // User Session Manager
-        //session = new UserSessionManager(getApplicationContext());
         session = UserSessionManager.getSingleInstance(getApplicationContext());
 
 
@@ -104,7 +108,29 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             }
         });
     }
+    public void showAlert(AlertDialog.Builder builder){
 
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                loginButton.setEnabled(true);
+            }
+        });
+
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                login();
+            }
+        });
+        AlertDialog dialog = builder.create(); // calling builder.create after adding buttons
+        dialog.show();
+        Toast.makeText(this, "Network Unavailable!", Toast.LENGTH_LONG).show();
+
+    }
     public void login() {
         Log.d(TAG, "Login");
 
@@ -121,9 +147,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-
-        Log.e("User Authentication", "-------> Starting");
-        // TODO: Implement your own authentication logic here.
         getContent();  //starts the RestTask
 
 
@@ -188,23 +211,30 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     }
 
     private void getContent(){
-        Log.e("User Authentication", "-------> Get Content");
-        String username = usernameText.getText().toString();
-        String password = passwordText.getText().toString();
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("username", username));
-        nameValuePairs.add(new BasicNameValuePair("password", password));
-        // the request
-        try{
-            Log.e("User Authentication", "-------> Get Content1");
-            APIConnection.SetAsyncCaller(this, getApplicationContext());
-            Log.e("User Authentication", "-------> Get Content2");
-            APIConnection.authenticateUser(nameValuePairs);
+        if(isThereInternetConnection()) {
 
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            String username = usernameText.getText().toString();
+            String password = passwordText.getText().toString();
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("username", username));
+            nameValuePairs.add(new BasicNameValuePair("password", password));
+            // the request
+            try {
+                APIConnection.SetAsyncCaller(this, getApplicationContext());
+                APIConnection.authenticateUser(nameValuePairs);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else{
+            try {
+                throw new NetworkConnectionException(this);
+            } catch (NetworkConnectionException e) {
+                progressDialog.dismiss();
+                Log.e("Network Error ", "-------> No internet");
+                AlertDialog.Builder builder = e.displayMessageBox();
+                showAlert(builder);
+            }
         }
 
     }
@@ -228,7 +258,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
             if(finalResult.getString("success").equals("true")){
 
-
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse session json object
                 user_username = finalResult.getString("username");
@@ -243,5 +272,15 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    private boolean isThereInternetConnection() {
+        boolean isConnected;
+
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
     }
 }

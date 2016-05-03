@@ -222,11 +222,11 @@ public class APIConnection{
 
             putTask.execute(httpPut, "");
         } else {
-            try {
+          /*  try {
                 throw new NetworkConnectionException();
             } catch (NetworkConnectionException e) {
                 e.displayMessageBox("Error", "NetworkConnectionException");
-            }
+            }*/
         }
     }
 
@@ -245,12 +245,12 @@ public class APIConnection{
 
                 postTask.execute(httpPost, "");
             } else {
-                try {
+                /*try {
                     throw new NetworkConnectionException();
                 } catch (NetworkConnectionException e) {
                     e.displayMessageBox("Error", "NetworkConnectionException");
                     e.displayMessageBox("Network not available", "Please check your network connection!");
-                }
+                }*/
             }
     }
 
@@ -266,13 +266,13 @@ public class APIConnection{
             getTask.execute(httpGet, "");
 
         } else {
-            try {
+         /*   try {
                 throw new NetworkConnectionException();
             } catch (NetworkConnectionException e) {
                 e.displayMessageBox("Error", "NetworkConnectionException");
                 e.displayMessageBox("Network not available", "Please check your network connection!");
 
-            }
+            }*/
         }
     }
 
