@@ -215,7 +215,8 @@ public class APIConnection{
     }
 
     private static void createPostReq(String url, List<NameValuePair> params){
-            if (true) {
+        Log.e("Network? ", ""+isThereInternetConnection());
+            if (isThereInternetConnection()) {
                 HttpPost httpPost = new HttpPost(url);
                 setRequestCookies(httpPost);
 
@@ -232,14 +233,15 @@ public class APIConnection{
                     throw new NetworkConnectionException();
                 } catch (NetworkConnectionException e) {
                     e.displayMessageBox("Error", "NetworkConnectionException");
+                    e.displayMessageBox("Network not available", "Please check your network connection!");
                 }
             }
     }
 
 
     private static void createGetReq(String url, List<NameValuePair> params) {
-
-        if (true) {
+        Log.e("Network? ", ""+isThereInternetConnection());
+        if (isThereInternetConnection()) {
             HttpGet httpGet = new HttpGet(url);
             Log.e("Cookie? ", UserSessionManager.getSingleInstance(context).getCookies()+".");
             setRequestCookies(httpGet);
@@ -252,6 +254,8 @@ public class APIConnection{
                 throw new NetworkConnectionException();
             } catch (NetworkConnectionException e) {
                 e.displayMessageBox("Error", "NetworkConnectionException");
+                e.displayMessageBox("Network not available", "Please check your network connection!");
+
             }
         }
     }
