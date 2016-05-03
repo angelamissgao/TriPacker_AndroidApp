@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.view.activity.TripCreateActivity;
 import com.example.tripacker.tripacker.view.adapter.TripRecyclerViewAdapter;
@@ -43,6 +42,9 @@ public class TripFragment extends Fragment implements AsyncCaller {
     public static final String ARG_PAGE = "ARG_PAGE";
     private StaggeredGridLayoutManager gaggeredGridLayoutManager;
     private static SharedPreferences pref;
+    private ArrayList<TripEntity> arrayOfTrips = new ArrayList<>();
+    RecyclerView recyclerView;
+    TripRecyclerViewAdapter rcAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
         //get user ID
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
-        RecyclerView recyclerView = (RecyclerView)view.findViewById(R.id.recycler_trip_view);
+        recyclerView = (RecyclerView)view.findViewById(R.id.recycler_trip_view);
         recyclerView.setHasFixedSize(true);
 
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
@@ -65,10 +67,9 @@ public class TripFragment extends Fragment implements AsyncCaller {
 
         //HTTP get all trips
         getContent();
-        List<TripEntity> gaggeredList = getListItemData();
 
-        TripRecyclerViewAdapter rcAdapter = new TripRecyclerViewAdapter(thiscontext, gaggeredList);
-        recyclerView.setAdapter(rcAdapter);
+        //render List
+
 
         // FAB
         final FrameLayout frameLayout = (FrameLayout) view.findViewById(R.id.fab_frame_layout);
@@ -86,6 +87,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
                     }
                 });
             }
+
             @Override
             public void onMenuCollapsed() {
                 frameLayout.getBackground().setAlpha(0);
@@ -133,7 +135,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
         try{
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             String pageId = "1";
-            String pageSize = "5";
+            String pageSize = "10";
 
             nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
             nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
@@ -151,33 +153,34 @@ public class TripFragment extends Fragment implements AsyncCaller {
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
+        arrayOfTrips.clear();
         String response = result.toString();
-
         JSONTokener tokener = new JSONTokener(response);
-        Log.e("Get Gall Trips------>",response);
+        Log.e("Get Gall Trips------>", response);
 
-//        try {
-//            JSONObject finalResult = new JSONObject(tokener);
-//            String trip_name = finalResult.getString("tripName");
-//            String trip_id = finalResult.getString("tripId");
-//            String trip_beginDate = finalResult.getString("beginDate");
-//            String trip_endDate = finalResult.getString("endDate");
-//            String trip_ownerId = finalResult.getString("ownerId");
-//
-//            JSONArray Spots = finalResult.getJSONArray("spots");
-//            ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
-//            for (int i = 0; i < Spots.length(); i++) {
-//                JSONObject spoti = Spots.getJSONObject(i);
-//                SpotEntity spotEntity = new SpotEntity(spoti);
-//                spotsOfTrip.add(spotEntity);
-//            }
-//
-//
-//
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            JSONArray Trips = finalResult.getJSONArray("tripList");
+            for(int i = 0; i < Trips.length(); i++ ) {
+                JSONObject childJSONObject = Trips.getJSONObject(i);
+                TripEntity tripEntity = new TripEntity(childJSONObject);
+                Log.e("TripFragment render one item", tripEntity.toString());
+                arrayOfTrips.add(tripEntity);
+            }
+            renderSpotList(arrayOfTrips);
+            Log.e("TripFragment render list", arrayOfTrips.toString());
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void renderSpotList(final ArrayList<TripEntity> Trips) {
+        rcAdapter = new TripRecyclerViewAdapter(thiscontext, Trips);
+        recyclerView.setAdapter(rcAdapter);
 
     }
+
+
+
 }

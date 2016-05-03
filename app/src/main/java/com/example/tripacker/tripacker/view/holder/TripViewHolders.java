@@ -10,8 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.entity.SpotEntity;
-import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.view.activity.TripViewActivity;
 
 public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -24,13 +22,15 @@ public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnC
     public TripViewHolders(View itemView) {
         super(itemView);
         itemView.setOnClickListener(this);
-        tripName = (TextView) itemView.findViewById(R.id.trip_name);
+        tripName = (TextView) itemView.findViewById(R.id.trip_name_trips);
         tripCoverPhoto = (ImageView) itemView.findViewById(R.id.trip_cover_photo);
         context = itemView.getContext();
     }
 
     @Override
     public void onClick(View view) {
+
+
         Intent mainInten = new Intent(context, TripViewActivity.class);
 
         this.getItemId();
@@ -39,4 +39,5 @@ public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnC
         context.startActivity(mainInten);
         Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
     }
+
 }
