@@ -54,6 +54,7 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
     // Runner IO for calling external APIs
 
     //new added
+    private String TAG = "TripViewActivity";
     private SlidingTabLayout slidingTabLayout;
     private ViewPager viewPager;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
@@ -68,6 +69,10 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_view);
+
+        Bundle bundle = getIntent().getExtras();
+        ArrayList<Integer> stuff = bundle.getIntegerArrayList("tripId");
+        Log.e(TAG +"tripID-->", stuff.get(0).toString());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
@@ -85,8 +90,7 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         viewPager = (ViewPager) findViewById(R.id.trip_view_pager);
 
         //Http Request to get Trip details with TripID
-        getContent(9);
-
+        getContent(stuff.get(0));
 
     }
 

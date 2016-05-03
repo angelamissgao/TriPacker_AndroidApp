@@ -164,7 +164,6 @@ public class TripFragment extends Fragment implements AsyncCaller {
             for(int i = 0; i < Trips.length(); i++ ) {
                 JSONObject childJSONObject = Trips.getJSONObject(i);
                 TripEntity tripEntity = new TripEntity(childJSONObject);
-                Log.e("TripFragment render one item", tripEntity.toString());
                 arrayOfTrips.add(tripEntity);
             }
             renderSpotList(arrayOfTrips);
