@@ -14,6 +14,7 @@ import org.json.JSONException;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -102,7 +103,7 @@ public class AsyncJsonGetTask extends AsyncTask<Object, Void, Object> {
 				Header h = cookie[i];
 				Log.i(TAG, "Cookie Header names: " + h.getName());
 				Log.i(TAG, "Cookie Header Value: " + h.getValue());
-				APIConnection.setCookies(h.getValue()); //set cookies
+				APIConnection.setCookie(h.getValue());//set cookies
 			}
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 

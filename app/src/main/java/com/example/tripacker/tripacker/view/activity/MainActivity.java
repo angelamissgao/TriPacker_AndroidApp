@@ -43,7 +43,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
     // Runner IO for calling external APIs
-
+    private String TAG = "Main Activity";
     private TabLayout mTabLayout;
 
     //top navigation
@@ -101,6 +101,11 @@ public class MainActivity extends ActionBarActivity {
 //            Intent intent = new Intent(this, LoginActivity.class);
 //            startActivity(intent);
 //        }
+        //From session
+        Log.e(TAG + " sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("username"));
+        Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
+        Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("cookies"));
+
         UserSessionManager.getSingleInstance(this).checkLogin();
 
 

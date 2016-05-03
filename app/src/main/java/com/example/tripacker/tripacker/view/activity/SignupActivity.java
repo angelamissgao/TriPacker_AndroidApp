@@ -112,7 +112,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
 
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
-        session.createUserLoginSession(user_username,user_nickname, user_id, APIConnection.getCookies());
+        session.createUserLoginSession(user_username,user_nickname, user_id, session.getCookies());
         setResult(RESULT_OK, null);
         finish();
     }

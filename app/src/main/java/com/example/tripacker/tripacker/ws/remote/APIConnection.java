@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 
@@ -34,8 +35,6 @@ public class APIConnection{
     private static Context context;
     private final UserEntityJsonMapper userEntityJsonMapper;
     private static AsyncCaller caller;
-    private static String cookies = "";
-    private static SharedPreferences pref;
 
     /**
      * Constructor of the class
@@ -49,15 +48,14 @@ public class APIConnection{
         }
         this.context = context.getApplicationContext();
         this.userEntityJsonMapper = userEntityJsonMapper;
-        pref = context.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
+       // pref = context.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
     }
 
-    public static void setCookies(String thiscookies){
-        cookies = thiscookies;
+    public static void setCookie(String cookie){
+        UserSessionManager.getSingleInstance(context).setCookies(cookie);
     }
-    public static String getCookies(){
-        return cookies;
-    }
+
+
     public static void SetAsyncCaller(AsyncCaller asyncCallercaller, Context thecontext){
         caller = asyncCallercaller;
         context = thecontext;
@@ -143,7 +141,7 @@ public class APIConnection{
         createPostReq(TripPackerAPIs.loginUser(), params);
     }
     private static void signouteUserFromApi(String user_id, List<NameValuePair> params){
-        createPostReq(TripPackerAPIs.logoutUser(user_id), params);
+        createGetReq(TripPackerAPIs.logoutUser(user_id), params);
     }
 
     private static void getSpotsListFromApi(String id, List<NameValuePair> params){
@@ -243,6 +241,8 @@ public class APIConnection{
 
         if (true) {
             HttpGet httpGet = new HttpGet(url);
+            Log.e("Cookie? ", UserSessionManager.getSingleInstance(context).getCookies());
+            setRequestCookies(httpGet);
 
             AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
             getTask.execute(httpGet, "");
@@ -262,8 +262,9 @@ public class APIConnection{
      * @param reqMsg
      */
     private static void setRequestCookies(HttpMessage reqMsg) {
-        if(!cookies.isEmpty()){
-            reqMsg.setHeader("Set-Cookie", cookies);
+        UserSessionManager session = UserSessionManager.getSingleInstance(context);
+        if(session.isUserLoggedIn() && !session.getUserDetails().get("cookies").isEmpty()){
+            reqMsg.setHeader("Set-Cookie", session.getUserDetails().get("cookies"));
         }
     }
     /**
@@ -271,14 +272,15 @@ public class APIConnection{
      * @param resMsg
      */
     private static void appendCookies(HttpMessage resMsg) {
+        UserSessionManager session = UserSessionManager.getSingleInstance(context);
         Header setCookieHeader=resMsg.getFirstHeader("Set-Cookie");
         if (setCookieHeader != null
-                && cookies.isEmpty()) {
+                && session.getUserDetails().get("cookies").isEmpty()) {
             String setCookie=setCookieHeader.getValue();
-            if(cookies.isEmpty()){
-                cookies=setCookie;
+            if(session.getCookies().isEmpty()){
+                session.setCookies(setCookie);
             }else{
-                cookies=cookies+"; "+setCookie;
+                session.setCookies(session.getCookies()+"; "+setCookie);
             }
         }
     }
@@ -298,5 +300,6 @@ public class APIConnection{
 
         return isConnected;
     }
+
 
 }

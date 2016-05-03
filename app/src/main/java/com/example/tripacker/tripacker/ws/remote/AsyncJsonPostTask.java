@@ -72,7 +72,8 @@ public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
 				Header h = cookie[i];
 				Log.i(TAG, "Cookie Header names: " + h.getName());
 				Log.i(TAG, "Cookie Header Value: " + h.getValue());
-				APIConnection.setCookies(h.getValue()); //set cookies
+				APIConnection.setCookie(h.getValue());//set cookies
+
 			}
 			ResponseHandler<String> responseHandler = new BasicResponseHandler();
 

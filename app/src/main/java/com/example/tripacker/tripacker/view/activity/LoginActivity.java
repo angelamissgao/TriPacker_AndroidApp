@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
     public void onLoginSuccess() {
         // Creating user login session
-        session.createUserLoginSession(user_username, user_nickname, user_id, APIConnection.getCookies());
+        session.createUserLoginSession(user_username, user_nickname, user_id, session.getCookies());
         loginButton.setEnabled(true);
         finish();
     }

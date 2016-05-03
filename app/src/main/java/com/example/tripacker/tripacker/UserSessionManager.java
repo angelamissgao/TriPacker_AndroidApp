@@ -58,6 +58,14 @@ public class UserSessionManager {
         return singleInstance;
     }
 
+    public void setCookies(String cookies){
+        editor.putString(KEY_COOKIES, cookies);
+        editor.commit();
+    }
+    public String getCookies(){
+        return pref.getString(KEY_COOKIES, null);
+    }
+
     //Create login session
     public void createUserLoginSession(String username, String nickname, String uid, String cookies){
         // Storing login value as TRUE

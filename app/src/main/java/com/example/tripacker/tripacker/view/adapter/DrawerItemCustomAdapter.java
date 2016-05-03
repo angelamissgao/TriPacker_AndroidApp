@@ -20,8 +20,20 @@ import com.example.tripacker.tripacker.view.activity.MainActivity;
 import com.example.tripacker.tripacker.view.activity.TripActivity;
 import com.example.tripacker.tripacker.view.activity.ViewFollowingActivity;
 import com.example.tripacker.tripacker.view.fragment.ProfilePageFragment;
+import com.example.tripacker.tripacker.ws.remote.APIConnection;
+import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
-public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCustomAdapter.ViewHolder> {
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCustomAdapter.ViewHolder> implements AsyncCaller {
+    String TAG = "drawer item";
     String[] titles;
     TypedArray icons;
     Context context;
@@ -33,6 +45,8 @@ public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCust
         this.icons = icons;
         this.context = context;
     }
+
+
 
     /**
      *Its a inner class to RecyclerViewAdapter Class.
@@ -167,8 +181,54 @@ public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCust
     }
 
     public void logout(){
-        Log.e("Log out ->", " Now log out and start the activity login");
         UserSessionManager.getSingleInstance(context).logoutUser();
+        //From session
+        Log.e(TAG + " sess", "->" + UserSessionManager.getSingleInstance(context).getUserDetails().get("username"));
+        Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(context).getUserDetails().get("uid"));
+        Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(context).getUserDetails().get("cookies"));
+
+        Log.e("User Logout", "-------> logout");
+
+        // the request
+        try{
+   //         APIConnection.SetAsyncCaller(this, context);
+   //         Log.e("User Logout", "-------> Call API");
+   //         APIConnection.signoutUser(UserSessionManager.getSingleInstance(context).getUserDetails().get("uid"), null);
+
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
+
+
+        String response = result.toString();
+
+        JSONTokener tokener = new JSONTokener(response);
+        try {
+            JSONObject finalResult = new JSONObject(tokener);
+            Log.i("LOG OUT", "RESPONSE CODE= " + finalResult.getString("success"));
+
+
+            if(finalResult.getString("success").equals("true")){
+
+
+                Log.e("Log out ->", " Now log out and start the activity login");
+                UserSessionManager.getSingleInstance(context).logoutUser();
+
+                Log.e("Cookie now->", ""+UserSessionManager.getSingleInstance(context).getCookies());
+
+            }else{
+                Log.e("Log out FAILED->", " CANNOT LOGOUT USER");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 
