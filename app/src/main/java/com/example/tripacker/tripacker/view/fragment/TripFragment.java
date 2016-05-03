@@ -179,7 +179,6 @@ public class TripFragment extends Fragment implements AsyncCaller {
                 arrayOfTrips.add(tripEntity);
             }
             renderSpotList(arrayOfTrips);
-            Log.e("TripFragment render list", arrayOfTrips.toString());
 
         } catch (JSONException e) {
             e.printStackTrace();

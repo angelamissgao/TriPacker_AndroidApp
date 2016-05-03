@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -24,6 +25,7 @@ import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.SpotListView;
+import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
 import com.example.tripacker.tripacker.view.activity.TripCreateActivity;
 import com.example.tripacker.tripacker.view.activity.TripEditSpotActivity;
 import com.example.tripacker.tripacker.view.adapter.TripSpotTimelineAdapter;
@@ -172,6 +174,23 @@ public class TripListPageFragment extends Fragment implements SpotListView {
     public void renderSpotList(ArrayList<SpotEntity> Spots) {
         TripSpotTimelineAdapter adapter = new TripSpotTimelineAdapter(thiscontext, Spots);
         trip_spotlistView.setAdapter(adapter);
+        trip_spotlistView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent spotIntent = new Intent(getActivity(), SpotViewActivity.class);
+
+                SpotEntity spotEntity = spotsOfTrip.get(position);
+                ArrayList<String> spot_info = new ArrayList<String>();
+                spot_info.add(spotEntity.getSpotId());
+
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("spotId", spot_info);
+                spotIntent.putExtras(bundle);
+
+                startActivity(spotIntent);
+            }
+        });
     }
 
 
