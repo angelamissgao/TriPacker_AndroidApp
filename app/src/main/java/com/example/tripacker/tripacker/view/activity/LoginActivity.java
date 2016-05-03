@@ -17,6 +17,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,9 +66,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     private String user_nickname = "";
     private String user_id = "";
 
-
-    // Configuration for calling a REST service
-    private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
     private ProgressDialog progressDialog;
 
 
@@ -76,20 +74,15 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
-        // Setup view elements
-        usernameText = (EditText) findViewById(R.id.input_username);
-        passwordText = (EditText) findViewById(R.id.input_password);
-        loginButton = (Button) findViewById(R.id.btn_login);
-        signupLink = (TextView) findViewById(R.id.link_signup);
-
-
         // User Session Manager
         session = UserSessionManager.getSingleInstance(getApplicationContext());
 
+        // Setup view elements
+        setUpViewById();
+        setUpClickEvent();
+    }
 
-//        ButterKnife.inject(this);
-
+    private void setUpClickEvent(){
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -108,6 +101,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             }
         });
     }
+
+    private void setUpViewById(){
+        usernameText = (EditText) findViewById(R.id.input_username);
+        passwordText = (EditText) findViewById(R.id.input_password);
+        loginButton = (Button) findViewById(R.id.btn_login);
+        signupLink = (TextView) findViewById(R.id.link_signup);
+    }
+
     public void showAlert(AlertDialog.Builder builder){
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -181,7 +182,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
 
     public void onLoginFailed(String message) {
         Toast.makeText(getBaseContext(), message, Toast.LENGTH_LONG).show();
-
         loginButton.setEnabled(true);
     }
 
@@ -255,11 +255,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             JSONObject finalResult = new JSONObject(tokener);
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-
             if(finalResult.getString("success").equals("true")){
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
-                // Parse session json object
+
                 user_username = finalResult.getString("username");
                 user_nickname = finalResult.getString("nickname");
                 user_id = finalResult.getString("uid");
