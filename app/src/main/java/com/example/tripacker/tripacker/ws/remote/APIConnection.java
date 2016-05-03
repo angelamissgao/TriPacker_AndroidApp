@@ -241,7 +241,7 @@ public class APIConnection{
 
         if (true) {
             HttpGet httpGet = new HttpGet(url);
-            Log.e("Cookie? ", UserSessionManager.getSingleInstance(context).getCookies());
+            Log.e("Cookie? ", UserSessionManager.getSingleInstance(context).getCookies()+".");
             setRequestCookies(httpGet);
 
             AsyncJsonGetTask getTask = new AsyncJsonGetTask(caller);
