@@ -97,10 +97,10 @@ public class MainActivity extends ActionBarActivity {
 
 
 //      start login activity
-//        if(UserSessionManager.getSingleInstance(this).isUserLoggedIn()){
-//            Intent intent = new Intent(this, LoginActivity.class);
-//            startActivity(intent);
-//        }
+        if(UserSessionManager.getSingleInstance(this).isUserLoggedIn()){
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }
         UserSessionManager.getSingleInstance(this).checkLogin();
 
 

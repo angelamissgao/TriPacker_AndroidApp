@@ -81,7 +81,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         Bundle bundle = getIntent().getExtras();
         ArrayList<String> stuff = bundle.getStringArrayList("spotId");
         spotEntity.setSpotId(stuff.get(0));
-        Log.e("SpotID is ----> ", stuff.get(0));
+
 
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

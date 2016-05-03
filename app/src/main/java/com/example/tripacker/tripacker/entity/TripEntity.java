@@ -64,12 +64,15 @@ public class TripEntity implements Serializable {
 
         try {
             this.name = object.getString("tripName");
+            this.trip_id = object.getInt("tripId");
      /*       this.owner = object.getString("owner");
             this.cover_photo = object.getString("cover_photo");
             this.tip = object.getString("tip");
             this.status = object.getString("status");
             this.score = object.getString("score");*/
-            this.gmt_create = object.getString("gmt_create");
+            if(object.has(gmt_create)){
+                this.gmt_create = object.getString("gmt_create");
+            }
           //  this.gmt_modified = object.getString("gmt_modified");
         } catch (JSONException e) {
             e.printStackTrace();
@@ -147,7 +150,7 @@ public class TripEntity implements Serializable {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("***** Trip Entity Details *****\n");
         stringBuilder.append("name=" + this.getName() + "\n");
-        stringBuilder.append("created_at=" + this.getGmt_create() + "\n");
+        stringBuilder.append("tripID=" + this.getTrip_id() + "\n");
         stringBuilder.append("*******************************");
 
         return stringBuilder.toString();
