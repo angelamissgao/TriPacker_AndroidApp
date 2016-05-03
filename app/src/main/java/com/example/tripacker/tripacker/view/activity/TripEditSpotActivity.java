@@ -11,13 +11,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
+import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.view.adapter.SpotsListAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
@@ -45,6 +48,8 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
     EditText endDateInput;
     private ListView addSpotListView;
     private ArrayList<SpotEntity> arrayOfSpots = new ArrayList<>();
+    private ArrayList<String> selectedSpotID = new ArrayList<>();
+    private TripEntity tripEntity = new TripEntity();
 
     private Integer[] imagesource = {
             R.drawable.paris,
@@ -59,7 +64,13 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_edit_spot);
 
+        //Get Trip
         Bundle bundle = getIntent().getExtras();
+        ArrayList<Integer> stuff = bundle.getIntegerArrayList("tripID");
+        Log.e(TAG + " of tripID", stuff.get(0).toString());
+        tripEntity.setTrip_id(stuff.get(0));
+        Log.e(TAG + " of tripEntity.tripID-->", String.valueOf(tripEntity.getTrip_id()));
+
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
@@ -70,9 +81,8 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
         // Set Up List View
         addSpotListView = (ListView) findViewById(R.id.addSpotListView);
 
-        //HTTP GET requests
+        //HTTP GET requests to get posible spots
         getContent();
-
 
     }
 
@@ -101,7 +111,7 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
-            //sendContent();
+            updateContent(tripEntity.getTrip_id(), selectedSpotID);
             setResult(200, null);
             finish();
         }
@@ -154,11 +164,15 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
         arrayOfSpots.clear();
         String  response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
+        Log.e( TAG + "RequestCode ----->", String.valueOf(requestCode));
         Log.e( TAG + "Get All Spots to Add to Trip ----->", response);
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
-            JSONArray Spots = finalResult.getJSONArray("spotList");
+            JSONArray Spots = new JSONArray();
+            if(finalResult.has("spotList")){
+                Spots = finalResult.getJSONArray("spotList");
+            }
             for (int i = 0; i < Spots.length(); i++) {  // **line 2**
                 JSONObject childJSONObject = Spots.getJSONObject(i);
                 if(childJSONObject.getString("spotName").length() == 0) {
@@ -187,6 +201,17 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
     public void renderSpotList(ArrayList<SpotEntity> Spots) {
         SpotsListAdapter adapter = new SpotsListAdapter(getApplicationContext(), Spots);
         addSpotListView.setAdapter(adapter);
+        addSpotListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView addbn = (TextView) view.findViewById(R.id.spotsToAdd);
+                addbn.setText("added already");
+                addbn.setBackgroundColor(Color.GRAY);
+
+                selectedSpotID.add(arrayOfSpots.get(position).getSpotId());
+                Log.e(TAG + "selectedSpotID are: ", selectedSpotID.toString());
+            }
+        });
     }
 
     @Override
@@ -217,5 +242,26 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
     @Override
     public Context context() {
         return null;
+    }
+
+
+    public void updateContent(int tripID, ArrayList<String> spotsAdded){
+        String spotsAdded_url = new String();
+
+        for(int i = 0; i < spotsAdded.size(); i++) {
+            spotsAdded_url += spotsAdded.get(i);
+            if(i != spotsAdded.size()-1 ) {
+                spotsAdded_url += ",";
+            }
+        }
+
+        Log.e(TAG + "spotsAdded_url *** is:",spotsAdded_url);
+
+        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+        nameValuePairs.add(new BasicNameValuePair("spots", spotsAdded_url));
+
+        APIConnection.SetAsyncCaller(this, getApplicationContext());
+        APIConnection.editTrip(tripID, nameValuePairs);
+
     }
 }
