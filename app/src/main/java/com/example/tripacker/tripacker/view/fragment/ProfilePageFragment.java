@@ -35,11 +35,13 @@ import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.UserProfileView;
 import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
 import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
+import com.example.tripacker.tripacker.view.activity.TripCreateActivity;
 import com.example.tripacker.tripacker.view.activity.TripViewActivity;
 import com.example.tripacker.tripacker.view.activity.ViewFollowingActivity;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.squareup.picasso.Picasso;
 
@@ -148,6 +150,42 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
             }
         });
 
+        // Floating button
+        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.create_spot);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getActivity(), SpotCreateActivity.class);
+
+                // bundle data to the spot view activity
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("user_id");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("user_id", spot_info);
+
+                mainInten.putExtras(bundle);
+                startActivity(mainInten);
+
+            }
+        });
+
+        //Create a new Trip
+        FloatingActionButton ButtonAddTrip = (FloatingActionButton) view.findViewById(R.id.create_trip_frag);
+        ButtonAddTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getActivity(), TripCreateActivity.class);
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("user_id");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("user_id", spot_info);
+                mainInten.putExtras(bundle);
+
+                startActivity(mainInten);
+            }
+        });
 
         return view;
     }

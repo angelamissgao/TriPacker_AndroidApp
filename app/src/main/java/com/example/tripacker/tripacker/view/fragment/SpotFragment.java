@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,9 +21,11 @@ import com.example.tripacker.tripacker.presenter.SpotListPresenter;
 import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
+import com.example.tripacker.tripacker.view.activity.TripCreateActivity;
 import com.example.tripacker.tripacker.view.adapter.SpotsGridViewAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -83,7 +84,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         getContent();
 
         // Spots gridView listener
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent mainInten = new Intent(getActivity(), SpotViewActivity.class);
@@ -120,6 +121,23 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
                 mainInten.putExtras(bundle);
                 startActivity(mainInten);
 
+            }
+        });
+
+        //Fab - Create a new Trip
+        FloatingActionButton ButtonAddTrip = (FloatingActionButton) view.findViewById(R.id.create_trip_frag);
+        ButtonAddTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mainInten = new Intent(getActivity(), TripCreateActivity.class);
+                ArrayList<String> spot_info = new ArrayList<String>();
+                //Todo: added spot json
+                spot_info.add("user_id");
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("user_id", spot_info);
+                mainInten.putExtras(bundle);
+
+                startActivity(mainInten);
             }
         });
 

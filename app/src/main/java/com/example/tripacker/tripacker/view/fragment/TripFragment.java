@@ -141,7 +141,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
         try{
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             String pageId = "1";
-            String pageSize = "10";
+            String pageSize = "30";
 
             nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
             nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));

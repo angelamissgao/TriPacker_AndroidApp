@@ -48,26 +48,23 @@ public class TripEditActivity extends AppCompatActivity implements AsyncCaller {
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
-        // Post request to add a spot
-        Button button_addSpot = (Button) findViewById(R.id.addTrip);
-        button_addSpot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendContent();
-            }
-        });
+//        // Post request to add a spot
+//        Button button_addSpot = (Button) findViewById(R.id.addTrip);
+//        button_addSpot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendContent();
+//            }
+//        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.action_menu, menu);
-
-
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-
 
         return true;
     }

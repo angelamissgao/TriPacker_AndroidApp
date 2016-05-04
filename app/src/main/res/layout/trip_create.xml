@@ -137,14 +137,14 @@
 
     </LinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:text="Add Trip"
-        android:id="@+id/addTrip"
-        android:backgroundTint="@color/primary"
-        android:textColor="@color/secondary_text_default_material_dark" />
+    <!--<Button-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:text="Add Trip"-->
+        <!--android:id="@+id/addTrip"-->
+        <!--android:backgroundTint="@color/primary"-->
+        <!--android:textColor="@color/secondary_text_default_material_dark" />-->
 
 
 </LinearLayout>

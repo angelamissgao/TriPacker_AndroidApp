@@ -46,14 +46,14 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
-        // Post request to add a spot
-        Button button_addSpot = (Button) findViewById(R.id.addTrip);
-        button_addSpot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendContent();
-            }
-        });
+//        // Post request to add a spot
+//        Button button_addSpot = (Button) findViewById(R.id.addTrip);
+//        button_addSpot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendContent();
+//            }
+//        });
     }
 
     @Override
