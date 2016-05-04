@@ -1,12 +1,20 @@
 package com.example.tripacker.tripacker.view.activity;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -51,9 +59,12 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
     private GoogleMap googleMap;
     MarkerOptions markerOptions;
     LatLng latLng;
+    private LocationManager locationManager;
+    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
+    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
 
     //Spot Model
-    SpotEntity newspot = new SpotEntity();
+    private SpotEntity newspot = new SpotEntity();
 
 
     @Override
@@ -98,14 +109,29 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
             }
         });
 
-//        //Getting Current location
-//        Button button_getCurrentGps = (Button) findViewById(R.id.getCurrentGps);
-//        button_getCurrentGps.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
+        //Getting Current location
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.SEND_SMS}, 10);
+            return;
+        }
+
+
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                MINIMUM_TIME_BETWEEN_UPDATES,
+                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
+                new MyLocationListener()
+        );
+
+        Button button_getCurrentGps = (Button) findViewById(R.id.showCurrentLocation);
+        button_getCurrentGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCurrentLocation();
+                Toast.makeText(getApplicationContext(), "get Current Location", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -121,8 +147,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
 
 
         //noinspection SimplifiableIfStatement
@@ -197,6 +221,39 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         finish();
     }
 
+    protected void showCurrentLocation() {
+
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        // Add a marker in spot and move the camera
+        LatLng spot_gps = new LatLng(location.getLatitude(), location.getLongitude());
+        String message = String.format(
+                "New Location \n Longitude: %1$s \n Latitude: %2$s",
+                location.getLongitude(), location.getLatitude()
+        );
+        //set the spot model
+        newspot.setGeo_latitude(String.format("%s", location.getLatitude()));
+        newspot.setGeo_longitude(String.format("%s", location.getLongitude()));
+
+        googleMap.addMarker(new MarkerOptions().position(spot_gps).title(message));
+        float zoomLevel = (float) 12.0;
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spot_gps, zoomLevel));
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+            return;
+        }
+
+        if (location != null) {
+            message = String.format(
+                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
+                    location.getLongitude(), location.getLatitude()
+            );
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //Google Map Task
     private class GeocoderTask extends AsyncTask<String, Void, List<Address>>{
         @Override
         protected List<Address> doInBackground(String... locationName){
@@ -208,7 +265,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
                 if (address==null) {
                     return null;
                 }
-
                 Log.e("current location is: ---****",address.get(0).toString());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -245,6 +301,34 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
 
             float zoomLevel = (float) 12.0;
             googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoomLevel));
+        }
+    }
+
+    //Location Listener class
+    private class MyLocationListener implements LocationListener {
+
+        @Override
+        public void onLocationChanged(Location location) {
+            String message = String.format(
+                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
+                    location.getLongitude(), location.getLatitude()
+            );
+            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+            Toast.makeText(getApplicationContext(), "provider status changed", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+            Toast.makeText(getApplicationContext(), "privider enabled by user", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+            Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
         }
     }
 }

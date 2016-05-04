@@ -6,19 +6,6 @@
     android:orientation="vertical"
     android:background="@color/lightgrey">
 
-    <!--<com.google.android.gms.maps.MapView-->
-    <!--android:id="@+id/mapview"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="200dp">-->
-    <!--</com.google.android.gms.maps.MapView>-->
-
-
-    <!--<ImageView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="200dp"-->
-        <!--android:gravity="center"-->
-        <!--android:id="@+id/imageView"-->
-        <!--android:background="#6d6a6a" />-->
     <fragment
         android:layout_width="match_parent"
         android:layout_height="300dp"
@@ -26,7 +13,6 @@
         android:id="@+id/mapCreate"
         android:layout_gravity="center_horizontal"
         tools:context="com.example.tripacker.tripacker.view.activity.SpotCreateActivity"/>
-    <!--&lt;!&ndash;tools:layout="@layout/spot_view" />&ndash;&gt;-->
 
     <LinearLayout
         android:orientation="vertical"
@@ -114,6 +100,16 @@
                 android:id="@+id/showSpotMap"
                 android:backgroundTint="@color/primary"
                 android:textColor="#171313" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="show Current GPS"
+                android:id="@+id/showCurrentLocation"
+                android:backgroundTint="@color/primary"
+                android:textColor="#171313" />
+
         </LinearLayout>
 
 

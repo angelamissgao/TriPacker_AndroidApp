@@ -66,7 +66,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
     private GoogleMap mMap;
 
-    protected LocationManager locationManager;
+    private LocationManager locationManager;
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
 
@@ -92,7 +92,6 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
         //get Request
         getContent(stuff.get(0));
-
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -244,6 +243,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         spotEntity.setGeo_latitude(geoLati);
         spotLocation.setLatitude(Double.parseDouble(geoLati));
         spotLocation.setLongitude(Double.parseDouble(geoLong));
+
         onMapReady(mMap);
         Log.e("Spot geo set------>", "Lat" + geoLati + "  " + "Long" + geoLong);
 
@@ -259,7 +259,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
+        // Add a marker in spot and move the camera
         LatLng spot_gps = new LatLng(spotLocation.getLatitude(), spotLocation.getLongitude());
         mMap.addMarker(new MarkerOptions().position(spot_gps).title(spotEntity.getName()));
         float zoomLevel = (float) 12.0;
