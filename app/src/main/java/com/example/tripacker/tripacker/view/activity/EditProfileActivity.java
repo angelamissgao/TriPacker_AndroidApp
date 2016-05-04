@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,10 +25,13 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
+import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 import com.example.tripacker.tripacker.view.UserEditProfileDetailsView;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
@@ -69,6 +74,19 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile);
+
+        setToolBar();
+        setUpViewById();
+        setDateTimeField();
+
+        initializeDialog();
+        showLoading();
+
+        getProfile();
+
+    }
+
+    public void setToolBar(){
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Edit Profile");
         setSupportActionBar(toolbar);
@@ -78,51 +96,16 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
-
-        initializeDialog();
-        showLoading();
-
-        pref = getApplicationContext().getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
-
-        getProfile();
-
-        dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
-
-        setUpViewById();
-
-
-        // Create an ArrayAdapter using the string array and a default spinner layout
-        gender_arr_adapter = ArrayAdapter.createFromResource(this,
-                R.array.gender_value, android.R.layout.simple_spinner_item);
-        // Specify the layout to use when the list of choices appears
-        gender_arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-     // Apply the adapter to the spinner
-        gender_spinner.setAdapter(gender_arr_adapter);
-
-        setDateTimeField();
-
     }
     public void initializeDialog(){
         progressDialog = new ProgressDialog(EditProfileActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("ERROR !!");
-        builder.setMessage("Sorry there was an error getting data from the Internet.\nNetwork Unavailable!");
-
-        errorDialog = builder.create();
-        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                //runTask();
-            }
-        });
     }
     private void setUpViewById(){
+        dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
+
         usernameEtxt = (EditText) findViewById(R.id.row1editText);
         locationEtxt = (EditText) findViewById(R.id.row2editText);
         emailEtxt = (EditText) findViewById(R.id.row3editText);
@@ -130,6 +113,14 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         phoneEtxt = (EditText) findViewById(R.id.row6editText);
         introductionEtxt = (EditText) findViewById(R.id.row7editText);
         gender_spinner = (Spinner) findViewById(R.id.row5spinner);
+
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        gender_arr_adapter = ArrayAdapter.createFromResource(this,
+                R.array.gender_value, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        gender_arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        gender_spinner.setAdapter(gender_arr_adapter);
     }
 
 
@@ -146,9 +137,6 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
             updateProfile();
@@ -157,11 +145,9 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         }
 
         if (id == android.R.id.home) {
-            Log.e(TAG, "-> click!"+ item.getItemId()+"");
             setResult(400, null);
             finish();
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -179,26 +165,33 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
-
-
     }
 
     private void getProfile(){
         Log.e("Get User Profile Edit", "-> Get Content");
+        if(isThereInternetConnection()) {
+            // the request
+            try{
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+                nameValuePairs.add(new BasicNameValuePair("user_id", UserSessionManager.getSingleInstance(this).getUserDetails().get("uid")));
+                APIConnection.SetAsyncCaller(this, getApplicationContext());
+                Log.e(TAG, "id-> "+UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
+                APIConnection.getUserProfile(Integer.parseInt(UserSessionManager.getSingleInstance(this).getUserDetails().get("uid")), nameValuePairs);
 
-
-        // the request
-        try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
-            APIConnection.SetAsyncCaller(this, getApplicationContext());
-
-            APIConnection.getUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
-
-        }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getMessage());
+            }
+            catch (Exception e)
+            {
+                Log.e(TAG, e.toString());
+            }
+        }else{
+            try {
+                throw new NetworkConnectionException(this);
+            } catch (NetworkConnectionException e) {
+                hideLoading();
+                Log.e("Network Error ", "-------> No internet");
+                android.support.v7.app.AlertDialog.Builder builder = e.displayMessageBox();
+                showAlert(builder);
+            }
         }
 
     }
@@ -206,27 +199,62 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
     private void updateProfile(){
         Log.e("Update User Profile", "-> Update Profile");
 
-        // the request
-        try{
-            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
-            nameValuePairs.add(new BasicNameValuePair("uid", pref.getString("uid", null)));
-            nameValuePairs.add(new BasicNameValuePair("gender", gender_spinner.getSelectedItemPosition()+""));
-            nameValuePairs.add(new BasicNameValuePair("tel", phoneEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("birthday", birthdayEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("nickname", usernameEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("email", emailEtxt.getText().toString()));
-            nameValuePairs.add(new BasicNameValuePair("introduction", introductionEtxt.getText().toString()));
+        if(isThereInternetConnection()) {
 
-            APIConnection.SetAsyncCaller(this, getApplicationContext());
-            APIConnection.updateUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
+            // the request
+            try{
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
+                nameValuePairs.add(new BasicNameValuePair("uid", UserSessionManager.getSingleInstance(this).getUserDetails().get("uid")));
+                nameValuePairs.add(new BasicNameValuePair("gender", gender_spinner.getSelectedItemPosition()+""));
+                nameValuePairs.add(new BasicNameValuePair("tel", phoneEtxt.getText().toString()));
+                nameValuePairs.add(new BasicNameValuePair("birthday", birthdayEtxt.getText().toString()));
+                nameValuePairs.add(new BasicNameValuePair("nickname", usernameEtxt.getText().toString()));
+                nameValuePairs.add(new BasicNameValuePair("email", emailEtxt.getText().toString()));
+                nameValuePairs.add(new BasicNameValuePair("introduction", introductionEtxt.getText().toString()));
 
+                APIConnection.SetAsyncCaller(this, getApplicationContext());
+                APIConnection.updateUserProfile(Integer.parseInt(UserSessionManager.getSingleInstance(this).getUserDetails().get("uid")), nameValuePairs);
+
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
+        }else{
+            try {
+                throw new NetworkConnectionException(this);
+            } catch (NetworkConnectionException e) {
+                hideLoading();
+                Log.e("Network Error ", "-------> No internet");
+                android.support.v7.app.AlertDialog.Builder builder = e.displayMessageBox();
+                showAlert(builder);
+            }
         }
-        catch (Exception e)
-        {
-            Log.e(TAG, e.getMessage());
-        }
+
+
+
     }
 
+    public void showAlert(android.support.v7.app.AlertDialog.Builder builder){
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                getProfile();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create(); // calling builder.create after adding buttons
+        dialog.show();
+        Toast.makeText(this, "Network Unavailable!", Toast.LENGTH_LONG).show();
+    }
 
     @Override
     public void onClick(View view) {
@@ -280,7 +308,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void showLoading() {
-        errorDialog.hide();
+
         progressDialog.show();
     }
 
@@ -299,16 +327,25 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void hideRetry() {
-        errorDialog.dismiss();
     }
 
     @Override
     public void showError(String message) {
-        errorDialog.show();
     }
 
     @Override
     public Context context() {
-        return null;
+        return this;
+    }
+
+    private boolean isThereInternetConnection() {
+        boolean isConnected;
+
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
     }
 }

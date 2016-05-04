@@ -2,15 +2,20 @@ package com.example.tripacker.tripacker.view.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,15 +24,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.UserProfileEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.entity.mapper.UserProfileEntityJsonMapper;
+import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.UserProfileView;
 import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
 import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
+import com.example.tripacker.tripacker.view.activity.TripViewActivity;
 import com.example.tripacker.tripacker.view.activity.ViewFollowingActivity;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
@@ -37,6 +45,7 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -48,7 +57,7 @@ import java.util.List;
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class ProfilePageFragment extends Fragment implements AsyncCaller, UserProfileView {
+public class ProfilePageFragment extends Fragment implements AsyncCaller, UserProfileView, AdapterView.OnItemClickListener {
     private static final String TAG = "PofilePageFragment";
     private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
@@ -69,6 +78,11 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
     private TextView followingnum_view;
     private TextView followernum_view;
 
+    private String user_id;
+
+
+    private ArrayList<TripEntity> arrayOfTrips;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,6 +97,8 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
         Log.e(TAG, "-------> Get Public profile");
 
+        //get user ID
+        user_id = UserSessionManager.getSingleInstance(thiscontext).getUserDetails().get("uid");
 
         setUpViewById(view);
 
@@ -93,8 +109,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         Log.e(TAG+" sess", "->" + pref.getString("cookies", null));
 
         getContent();
-
-
+        getTripContent(Integer.parseInt(user_id));
 
 
         // Edit button
@@ -102,7 +117,6 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Intent intent = new Intent(getActivity(), EditProfileActivity.class);
                 startActivityForResult(intent, REQUEST_EDIT);
 
@@ -169,7 +183,6 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         try{
 
             APIConnection.SetAsyncCaller(this, thiscontext);
-
             APIConnection.getUserPublicProfile(Integer.parseInt(pref.getString("uid", null).trim()), null);
 
         }
@@ -177,6 +190,54 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         {
             Log.e(TAG, e.toString());
         }
+
+    }
+
+    public void getTripContent(int uid) {
+        if(isThereInternetConnection()) {
+            try {
+                List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
+
+                APIConnection.SetAsyncCaller(this, thiscontext);
+                APIConnection.getTripsByOwner(uid, nameValuePairs);
+
+            } catch (Exception e) {
+                Log.e("GetTripException", e.toString());
+            }
+        }else{
+            try {
+                throw new NetworkConnectionException(thiscontext);
+            } catch (NetworkConnectionException e) {
+                progressDialog.dismiss();
+                Log.e("Network Error ", "-------> No internet");
+                AlertDialog.Builder builder = e.displayMessageBox();
+                showAlert(builder);
+            }
+        }
+    }
+
+    public void showAlert(AlertDialog.Builder builder){
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                getContent();
+                getTripContent(Integer.parseInt(user_id));
+            }
+        });
+        AlertDialog dialog = builder.create(); // calling builder.create after adding buttons
+        dialog.show();
+        Toast.makeText(thiscontext, "Network Unavailable!", Toast.LENGTH_LONG).show();
 
     }
 
@@ -194,12 +255,26 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
             if(finalResult.getString("success").equals("true")){
                 hideLoading();
-
                 Log.i(TAG, "RESPONSE BODY= " + response);
-                // Parse user json object
-                UserProfileEntity user = (new UserProfileEntityJsonMapper()).transformUserProfileEntity(response);
-                Log.i(TAG, "User Info= " + user.toString());
-                renderUserProfile(user);
+                if(finalResult.getString("code").equals("320")){
+                    arrayOfTrips = new ArrayList<>();
+                    JSONArray Trips = finalResult.getJSONArray("tripList");
+                    for(int i = 0; i < Trips.length(); i++ ) {
+                        JSONObject childJSONObject = Trips.getJSONObject(i);
+                        TripEntity tripEntity = new TripEntity(childJSONObject);
+
+
+                        arrayOfTrips.add(tripEntity);
+                    }
+                    renderTrip(arrayOfTrips);
+
+                }else{
+                    // Parse user json object
+                    UserProfileEntity user = (new UserProfileEntityJsonMapper()).transformUserProfileEntity(response);
+                    Log.i(TAG, "User Info= " + user.toString());
+                    renderUserProfile(user);
+                }
+
 
             }else{
 
@@ -237,47 +312,32 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
     @Override
     public void renderTrip(ArrayList<TripEntity> TripEntities) {
-        // Construct the data source
-        ArrayList<TripEntity> arrayOfTrips = new ArrayList<TripEntity>();
-        // Create the adapter to convert the array to views
+
+
+
         TripsTimelineAdapter adapter = new TripsTimelineAdapter(thiscontext, arrayOfTrips);
-        // Attach the adapter to a ListView
         trip_listView.setAdapter(adapter);
+        trip_listView.setOnItemClickListener(this);
 
-
-        // Add item to adapter
-/*
-        try {
-
-           JSONObject js_trip1 = new JSONObject();
-            js_trip1.put("name", "San Diego Trip");
-            js_trip1.put("gmt_create", "04/10/2015");
-            TripEntity newTrip1 = new TripEntity(js_trip1);
-            adapter.add(newTrip1);
-
-            JSONObject js_trip2 = new JSONObject();
-            js_trip2.put("name", "SFMA");
-            js_trip2.put("gmt_create", "06/12/2015");
-            TripEntity newTrip2 = new TripEntity(js_trip2);
-            adapter.add(newTrip2);
-
-            JSONObject js_trip3 = new JSONObject();
-            js_trip3.put("name", "Stanford University");
-            js_trip3.put("gmt_create", "08/12/2015");
-            TripEntity newTrip3 = new TripEntity(js_trip3);
-            adapter.add(newTrip3);
-
-            JSONObject js_trip4 = new JSONObject();
-            js_trip4.put("name", "NASA Research Park");
-            js_trip4.put("gmt_create", "12/12/2015");
-            TripEntity newTrip4 = new TripEntity(js_trip4);
-            adapter.add(newTrip4);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        */
     }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
+        TripEntity item = (TripEntity) adapter.getItemAtPosition(position);
+        Toast.makeText(thiscontext, "CLICK: " + item, Toast.LENGTH_SHORT).show();
+
+        ArrayList<Integer> trip_info = new ArrayList<>();
+        TripEntity tripEntity = arrayOfTrips.get(position);
+        trip_info.add(tripEntity.getTrip_id());
+        Intent tripIntent = new Intent(thiscontext, TripViewActivity.class);
+
+        Bundle bundle = new Bundle();
+        bundle.putIntegerArrayList("tripId", trip_info);
+        tripIntent.putExtras(bundle);
+
+        startActivity(tripIntent);
+    }
+
 
     @Override
     public void showLoading() {
@@ -319,7 +379,19 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
     public void viewFollowing() {
 
             Intent followingInten = new Intent(getActivity(), ViewFollowingActivity.class);
+            followingInten.putExtra("profile_id", user_id);
             startActivity(followingInten);
 
+    }
+
+    private boolean isThereInternetConnection() {
+        boolean isConnected;
+
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) thiscontext.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
     }
 }

@@ -79,6 +79,9 @@ public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCust
                 name = (TextView) itemView.findViewById(R.id.name);         // Creating Text View object from header.xml for name
                 username = (TextView) itemView.findViewById(R.id.username);       // Creating Text View object from header.xml for email
                 profile = (ImageView) itemView.findViewById(R.id.circleView);//
+                //set drawer header
+                username.setText("@"+UserSessionManager.getSingleInstance(context).getUserDetails().get("username"));
+                name.setText(UserSessionManager.getSingleInstance(context).getUserDetails().get("nickname"));
             }
         }
 
@@ -95,19 +98,13 @@ public class DrawerItemCustomAdapter extends RecyclerView.Adapter<DrawerItemCust
             Log.e("Navi ", "Click " + getPosition());
             switch (getPosition()){
                 case 1:
-
+                    Intent tripIntent = new Intent(context, TripActivity.class);
+                    context.startActivity(tripIntent);
                     break;
                 case 2:
 
                     break;
                 case 3:
-                    Intent tripIntent = new Intent(context, TripActivity.class);
-                    context.startActivity(tripIntent);
-                    break;
-                case 4:
-
-                    break;
-                case 5:
                     logout();
                     break;
             }

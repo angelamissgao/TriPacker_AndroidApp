@@ -283,7 +283,7 @@ public class APIConnection{
      */
     private static void setRequestCookies(HttpMessage reqMsg) {
         UserSessionManager session = UserSessionManager.getSingleInstance(context);
-        if(session.isUserLoggedIn() && !session.getUserDetails().get("cookies").isEmpty()){
+        if(session.isUserLoggedIn() && session.getUserDetails().get("cookies")!=null){
             reqMsg.setHeader("Set-Cookie", session.getUserDetails().get("cookies"));
         }
     }

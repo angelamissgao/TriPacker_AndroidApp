@@ -37,17 +37,12 @@
 
 
     <string-array name="navDrawerItems">
-        <item>Profile</item>
-        <item>My Spot</item>
         <item>My Trip</item>
         <item>Bookmark</item>
         <item>Logout</item>
     </string-array>
 
     <string-array name="navDrawerIcons">
-
-        <item>@drawable/ic_profile_normal_24dp</item>
-        <item>@drawable/ic_place_normal_24dp</item>
         <item>@drawable/ic_trip_normal_24dp</item>
         <item>@drawable/ic_favorite_normal_24dp</item>
         <item>@drawable/ic_logout_normal_24dp</item>

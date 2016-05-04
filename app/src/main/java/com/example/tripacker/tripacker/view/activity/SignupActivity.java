@@ -1,7 +1,12 @@
 package com.example.tripacker.tripacker.view.activity;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +17,7 @@ import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.UserSessionManager;
+import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
@@ -64,12 +70,12 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
         session = new UserSessionManager(getApplicationContext());
 
         // Setup view elements
-        usernameText = (EditText) findViewById(R.id.input_username);
-        nameText = (EditText) findViewById(R.id.input_name);
-        passwordText = (EditText) findViewById(R.id.input_password);
-        signupButton = (Button) findViewById(R.id.btn_signup);
-        loginLink = (TextView) findViewById(R.id.link_login);
+        setUpViewById();
+        setUpClickEvent();
 
+    }
+
+    private void setUpClickEvent(){
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +90,14 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
                 finish();
             }
         });
+    }
+
+    private void setUpViewById(){
+        usernameText = (EditText) findViewById(R.id.input_username);
+        nameText = (EditText) findViewById(R.id.input_name);
+        passwordText = (EditText) findViewById(R.id.input_password);
+        signupButton = (Button) findViewById(R.id.btn_signup);
+        loginLink = (TextView) findViewById(R.id.link_login);
     }
 
     public void signup() {
@@ -166,21 +180,55 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
         String name = nameText.getText().toString();
         String password = passwordText.getText().toString();
 
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("username", username));
-        nameValuePairs.add(new BasicNameValuePair("nickname", name));
-        nameValuePairs.add(new BasicNameValuePair("password", password));
+        if(isThereInternetConnection()) {
 
-        // the request
-        try{
-            APIConnection.SetAsyncCaller(this, getApplicationContext());
-            APIConnection.registerUser(nameValuePairs);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("username", username));
+            nameValuePairs.add(new BasicNameValuePair("nickname", name));
+            nameValuePairs.add(new BasicNameValuePair("password", password));
 
+            // the request
+            try{
+                APIConnection.SetAsyncCaller(this, getApplicationContext());
+                APIConnection.registerUser(nameValuePairs);
+
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+        }else{
+            try {
+                throw new NetworkConnectionException(this);
+            } catch (NetworkConnectionException e) {
+                progressDialog.dismiss();
+                Log.e("Network Error ", "-------> No internet");
+                AlertDialog.Builder builder = e.displayMessageBox();
+                showAlert(builder);
+            }
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+
+    }
+
+    public void showAlert(AlertDialog.Builder builder){
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+                signupButton.setEnabled(true);
+            }
+        });
+
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                signup();
+            }
+        });
+        AlertDialog dialog = builder.create(); // calling builder.create after adding buttons
+        dialog.show();
+        Toast.makeText(this, "Network Unavailable!", Toast.LENGTH_LONG).show();
 
     }
 
@@ -217,5 +265,16 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
             e.printStackTrace();
         }
 
+    }
+
+    private boolean isThereInternetConnection() {
+        boolean isConnected;
+
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) this.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        isConnected = (networkInfo != null && networkInfo.isConnectedOrConnecting());
+
+        return isConnected;
     }
 }
