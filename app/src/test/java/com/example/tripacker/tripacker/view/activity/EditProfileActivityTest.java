@@ -1,9 +1,11 @@
 package com.example.tripacker.tripacker.view.activity;
-
+/*
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.TouchUtils;
 import android.widget.Button;
 import com.example.tripacker.tripacker.R;
+import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
+
 import android.widget.EditText;
 import android.widget.Spinner;
 
@@ -63,6 +65,6 @@ public class EditProfileActivityTest extends ActivityInstrumentationTestCase2<Ed
         assertEquals("Hello, Jake!", actualText);
         */
         
-    }
+//    }
 
-}
+//}

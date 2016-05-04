@@ -16,6 +16,10 @@ import android.test.ServiceTestCase;
 //import android.support.test.rule.ServiceTestRule;
 import android.app.Service;
 
+
+
+
+
 public class ViewProfileActivityTest extends ActivityInstrumentationTestCase2<ViewProfileActivity>{
 
 
