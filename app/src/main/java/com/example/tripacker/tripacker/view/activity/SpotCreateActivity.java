@@ -1,9 +1,16 @@
 package com.example.tripacker.tripacker.view.activity;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.CursorLoader;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -11,8 +18,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
+import android.preference.DialogPreference;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
@@ -25,6 +36,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.android.internal.http.multipart.MultipartEntity;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
@@ -38,6 +50,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,13 +97,13 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         getSupportActionBar().setElevation(0);
 
         // Post request to add a spot
-        Button button_addSpot = (Button) findViewById(R.id.addSpot);
-        button_addSpot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendContent();
-            }
-        });
+//        Button button_addSpot = (Button) findViewById(R.id.addSpot);
+//        button_addSpot.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                sendContent();
+//            }
+//        });
 
         //Google Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -116,7 +132,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
             return;
         }
 
-
         locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER,
                 MINIMUM_TIME_BETWEEN_UPDATES,
@@ -132,6 +147,18 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
                 Toast.makeText(getApplicationContext(), "get Current Location", Toast.LENGTH_LONG).show();
             }
         });
+
+        //Upload Image Feature
+        Button button_uploadImage = (Button) findViewById(R.id.uploadImage);
+        button_uploadImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent uploadImage = new Intent(getApplicationContext(), UploadImageActivity.class);
+                startActivity(uploadImage);
+            }
+        });
+
+
     }
 
     @Override
@@ -148,7 +175,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
             sendContent();
@@ -161,7 +187,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
             finish();
         }
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -169,6 +194,11 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         spotName = (EditText) findViewById(R.id.tripNameInput);
         spotAddress = (EditText) findViewById(R.id.startDate);
         spotDescription = (EditText) findViewById(R.id.endDate);
+
+        if(isEmpty(spotName) || isEmpty(spotAddress) || isEmpty(spotDescription)){
+            //// TODO: 5/4/16  handle exception;
+            Toast.makeText(getApplicationContext(), "Please typeIn informations needed!", Toast.LENGTH_LONG).show();
+        }
 
         String name = spotName.getText().toString();
         String tags = "history";
@@ -253,6 +283,13 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         }
     }
 
+    //check Input
+    private boolean isEmpty(EditText etText) {
+        if (etText.getText().toString().trim().length() > 0)
+            return false;
+        return true;
+    }
+
     //Google Map Task
     private class GeocoderTask extends AsyncTask<String, Void, List<Address>>{
         @Override
@@ -331,4 +368,5 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
             Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
         }
     }
+
 }

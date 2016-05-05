@@ -181,15 +181,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:layout_marginTop="30dp">
+        android:layout_marginTop="50dp">
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Add Spot"
-            android:id="@+id/addSpot"
+            android:text="Upload Image"
+            android:id="@+id/uploadImage"
             android:backgroundTint="#d98a67"
             android:textColor="#171313" />
     </LinearLayout>
+
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center"-->
+        <!--android:layout_marginTop="30dp">-->
+        <!--<Button-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Add Spot"-->
+            <!--android:id="@+id/addSpot"-->
+            <!--android:backgroundTint="#d98a67"-->
+            <!--android:textColor="#171313" />-->
+    <!--</LinearLayout>-->
 
 </LinearLayout>
 
