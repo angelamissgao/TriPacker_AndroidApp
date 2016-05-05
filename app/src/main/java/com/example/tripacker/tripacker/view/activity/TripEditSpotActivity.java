@@ -52,10 +52,10 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
     private TripEntity tripEntity = new TripEntity();
 
     private Integer[] imagesource = {
-//            R.drawable.paris,
-//            R.drawable.thai_temple,
-//            R.drawable.new_zealand,
-//            R.drawable.sf_night,
+            R.drawable.paris,
+            R.drawable.thai_temple,
+            R.drawable.new_zealand,
+            R.drawable.sf_night,
             R.drawable.sf_museum
     };
 
