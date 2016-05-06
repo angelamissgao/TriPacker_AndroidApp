@@ -3,6 +3,7 @@ package com.example.tripacker.tripacker.view.activity;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
+import com.example.tripacker.tripacker.exception.GPSProviderException;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -70,6 +72,9 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
     //Spot Model
     private SpotEntity newspot = new SpotEntity();
 
+    //GPS Exception
+    private boolean isGPSEnabled;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,27 +113,7 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         });
 
         //Getting Current location
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.SEND_SMS}, 10);
-            return;
-        }
-
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                MINIMUM_TIME_BETWEEN_UPDATES,
-                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-                new MyLocationListener()
-        );
-
-        Button button_getCurrentGps = (Button) findViewById(R.id.showCurrentLocation);
-        button_getCurrentGps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showCurrentLocation();
-                Toast.makeText(getApplicationContext(), "get Current Location", Toast.LENGTH_LONG).show();
-            }
-        });
+        setUpGPSLocation();
 
         //Upload Image Feature
         Button button_uploadImage = (Button) findViewById(R.id.uploadImage);
@@ -146,6 +131,33 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         spotAddress = (EditText) findViewById(R.id.startDate);
         spotDescription = (EditText) findViewById(R.id.endDate);
         button_showMap = (Button) findViewById(R.id.showSpotMap);
+    }
+
+    private void setUpGPSLocation() {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.SEND_SMS}, 10);
+                return;
+            }
+
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    MINIMUM_TIME_BETWEEN_UPDATES,
+                    MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
+                    new MyLocationListener()
+            );
+
+
+        Button button_getCurrentGps = (Button) findViewById(R.id.showCurrentLocation);
+        button_getCurrentGps.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCurrentLocation();
+                Toast.makeText(getApplicationContext(), "get Current Location", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -242,34 +254,45 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
     }
 
     protected void showCurrentLocation() {
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
-        // Add a marker in spot and move the camera
-        LatLng spot_gps = new LatLng(location.getLatitude(), location.getLongitude());
-        String message = String.format(
-                "New Location \n Longitude: %1$s \n Latitude: %2$s",
-                location.getLongitude(), location.getLatitude()
-        );
+        if(isGPSEnabled) {
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
-        //set the spot model
-        newspot.setGeo_latitude(String.format("%s", location.getLatitude()));
-        newspot.setGeo_longitude(String.format("%s", location.getLongitude()));
-
-        googleMap.addMarker(new MarkerOptions().position(spot_gps).title(message));
-        float zoomLevel = (float) 12.0;
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spot_gps, zoomLevel));
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
-            return;
-        }
-
-        if (location != null) {
-            message = String.format(
+            // Add a marker in spot and move the camera
+            LatLng spot_gps = new LatLng(location.getLatitude(), location.getLongitude());
+            String message = String.format(
                     "New Location \n Longitude: %1$s \n Latitude: %2$s",
                     location.getLongitude(), location.getLatitude()
             );
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+
+            //set the spot model
+            newspot.setGeo_latitude(String.format("%s", location.getLatitude()));
+            newspot.setGeo_longitude(String.format("%s", location.getLongitude()));
+
+            googleMap.addMarker(new MarkerOptions().position(spot_gps).title(message));
+            float zoomLevel = (float) 12.0;
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spot_gps, zoomLevel));
+
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
+                return;
+            }
+            if (location != null) {
+                message = String.format(
+                        "New Location \n Longitude: %1$s \n Latitude: %2$s",
+                        location.getLongitude(), location.getLatitude()
+                );
+                Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+            }
+        } else {
+            try {
+                throw new GPSProviderException(this);
+            } catch (GPSProviderException e){
+                Log.e(TAG + "GPS Error", "-------> No GPS");
+                android.support.v7.app.AlertDialog.Builder builder = e.displayMessageBox();
+                showAlert(builder);
+            }
         }
     }
 
@@ -357,6 +380,29 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         public void onProviderDisabled(String provider) {
             Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void showAlert(android.support.v7.app.AlertDialog.Builder builder){
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+
+            }
+        });
+
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                dialog.dismiss();
+                setUpGPSLocation();
+            }
+        });
+        android.support.v7.app.AlertDialog dialog = builder.create(); // calling builder.create after adding buttons
+        dialog.show();
+        Toast.makeText(this, "Network Unavailable!", Toast.LENGTH_LONG).show();
     }
 
 }
