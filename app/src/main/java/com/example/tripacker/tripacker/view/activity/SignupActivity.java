@@ -249,7 +249,6 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
 
             if(finalResult.getString("success").equals("true")){
 
-
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse session json object
                 user_username = finalResult.getString("username");

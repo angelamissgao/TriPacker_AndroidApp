@@ -40,7 +40,9 @@ import com.example.tripacker.tripacker.view.fragment.SpotFragment;
 import com.example.tripacker.tripacker.view.fragment.TripFragment;
 
 import java.util.ArrayList;
-
+/*
+    Main Activity with functions defining the Main Navigation
+ */
 public class MainActivity extends ActionBarActivity {
     // Runner IO for calling external APIs
     private String TAG = "Main Activity";
@@ -62,7 +64,6 @@ public class MainActivity extends ActionBarActivity {
             R.drawable.ic_profile_selected_24dp};
 
 
-
     //menu drawer
     String navTitles[];
     TypedArray navIcons;
@@ -71,7 +72,6 @@ public class MainActivity extends ActionBarActivity {
     RecyclerView.Adapter mAdapter;
     ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-
 
 
     private static SharedPreferences pref;
@@ -95,7 +95,6 @@ public class MainActivity extends ActionBarActivity {
 
         WebServices.setURL(TEST_URL);
 
-
 //      start login activity
 
         //From session
@@ -103,14 +102,12 @@ public class MainActivity extends ActionBarActivity {
         Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
         Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("cookies"));
 
-
-
 //        if(UserSessionManager.getSingleInstance(this).isUserLoggedIn()){
 //
 //        }
        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-   //     UserSessionManager.getSingleInstance(this).checkLogin();
+   //   UserSessionManager.getSingleInstance(this).checkLogin();
 
 
 
@@ -160,12 +157,6 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
-
-
-        //
-
-
-
 
     }
 

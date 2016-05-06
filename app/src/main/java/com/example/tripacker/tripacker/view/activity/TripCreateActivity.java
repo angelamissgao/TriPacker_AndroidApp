@@ -46,6 +46,8 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
+        setView();
+
 //        // Post request to add a spot
 //        Button button_addSpot = (Button) findViewById(R.id.addTrip);
 //        button_addSpot.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +56,12 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
 //                sendContent();
 //            }
 //        });
+    }
+
+    private void setView() {
+        tripNameInput = (EditText) findViewById(R.id.tripNameInput);
+        beginDateInput = (EditText) findViewById(R.id.startDate);
+        endDateInput = (EditText) findViewById(R.id.endDate);
     }
 
     @Override
@@ -89,15 +97,17 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
     }
 
     private void sendContent() {
-        tripNameInput = (EditText) findViewById(R.id.tripNameInput);
-        beginDateInput = (EditText) findViewById(R.id.startDate);
-        endDateInput = (EditText) findViewById(R.id.endDate);
-
         String tripName = tripNameInput.getText().toString();
         String beginDate = beginDateInput.getText().toString();
         String endDate = endDateInput.getText().toString();
         String spots = "19,27,32,20";
 
+//        if (tripName.isEmpty() || tripName.length() < 3) {
+//            tripNameInput.setError("Trip Name should be at least 1. ");
+////            valid = false;
+//        } else {
+//            tripNameInput.setError(null);
+//        }
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("tripName", tripName));

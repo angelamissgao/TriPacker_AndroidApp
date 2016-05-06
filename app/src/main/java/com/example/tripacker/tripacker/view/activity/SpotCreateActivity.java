@@ -1,16 +1,10 @@
 package com.example.tripacker.tripacker.view.activity;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.CursorLoader;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
@@ -18,16 +12,11 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.preference.DialogPreference;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,7 +25,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.internal.http.multipart.MultipartEntity;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
@@ -49,11 +37,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,6 +57,7 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
     EditText spotName;
     EditText spotAddress;
     EditText spotDescription;
+    Button button_showMap;
 
     //Spot on Google maps
     private GoogleMap googleMap;
@@ -96,21 +84,15 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
-        // Post request to add a spot
-//        Button button_addSpot = (Button) findViewById(R.id.addSpot);
-//        button_addSpot.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sendContent();
-//            }
-//        });
+        //Set View
+        setView();
 
         //Google Map
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.mapCreate);
 
         // Getting a reference to the map and search by address
-        Button button_showMap = (Button) findViewById(R.id.showSpotMap);
+
         googleMap = mapFragment.getMap();
         button_showMap.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,8 +139,13 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
                 startActivity(uploadImage);
             }
         });
+    }
 
-
+    private void setView() {
+        spotName = (EditText) findViewById(R.id.tripNameInput);
+        spotAddress = (EditText) findViewById(R.id.startDate);
+        spotDescription = (EditText) findViewById(R.id.endDate);
+        button_showMap = (Button) findViewById(R.id.showSpotMap);
     }
 
     @Override
@@ -179,7 +166,7 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         if (id == R.id.action_done) {
             sendContent();
             setResult(200, null);
-            finish();
+//            finish();
         }
 
         if (id == android.R.id.home) {
@@ -191,15 +178,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
     }
 
     private void sendContent() {
-        spotName = (EditText) findViewById(R.id.tripNameInput);
-        spotAddress = (EditText) findViewById(R.id.startDate);
-        spotDescription = (EditText) findViewById(R.id.endDate);
-
-        if(isEmpty(spotName) || isEmpty(spotAddress) || isEmpty(spotDescription)){
-            //// TODO: 5/4/16  handle exception;
-            Toast.makeText(getApplicationContext(), "Please typeIn informations needed!", Toast.LENGTH_LONG).show();
-        }
-
         String name = spotName.getText().toString();
         String tags = "history";
         String categoryId = "11";
@@ -210,49 +188,60 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         String description = spotDescription.getText().toString();
         String img="/res/drawable/tie";
 
-        //Spot Entity
-        newspot.setName(name);
-        newspot.setAddress(address);
+        //Validate Input
+        if(validateInput(spotName) && validateInput(spotAddress) && validateInput(spotDescription)){
 
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("spotName", name));
-        nameValuePairs.add(new BasicNameValuePair("categoryId", categoryId));
-        nameValuePairs.add(new BasicNameValuePair("tags", tags));
-        nameValuePairs.add(new BasicNameValuePair("cityId", cityId));
-        nameValuePairs.add(new BasicNameValuePair("address", address));
-        nameValuePairs.add(new BasicNameValuePair("geoLatitude", geoLatitude));
-        nameValuePairs.add(new BasicNameValuePair("geoLongitude", geoLongitude));
-        nameValuePairs.add(new BasicNameValuePair("description", description));
-        nameValuePairs.add(new BasicNameValuePair("img", img));
+            //Spot Entity
+            newspot.setName(name);
+            newspot.setAddress(address);
 
-        try{
-            APIConnection.SetAsyncCaller( this , getApplicationContext());
-            APIConnection.createSpot(nameValuePairs);
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("spotName", name));
+            nameValuePairs.add(new BasicNameValuePair("categoryId", categoryId));
+            nameValuePairs.add(new BasicNameValuePair("tags", tags));
+            nameValuePairs.add(new BasicNameValuePair("cityId", cityId));
+            nameValuePairs.add(new BasicNameValuePair("address", address));
+            nameValuePairs.add(new BasicNameValuePair("geoLatitude", geoLatitude));
+            nameValuePairs.add(new BasicNameValuePair("geoLongitude", geoLongitude));
+            nameValuePairs.add(new BasicNameValuePair("description", description));
+            nameValuePairs.add(new BasicNameValuePair("img", img));
 
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            try{
+                APIConnection.SetAsyncCaller( this , getApplicationContext());
+                APIConnection.createSpot(nameValuePairs);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        } else {
+
         }
     }
 
+    private void onCreateSpotSuccess() {
+        finish();
+    }
+
     @Override
-    public void onBackgroundTaskCompleted(int requestCode, Object result){
+    public void onBackgroundTaskCompleted(int requestCode, Object result) {
         String  response = result.toString();
-//        JSONTokener tokener = new JSONTokener(response);
+        Log.e(TAG + "Spot Post result------>", response);
 
         try {
-//            JSONObject finalResult = new JSONObject(tokener);
-            Log.e("Spot Post result------>", response);
+            JSONTokener tokener = new JSONTokener(response);
+            JSONObject finalResult = new JSONObject(tokener);
+            String message = finalResult.getString("success");
+            if(message.equals("true")){
+                onCreateSpotSuccess();
+            }
             Toast.makeText(getApplicationContext(), "create spots success", Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        finish();
     }
 
     protected void showCurrentLocation() {
-
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 
         // Add a marker in spot and move the camera
@@ -261,6 +250,7 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
                 "New Location \n Longitude: %1$s \n Latitude: %2$s",
                 location.getLongitude(), location.getLatitude()
         );
+
         //set the spot model
         newspot.setGeo_latitude(String.format("%s", location.getLatitude()));
         newspot.setGeo_longitude(String.format("%s", location.getLongitude()));
@@ -284,9 +274,12 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
     }
 
     //check Input
-    private boolean isEmpty(EditText etText) {
-        if (etText.getText().toString().trim().length() > 0)
+    private boolean validateInput(EditText etText) {
+        String text = etText.getText().toString();
+        if (text.isEmpty()){
+            etText.setError("Input must not be empty!");
             return false;
+        }
         return true;
     }
 
@@ -317,9 +310,7 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
             googleMap.clear();
 
             Address location=addresses.get(0);
-
             latLng = new LatLng(location.getLatitude(), location.getLongitude());
-
             newspot.setGeo_latitude(String.format("%s", location.getLatitude()));
             newspot.setGeo_longitude(String.format("%s", location.getLongitude()));
 
@@ -333,7 +324,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
             markerOptions = new MarkerOptions();
             markerOptions.position(latLng);
             markerOptions.title(addressText);
-
             googleMap.addMarker(markerOptions);
 
             float zoomLevel = (float) 12.0;
