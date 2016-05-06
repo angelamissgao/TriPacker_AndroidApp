@@ -41,6 +41,8 @@ public class TripEntity implements Serializable {
     String endDate;
     @SerializedName("ownerId")
     int ownerId;
+    @SerializedName("ownerNickname")
+    String ownerNickname;
     @SerializedName("spots")
     ArrayList<SpotEntity> spots;
 
@@ -134,6 +136,7 @@ public class TripEntity implements Serializable {
     public int getOwnerId() { return ownerId; }
     public ArrayList<SpotEntity> getSpots() { return spots; }
     public Integer getImage_local() { return image_local; }
+    public String getOwnerNickname() { return ownerNickname; }
 
     // Setters
     public void setName(String name) {
@@ -148,6 +151,7 @@ public class TripEntity implements Serializable {
     public void setBeginDate(String beginDate) {this.beginDate = beginDate;}
     public void setEndDate(String endDate) {this.endDate = endDate;}
     public void setOwnerId(int ownerId) { this.ownerId = ownerId;}
+    public void setOwnername(String ownername) {this.ownerNickname = ownername;}
     public void setSpots(ArrayList<SpotEntity> spots) {this.spots = spots; }
     public void setImage_local(Integer image_local) {this.image_local = image_local; }
 

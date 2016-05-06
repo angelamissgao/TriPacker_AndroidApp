@@ -175,6 +175,7 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
             String trip_beginDate = finalResult.getString("beginDate");
             String trip_endDate = finalResult.getString("endDate");
             String trip_ownerId = finalResult.getString("ownerId");
+            String trip_ownerNickname = finalResult.getString("ownerNickname");
 
             JSONArray Spots = finalResult.getJSONArray("spots");
             ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
@@ -190,6 +191,7 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
             trip_info.setEndDate(trip_endDate);
             trip_info.setOwnerId(Integer.parseInt(trip_ownerId));
             trip_info.setSpots(spotsOfTrip);
+            trip_info.setOwnername(trip_ownerNickname);
 
             Log.e("Get Trip detail------>",response);
 

@@ -86,35 +86,35 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         //Get Trip
         tripEntity = (TripEntity) getArguments().getSerializable("trip_info");
         Log.i( TAG + "Get BUNDEL in map spots--->", String.valueOf(tripEntity.getSpots()));
-        Log.i( TAG + "Get Bundel trip Name in map--->", tripEntity.getName());
+        Log.i(TAG + "Get Bundel trip Name in map--->", tripEntity.getName());
         spotsOfTrip = tripEntity.getSpots();
 
         //Views with data
-        tripName = (TextView) view.findViewById(R.id.tripName_show);
-        tripName.setText(tripEntity.getName());
-        spotOfTrip = (TextView) view.findViewById(R.id.spotOfTrip1);
-        spotOfTrip.setText(spotsOfTrip.get(0).getName());
+        setUpViewById(view);
+
+        //GoogleMap setUp
+        setGoogleMapConfiguration();
 
         //get User preference
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
-
-        setUpViewById(view);
-
         Log.e("From Session", "-------> " + pref.getString("name", null));
         Log.e("From Session", "-------> " + pref.getString("cookies", null));
 
-        // Or even append an entire new collection
-        // Fetching some data, data has now returned
-        // If data was JSON, convert to ArrayList of User objects.
-        //JSONArray jsonArray = ...;
-        //ArrayList<User> newUsers = User.fromJson(jsonArray)
-        //adapter.addAll(newUsers);
+        return view;
+    }
 
+    private void setUpViewById(View view) {
+        tripName = (TextView) view.findViewById(R.id.tripName_show);
+        tripName.setText(tripEntity.getName());
+        spotOfTrip = (TextView) view.findViewById(R.id.TripOwnerName);
+        spotOfTrip.setText(tripEntity.getOwnerNickname());
+    }
+
+    private void setGoogleMapConfiguration() {
         // Google Map Directions API
         SupportMapFragment mapFragment = (SupportMapFragment) this.getChildFragmentManager()
                 .findFragmentById(R.id.map_direction);
         googleMap = mapFragment.getMap();
-
 
         //Maker
         MarkerOptions options = new MarkerOptions();
@@ -135,15 +135,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spotsGPS.get(0),
                 13));
         addMarkers();
-
-        return view;
     }
-
-    private void setUpViewById(View view){
-
-
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -175,8 +167,6 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         TripsTimelineAdapter adapter = new TripsTimelineAdapter(thiscontext, arrayOfTrips);
         // Attach the adapter to a ListView
         trip_listView.setAdapter(adapter);
-
-
     }
 
     @Override

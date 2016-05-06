@@ -84,7 +84,7 @@ android:layout_height="match_parent">
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:paddingLeft="5dp"
-                    android:text="Spots of Trip"
+                    android:text="Trip Owner Name"
                     style="@style/Base.TextAppearance.AppCompat.Widget.TextView.SpinnerItem"
                     android:id="@+id/address"
                     android:textColor="@color/primary" />
@@ -95,28 +95,11 @@ android:layout_height="match_parent">
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Spot1"
+                android:text="Trip_trip_ownerNickname"
                 android:textAlignment="center"
                 android:gravity="center_horizontal"
-                android:id="@+id/spotOfTrip1" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="5dp"
-                android:text="Spot2"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:id="@+id/spot2_show" />
-            <TextView
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:padding="5dp"
-                android:text="Spot3"
-                android:textAlignment="center"
-                android:gravity="center_horizontal"
-                android:id="@+id/spot3_show" />
+                android:id="@+id/TripOwnerName" />
+
         </LinearLayout>
 
         <LinearLayout
