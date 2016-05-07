@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="topNavItems">
+        <item>@drawable/ic_main_selected_24dp</item>
+        <item>@drawable/ic_favorite_selected_24dp</item>
+        <item>@drawable/ic_trip_selected_24dp</item>
+        <item>@drawable/ic_place_selected_24dp</item>
+        <item>@drawable/ic_profile_selected_24dp</item>
+    </integer-array>
+</resources>

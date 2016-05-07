@@ -11,7 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by EILEENWEI on 4/13/16.
+ * Spot Entity used in the data layer.
  */
 public class SpotEntity implements Serializable {
 

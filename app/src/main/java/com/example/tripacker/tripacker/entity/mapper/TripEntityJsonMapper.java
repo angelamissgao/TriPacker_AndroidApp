@@ -30,11 +30,8 @@ public class TripEntityJsonMapper {
      * @throws JsonSyntaxException if the json string is not a valid json structure.
      */
     public UserEntity transformUserEntity(String userJsonResponse) throws JsonSyntaxException {
-        Log.i(TAG, "Json String= " + userJsonResponse);
         try {
-            String sample = "{\"id\":4,\"gender\":0,\"grade\":0,\"tel\":\"\",\"birthday\":\"04-21-2016\",\"nickname\":\"\",\"selfie\":\"\",\"introduction\":\"\"}";
-            sample = userJsonResponse;
-            UserEntity userEntity = this.gson.fromJson(sample, UserEntity.class);
+            UserEntity userEntity = this.gson.fromJson(userJsonResponse, UserEntity.class);
 
             return userEntity;
         } catch (JsonSyntaxException jsonException) {

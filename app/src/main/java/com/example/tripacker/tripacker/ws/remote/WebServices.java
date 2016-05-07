@@ -58,64 +58,13 @@ public class WebServices {
 		DEBUG = debug;
 	}
 	
-/*	public static String httpGet(final String methodName, final List<NameValuePair> params) {
-		
-		if (BASE_URL.equals("")) {
-			return null;
-		}
-		
-		String methodURL = BASE_URL + "/"+methodName;
-		
-		HttpGet httpGet;
-		
-		if (params != null) {
-			httpGet = new HttpGet(methodURL+"?"+URLEncodedUtils.format(params, "UTF-8"));
-		} else {
-			httpGet = new HttpGet(methodURL);
-		}
-		
-		httpGet.addHeader("Accept", "application/json");
-		httpGet.addHeader(HTTP.CONTENT_TYPE, "application/json");
-		
-		Log.d(TAG,"Setting up GET request params");
-		HttpParams httpParameters = new BasicHttpParams();
-		// Set the timeout in milliseconds until a connection is established.
-		// The default value is zero, that means the timeout is not used. 
-		HttpConnectionParams.setConnectionTimeout(httpParameters, CONNECTION_TIMEOUT);
-		// Set the default socket timeout (SO_TIMEOUT) 
-		// in milliseconds which is the timeout for waiting for data.
-		HttpConnectionParams.setSoTimeout(httpParameters, SOCKET_TIMOUT);
-		//client.setParams(httpParameters);
-		
-		// Apparently this solves the hanging problem
-		ConnManagerParams.setTimeout( httpParameters, 2000 ); 
-		
-		Log.d(TAG,"Setting GET request credentials");
-		// BasicResponseHandler returns the response body as string
-		BasicResponseHandler handler = new BasicResponseHandler();
-		
-		if (WS_USERNAME != null && WS_PASSWORD != null) {
-			client.getCredentialsProvider().setCredentials(new AuthScope(null,-1), new UsernamePasswordCredentials(WS_USERNAME, WS_PASSWORD));
-		}
-		
-		
-		String response = null;
-		try {
-			if (DEBUG) Log.d(TAG,"Executing get, "+ httpGet.getURI());
-			response = client.execute(httpGet,handler);
-		} catch (Exception e) {
-			Log.e(TAG, e.getMessage(),e);
-			e.printStackTrace();
-		} 
-		return response;	
-	}*/
+
 
 	public static HttpResponse httpGet(HttpUriRequest requestGet, String payLoad) {
 		HttpParams httpParams = new BasicHttpParams();
 		HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
 		HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMOUT);
 
-		//    HttpPost request = new HttpPost(BASE_URL+"/"+methodName);
 		HttpUriRequest request = requestGet;
 
 		if (WS_USERNAME != null && WS_PASSWORD != null) {
@@ -132,7 +81,6 @@ public class WebServices {
 			Log.i(TAG, "%% Cookie Header Value: " + h.getValue());
 			APIConnection.setCookie(h.getValue());//set cookies
 		}
-//        String jsonResponse = null;
 		HttpResponse jsonResponse = null;
 		Log.d(TAG, "HttpGetURL: "+ requestGet.getURI());
 
@@ -154,7 +102,6 @@ public class WebServices {
         HttpConnectionParams.setConnectionTimeout(httpParams, CONNECTION_TIMEOUT);
         HttpConnectionParams.setSoTimeout(httpParams, SOCKET_TIMOUT);
         
-    //    HttpPost request = new HttpPost(BASE_URL+"/"+methodName);
 		HttpUriRequest request = requestPost;
         
         if (WS_USERNAME != null && WS_PASSWORD != null) {
@@ -164,7 +111,6 @@ public class WebServices {
         	request.setHeader("Authorization","Basic "+Base64.encodeToString((WS_USERNAME+":"+WS_PASSWORD).getBytes(),Base64.URL_SAFE|Base64.NO_WRAP));
         }
         
-//        String jsonResponse = null;
 		HttpResponse jsonResponse = null;
         Log.d(TAG, "HttpPost URL: "+ requestPost.getURI());
         
@@ -200,7 +146,6 @@ public class WebServices {
 		Log.d(TAG, "HttpPut URL: "+ requestPut.getURI());
 
 		try {
-			//	request.setEntity(new StringEntity(payLoad, "UTF-8"));
 			request.setHeader(HTTP.CONTENT_TYPE, "application/json; charset=utf-8");
 			BasicResponseHandler handler = new BasicResponseHandler();
 			//	if (DEBUG) Log.d(TAG, "Executing post request with payload "+payLoad);

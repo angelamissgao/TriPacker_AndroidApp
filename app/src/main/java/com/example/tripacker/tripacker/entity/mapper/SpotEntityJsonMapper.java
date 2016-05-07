@@ -7,9 +7,11 @@ import org.json.JSONObject;
 import java.util.Map;
 
 /**
- * Created by EILEENWEI on 4/14/16.
+ * Class used to transform from Strings representing json to valid objects.
  */
+
 public class SpotEntityJsonMapper {
+
     public static Object toJSON(Object object) throws JSONException {
         if (object instanceof Map) {
              JSONObject json = new JSONObject();

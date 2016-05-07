@@ -202,18 +202,16 @@ public class SlidingTabLayout extends HorizontalScrollView {
         TextView title = (TextView) view.findViewById(R.id.title);
         title.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-//        title.setText(mTabsTitle[position]);
         ImageView icon = (ImageView) view.findViewById(R.id.icon);
-//        icon.setImageResource(mTabsIcons[position]);
         return view;
 
-        //return textView;
 
     }
 
     private void populateTabStrip() {
         final PagerAdapter adapter = mViewPager.getAdapter();
         final OnClickListener tabClickListener = new TabClickListener();
+        final int[] navItems = getResources().getIntArray(R.array.topNavItems);
         for (int i = 0; i < adapter.getCount(); i++) {
             View tabView = null;
             TextView tabTitleView = null;
@@ -224,9 +222,11 @@ public class SlidingTabLayout extends HorizontalScrollView {
                     // If there is a custom tab view layout id set, try and inflate it
                     tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                             false);
-//                tabTitleView = (TextView) tabView.findViewById(mTabViewTextViewId);
+
+                    tabView.setId(navItems[i]);
                     tabIconView = (ImageView) tabView.findViewById(mTabViewImageViewId);
                     tabIconView.setImageResource(mTabsIcons[i]);
+
                     Log.e("Custom Layout: ", "!!!");
                 } else if(mTabViewLayoutId == R.layout.custom_tab_tripiew){
                     tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
@@ -251,7 +251,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
                 lp.weight = 1;
             }
 
-//            tabTitleView.setText(adapter.getPageTitle(i));
 
             tabView.setOnClickListener(tabClickListener);
             String desc = mContentDescriptions.get(i, null);

@@ -48,7 +48,6 @@ public class APIConnection{
         }
         this.context = context.getApplicationContext();
         this.userEntityJsonMapper = userEntityJsonMapper;
-       // pref = context.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
     }
 
     public static void setCookie(String cookie){
@@ -188,9 +187,6 @@ public class APIConnection{
         createPutReq(TripPackerAPIs.editTrip(tripID), params);
     }
 
-/*    private String getUserEntitiesFromApi() throws MalformedURLException {
-        return ApiConnection.createGET(RestApi.API_URL_GET_USER_LIST).requestSyncCall();
-    }*/
 
     private static void getUserPublicProfileFromApi(int user_id, List<NameValuePair> params){
         createGetReq(TripPackerAPIs.getUserPublicProfile(user_id), params);

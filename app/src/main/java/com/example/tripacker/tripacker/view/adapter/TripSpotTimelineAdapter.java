@@ -14,9 +14,7 @@ import com.example.tripacker.tripacker.entity.TripEntity;
 
 import java.util.ArrayList;
 
-/**
- * Created by EILEENWEI on 4/9/16.
- */
+
 public class TripSpotTimelineAdapter extends ArrayAdapter<SpotEntity> {
     public TripSpotTimelineAdapter(Context context, ArrayList<SpotEntity> spots) {
         super(context, 0, spots);

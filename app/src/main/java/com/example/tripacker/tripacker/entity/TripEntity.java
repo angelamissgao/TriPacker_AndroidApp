@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
- * Created by EILEENWEI on 4/13/16.
+ * Trip Entity used in the data layer.
  */
 public class TripEntity implements Serializable {
     @SerializedName("name")

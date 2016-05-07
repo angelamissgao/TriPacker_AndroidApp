@@ -85,7 +85,6 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
         // Define SlidingTabLayout (shown at top)
         // and ViewPager (shown at bottom) in the layout.
         // Get their instances.
-
         slidingTabLayout = (SlidingTabLayout) findViewById(R.id.trip_tab);
         viewPager = (ViewPager) findViewById(R.id.trip_view_pager);
 

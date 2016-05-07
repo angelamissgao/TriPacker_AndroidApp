@@ -16,9 +16,7 @@ import com.example.tripacker.tripacker.view.activity.ViewProfileActivity;
 
 import java.util.ArrayList;
 
-/**
- * Created by EILEENWEI on 4/9/16.
- */
+
 public class FollowerListAdapter extends ArrayAdapter<UserEntity>{
     public FollowerListAdapter(Context context, ArrayList<UserEntity> users) {
         super(context, 0, users);

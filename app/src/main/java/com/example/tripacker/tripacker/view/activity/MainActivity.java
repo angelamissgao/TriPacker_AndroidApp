@@ -95,9 +95,6 @@ public class MainActivity extends ActionBarActivity {
 
         WebServices.setURL(TEST_URL);
 
-
-//      start login activity
-
         //From session
         Log.e(TAG + " sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("username"));
         Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
@@ -105,16 +102,13 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-//        if(UserSessionManager.getSingleInstance(this).isUserLoggedIn()){
-//
-//        }
-       Intent intent = new Intent(this, LoginActivity.class);
+//      start login activity
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-   //     UserSessionManager.getSingleInstance(this).checkLogin();
+   //   UserSessionManager.getSingleInstance(this).checkLogin();
 
 
 
-        //pref = this.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
         // Define SlidingTabLayout (shown at top)
         // and ViewPager (shown at bottom) in the layout.
         // Get their instances.
@@ -160,11 +154,6 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
-
-
-        //
-
-
 
 
     }

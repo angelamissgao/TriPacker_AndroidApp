@@ -71,7 +71,6 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);

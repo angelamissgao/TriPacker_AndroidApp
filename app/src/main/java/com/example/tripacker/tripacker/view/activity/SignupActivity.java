@@ -41,7 +41,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class SignupActivity extends AppCompatActivity implements AsyncCaller {
+public class SignupActivity extends AppCompatActivity implements AsyncCaller, View.OnClickListener {
     private static final String TAG = "SignupActivity";
 
     private EditText usernameText;
@@ -76,20 +76,21 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
     }
 
     private void setUpClickEvent(){
-        signupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signup();
-            }
-        });
+        signupButton.setOnClickListener(this);
+        loginLink.setOnClickListener(this);
+    }
 
-        loginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
+    @Override
+    public void onClick(View v) {
+        final int id = v.getId();
+        switch (id) {
+            case R.id.btn_signup:
+                signup();
+                break;
+            case R.id.link_login:
                 finish();
-            }
-        });
+                break;
+        }
     }
 
     private void setUpViewById(){
@@ -118,7 +119,6 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
         String username = usernameText.getText().toString();
         String password = passwordText.getText().toString();
 
-        // TODO: Implement your own signup logic here.
         getContent();
 
     }
@@ -277,4 +277,6 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller {
 
         return isConnected;
     }
+
+
 }

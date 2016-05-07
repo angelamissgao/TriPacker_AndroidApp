@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- * User Entity used in the data layer.
+ * Session Entity used in the data layer.
  */
 
 public class SessionEntity {

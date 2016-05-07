@@ -69,10 +69,6 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
     private int profile_id;
 
 
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,22 +87,14 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
         initializeDialog();
         //showLoading();
 
-
-
         Intent intent = getIntent();
 
         profile_id  = Integer.parseInt(intent.getStringExtra("profile_id"));
 
 
-
-
         setUpViewById();
 
         getProfile();
-
-
-
-
 
     }
 
@@ -184,7 +172,6 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
 
     private void getProfile(){
         Log.e("Get User Profile Edit", "-> Get Content");
-
 
         // the request
         try{

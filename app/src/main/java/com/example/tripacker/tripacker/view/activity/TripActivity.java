@@ -75,25 +75,9 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller,Adapt
 
 
     public void renderTrip(ArrayList<TripEntity> TripEntities) {
-
         TripsTimelineAdapter adapter = new TripsTimelineAdapter(this, arrayOfTrips);
         trip_listView.setAdapter(adapter);
         trip_listView.setOnItemClickListener(this);
-
-        // Add item to adapter
-//        try {
-//
-//           JSONObject js_trip1 = new JSONObject();
-//            js_trip1.put("tripName", "San Diego Trip");
-//            js_trip1.put("gmt_create", "04/10/2015");
-//            TripEntity newTrip1 = new TripEntity(js_trip1);
-//            js_trip1.toString();
-//            adapter.add(newTrip1);
-//
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-
     }
     @Override
     public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {

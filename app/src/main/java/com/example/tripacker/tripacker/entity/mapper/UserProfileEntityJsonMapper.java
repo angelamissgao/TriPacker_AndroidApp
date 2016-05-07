@@ -24,10 +24,10 @@ public class UserProfileEntityJsonMapper {
     }
 
     /**
-     * Transform from valid json string to {@link UserEntity}.
+     * Transform from valid json string to {@link UserProfileEntity}.
      *
      * @param userJsonResponse A json representing a user profile.
-     * @return {@link UserEntity}.
+     * @return {@link UserProfileEntity}.
      * @throws JsonSyntaxException if the json string is not a valid json structure.
      */
     public UserProfileEntity transformUserProfileEntity(String userJsonResponse) throws JsonSyntaxException {
@@ -42,10 +42,10 @@ public class UserProfileEntityJsonMapper {
     }
 
     /**
-     * Transform from valid json string to List of {@link UserEntity}.
+     * Transform from valid json string to List of {@link UserProfileEntity}.
      *
      * @param userListJsonResponse A json representing a collection of users.
-     * @return List of {@link UserEntity}.
+     * @return List of {@link UserProfileEntity}.
      * @throws JsonSyntaxException if the json string is not a valid json structure.
      */
     public List<UserProfileEntity> transformUserEntityCollection(String userListJsonResponse)

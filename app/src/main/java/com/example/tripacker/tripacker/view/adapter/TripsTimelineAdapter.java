@@ -12,9 +12,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by EILEENWEI on 4/9/16.
- */
+
 public class TripsTimelineAdapter extends ArrayAdapter<TripEntity> {
     public TripsTimelineAdapter(Context context, ArrayList<TripEntity> trips) {
         super(context, 0, trips);

@@ -5,9 +5,7 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 
-/**
- * Created by EILEENWEI on 5/1/16.
- */
+
 public class SearchResultsActivity extends Activity {
 
     @Override
@@ -34,7 +32,7 @@ public class SearchResultsActivity extends Activity {
     }
 
     private void showResults(String query) {
-        // Query your data set and show results
+        // Query data set and show results
         // ...
     }
 }

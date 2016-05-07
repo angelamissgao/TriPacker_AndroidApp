@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by angelagao on 4/29/16.
+ * Class used to transform from Strings representing json to valid objects.
  */
 public class PathJSONParser {
     public List<List<HashMap<String, String>>> parse(JSONObject jObject) {
