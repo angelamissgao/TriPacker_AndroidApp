@@ -28,21 +28,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by angelagao on 4/28/16.
+ * Allow user to modify and edit one spot within this activity
  */
 public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
     private static final String TAG = "SpotEditActivity";
-
-
     private SpotEntity spotEntity = new SpotEntity();
     private Spinner spinner1;
-    private EditText addAttribute;
+    private EditText addAttribute, spotName, spotAddres, spotinfo;
+    private Button editSpot;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.spot_edit);
 
+        //Set Section Bar
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_clear_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -60,26 +60,29 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
         spotEntity.setGeo_longitude(stuff.get(4));
         spotEntity.setDescription(stuff.get(5));
 
+        setView();
+    }
+
+    private void setView() {
+        spotName = (EditText) findViewById(R.id.spotName_edit);
+        spotAddres = (EditText) findViewById(R.id.spotAddress_edit);
+        spotinfo = (EditText) findViewById(R.id.spotInfo_edit);
+        addAttribute = (EditText) findViewById(R.id.addSpotAttr);
+        spinner1 = (Spinner) findViewById(R.id.spinner1);
+        editSpot = (Button) findViewById(R.id.editSpot);
 
         //set EditText pre-update
-        EditText spotName = (EditText) findViewById(R.id.spotName_edit);
         spotName.setText(spotEntity.getName());
-
-        EditText spotAddres = (EditText) findViewById(R.id.spotAddress_edit);
         spotAddres.setText(spotEntity.getAddress());
-
-        EditText spotinfo = (EditText) findViewById(R.id.spotInfo_edit);
         spotinfo.setText(spotEntity.getDescription());
 
         //Spinner
-        addAttribute = (EditText) findViewById(R.id.addSpotAttr);
         addAttribute.setVisibility(View.INVISIBLE);
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
         spinner1.setPrompt("Add one attribute:");
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position != 0) {
+                if (position != 0) {
                     addAttribute.setVisibility(View.VISIBLE);
                 } else {
                     addAttribute.setVisibility(View.INVISIBLE);
@@ -98,9 +101,7 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
             }
         });
 
-
         //Put request
-        Button editSpot = (Button) findViewById(R.id.editSpot);
         editSpot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,8 +109,6 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
             }
         });
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -120,13 +119,7 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
-
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
@@ -140,11 +133,10 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
             finish();
         }
 
-
         return super.onOptionsItemSelected(item);
     }
-    private void updateContent(String spotId) {
 
+    private void updateContent(String spotId) {
         EditText NewSpotName = (EditText) findViewById(R.id.spotName_edit);
         EditText NewspotAddres = (EditText) findViewById(R.id.spotAddress_edit);
         EditText NewspotDescription = (EditText) findViewById(R.id.spotInfo_edit);
@@ -178,7 +170,6 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
         String  response = result.toString();
 
         try {
-//            JSONObject finalResult = new JSONObject(tokener);
             Log.e("SpotEdit Put result------>", response);
         } catch (Exception e) {
             e.printStackTrace();

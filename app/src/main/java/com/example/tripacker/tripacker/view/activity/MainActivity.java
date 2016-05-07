@@ -63,7 +63,6 @@ public class MainActivity extends ActionBarActivity {
             R.drawable.ic_place_selected_24dp,
             R.drawable.ic_profile_selected_24dp};
 
-
     //menu drawer
     String navTitles[];
     TypedArray navIcons;
@@ -104,8 +103,6 @@ public class MainActivity extends ActionBarActivity {
        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
    //   UserSessionManager.getSingleInstance(this).checkLogin();
-
-
 
         // Define SlidingTabLayout (shown at top)
         // and ViewPager (shown at bottom) in the layout.

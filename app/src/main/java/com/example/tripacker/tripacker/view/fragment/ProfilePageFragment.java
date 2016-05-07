@@ -177,7 +177,6 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
             public void onClick(View v) {
                 Intent mainInten = new Intent(getActivity(), TripCreateActivity.class);
                 ArrayList<String> spot_info = new ArrayList<String>();
-                //Todo: added spot json
                 spot_info.add("user_id");
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("user_id", spot_info);

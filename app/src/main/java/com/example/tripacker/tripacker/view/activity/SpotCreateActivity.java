@@ -48,33 +48,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by angelagao on 4/11/16.
+ *
+ * User could create a Spot within this Activity.
  */
 public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller {
 
     private static final String TAG = "SpotCreateActivity";
 
-    ProgressDialog progress;
     //View Element
-    EditText spotName;
-    EditText spotAddress;
-    EditText spotDescription;
-    Button button_showMap;
+    private EditText spotName;
+    private EditText spotAddress;
+    private EditText spotDescription;
+    private Button button_showMap, button_uploadImage, button_getCurrentGps;
 
     //Spot on Google maps
     private GoogleMap googleMap;
-    MarkerOptions markerOptions;
-    LatLng latLng;
+    private MarkerOptions markerOptions;
+    private LatLng latLng;
     private LocationManager locationManager;
     private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
     private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
-
     //Spot Model
     private SpotEntity newspot = new SpotEntity();
 
     //GPS Exception
     private boolean isGPSEnabled;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -97,18 +95,20 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
                 .findFragmentById(R.id.mapCreate);
 
         // Getting a reference to the map and search by address
-
         googleMap = mapFragment.getMap();
         button_showMap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Getting reference to EditText to get the user input location
                 EditText etLocation = (EditText) findViewById(R.id.startDate);
-
-                // Getting user input location
                 String location = etLocation.getText().toString();
+                // Getting user input location
+                if(validateInput(etLocation)){
+                    new GeocoderTask().execute(location);
+                } else {
+                    etLocation.setError("Please input Address;");
+                }
 
-                new GeocoderTask().execute(location);
             }
         });
 
@@ -116,7 +116,6 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         setUpGPSLocation();
 
         //Upload Image Feature
-        Button button_uploadImage = (Button) findViewById(R.id.uploadImage);
         button_uploadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -131,26 +130,25 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
         spotAddress = (EditText) findViewById(R.id.startDate);
         spotDescription = (EditText) findViewById(R.id.endDate);
         button_showMap = (Button) findViewById(R.id.showSpotMap);
+        button_uploadImage= (Button) findViewById(R.id.uploadImage);
+        button_getCurrentGps = (Button) findViewById(R.id.showCurrentLocation);
     }
 
     private void setUpGPSLocation() {
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.SEND_SMS}, 10);
+            return;
+        }
 
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.SEND_SMS}, 10);
-                return;
-            }
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER,
+                MINIMUM_TIME_BETWEEN_UPDATES,
+                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
+                new MyLocationListener()
+        );
 
-            locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
-                    MINIMUM_TIME_BETWEEN_UPDATES,
-                    MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-                    new MyLocationListener()
-            );
-
-
-        Button button_getCurrentGps = (Button) findViewById(R.id.showCurrentLocation);
         button_getCurrentGps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,16 +167,11 @@ public class SpotCreateActivity extends ActionBarActivity implements AsyncCaller
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
             sendContent();
             setResult(200, null);
-//            finish();
         }
 
         if (id == android.R.id.home) {

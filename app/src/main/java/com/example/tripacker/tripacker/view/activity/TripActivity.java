@@ -41,7 +41,7 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TripActivity extends ActionBarActivity implements AsyncCaller,AdapterView.OnItemClickListener{
+public class TripActivity extends ActionBarActivity implements AsyncCaller, AdapterView.OnItemClickListener{
     // Runner IO for calling external APIs
     private ListView trip_listView;
     private String TAG = "TripActivity";
@@ -61,7 +61,7 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller,Adapt
         //Get Trips by UserID
         getContent(Integer.parseInt(user_id));
 
-       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
@@ -107,8 +107,6 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller,Adapt
         super.onConfigurationChanged(newConfig);
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -118,9 +116,6 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller,Adapt
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement

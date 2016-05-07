@@ -52,23 +52,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by angelagao on 4/11/16.
+ * Check Detailed information about one Spot
  */
 public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,OnMapReadyCallback {
 
     private static final String TAG = "SpotViewActivity";
-
-    //GetSpotAPI - // TODO: 4/11/16
-    private static final String SendSpot_URL = "";
-    private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
-    private static final String GetSpot_URL = "";
-    ProgressDialog progress;
-
+    private ProgressDialog progress;
     private GoogleMap mMap;
-
-    private LocationManager locationManager;
-    private static final long MINIMUM_DISTANCE_CHANGE_FOR_UPDATES = 1;
-    private static final long MINIMUM_TIME_BETWEEN_UPDATES = 1000;
+    private TextView tv_spotName, tv_spotaddress, tv_spotInfo;
 
     private Location spotLocation = new Location("SpotLocation");
     private SpotEntity spotEntity = new SpotEntity();
@@ -82,8 +73,6 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         ArrayList<String> stuff = bundle.getStringArrayList("spotId");
         spotEntity.setSpotId(stuff.get(0));
 
-
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -93,25 +82,10 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         //get Request
         getContent(stuff.get(0));
 
-        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.SEND_SMS}, 10);
-            return;
-        }
-
-
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER,
-                MINIMUM_TIME_BETWEEN_UPDATES,
-                MINIMUM_DISTANCE_CHANGE_FOR_UPDATES,
-                new MyLocationListener()
-        );
-
-      //Google Map showing spot info
+        //Google Map showing spot info
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
 
         // Floating button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.edit_spot);
@@ -145,9 +119,6 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         if( id == android.R.id.home){
@@ -168,11 +139,8 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
     private void getContent(String spotId) {
         // Http Call
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        String spotid = "2";
-
         try{
             APIConnection.SetAsyncCaller(this, getApplicationContext());
-
             APIConnection.getSpotDetail(spotId, nameValuePairs);
 
         } catch (Exception e) {
@@ -180,7 +148,6 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
             e.printStackTrace();
         }
     }
-
 
     /**
      * Our Broadcast Receiver. We get notified that the data is ready this way.
@@ -200,16 +167,12 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
                     "Response is ready: " + response,
                     Toast.LENGTH_LONG).show();
             Log.i("get response", "RESPONSE = " + response);
-            //
-            // my old json code was here. this is where you will parse it.
-            //
             showSpot();
         }
     };
 
     private void showSpot() {
         TextView spotName_show = (TextView) findViewById(R.id.spotName_show);
-
     }
 
 
@@ -221,42 +184,45 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         JSONTokener tokener = new JSONTokener(response);
         JSONObject finalResult = new JSONObject(tokener);
 
-        // Set spot information to view
-        String spot_name = finalResult.getString("spotName");
-        TextView tv_spotName = (TextView) findViewById(R.id.spotName_show);
-        spotEntity.setName(spot_name);
-        tv_spotName.setText(spot_name);
-
-        String spot_address = finalResult.getString("address");
-        TextView tv_spotaddress = (TextView) findViewById(R.id.spotAddress_show);
-        spotEntity.setAddress(spot_address);
-        tv_spotaddress.setText(spot_address);
-
-        String spot_info = finalResult.getString("description");
-        TextView tv_spotInfo = (TextView) findViewById(R.id.spot_show3);
-        spotEntity.setDescription(spot_info);
-        tv_spotInfo.setText(spot_info);
-
-        String geoLati = finalResult.getString("geoLatitude");
-        String geoLong = finalResult.getString("geoLongitude");
-        spotEntity.setGeo_longitude(geoLong);
-        spotEntity.setGeo_latitude(geoLati);
-        spotLocation.setLatitude(Double.parseDouble(geoLati));
-        spotLocation.setLongitude(Double.parseDouble(geoLong));
-
+        setView(finalResult);
         onMapReady(mMap);
-        Log.e("Spot geo set------>", "Lat" + geoLati + "  " + "Long" + geoLong);
+
+    }
+
+    private void setView(JSONObject finalResult) {
+
+        tv_spotName = (TextView) findViewById(R.id.spotName_show);
+        tv_spotaddress = (TextView) findViewById(R.id.spotAddress_show);
+        tv_spotInfo = (TextView) findViewById(R.id.spot_show3);
+
+        // Set spot information to view
+        try {
+            String spot_name = finalResult.getString("spotName");
+            spotEntity.setName(spot_name);
+            tv_spotName.setText(spot_name);
+
+            String spot_address = finalResult.getString("address");
+            spotEntity.setAddress(spot_address);
+            tv_spotaddress.setText(spot_address);
+
+            String spot_info = finalResult.getString("description");
+            spotEntity.setDescription(spot_info);
+            tv_spotInfo.setText(spot_info);
+
+            String geoLati = finalResult.getString("geoLatitude");
+            String geoLong = finalResult.getString("geoLongitude");
+            spotEntity.setGeo_longitude(geoLong);
+            spotEntity.setGeo_latitude(geoLati);
+            spotLocation.setLatitude(Double.parseDouble(geoLati));
+            spotLocation.setLongitude(Double.parseDouble(geoLong));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
-            return;
-        }
-
         mMap = googleMap;
 
         // Add a marker in spot and move the camera
@@ -264,52 +230,6 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         mMap.addMarker(new MarkerOptions().position(spot_gps).title(spotEntity.getName()));
         float zoomLevel = (float) 12.0;
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(spot_gps, zoomLevel));
-    }
-
-    protected void showCurrentLocation() {
-
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, 10);
-            return;
-        }
-
-        if (location != null) {
-            String message = String.format(
-                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
-                    location.getLongitude(), location.getLatitude()
-            );
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    //Location Listener class
-    private class MyLocationListener implements LocationListener {
-
-        @Override
-        public void onLocationChanged(Location location) {
-            String message = String.format(
-                    "New Location \n Longitude: %1$s \n Latitude: %2$s",
-                    location.getLongitude(), location.getLatitude()
-            );
-//            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Toast.makeText(getApplicationContext(), "provider status changed", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            Toast.makeText(getApplicationContext(), "privider enabled by user", Toast.LENGTH_LONG).show();
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            Toast.makeText(getApplicationContext(), "privider disabled by user", Toast.LENGTH_LONG).show();
-        }
     }
 
 }

@@ -21,20 +21,20 @@ import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by angelagao on 4/29/16.
+ * Activity provide user a page to create the basic information of one Trip;
  */
 public class TripCreateActivity extends AppCompatActivity implements AsyncCaller {
 
     //View Element
-    EditText tripNameInput;
-    EditText beginDateInput;
-    EditText endDateInput;
+    private EditText tripNameInput, beginDateInput, endDateInput;
     private Button play,stop,record;
     private MediaRecorder myAudioRecorder;
     private String outputFile = null;
@@ -60,15 +60,6 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         play.setEnabled(false);
         outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";;
         TripAudioRecord();
-
-//        // Post request to add a spot
-//        Button button_addSpot = (Button) findViewById(R.id.addTrip);
-//        button_addSpot.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                sendContent();
-//            }
-//        });
     }
 
     private void setView() {
@@ -160,23 +151,18 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
             sendContent();
             setResult(200, null);
-            finish();
         }
 
         if (id == android.R.id.home) {
             setResult(400, null);
             finish();
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -187,41 +173,53 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         String endDate = endDateInput.getText().toString();
         String spots = "19,27,32,20";
 
-//        if (tripName.isEmpty() || tripName.length() < 3) {
-//            tripNameInput.setError("Trip Name should be at least 1. ");
-////            valid = false;
-//        } else {
-//            tripNameInput.setError(null);
-//        }
+        if(validateInput(tripNameInput) && validateInput(beginDateInput) && validateInput(endDateInput)){
+            List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
+            nameValuePairs.add(new BasicNameValuePair("tripName", tripName));
+            nameValuePairs.add(new BasicNameValuePair("beginDate", beginDate));
+            nameValuePairs.add(new BasicNameValuePair("endDate", endDate));
+            nameValuePairs.add(new BasicNameValuePair("spots",spots));
 
-        List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        nameValuePairs.add(new BasicNameValuePair("tripName", tripName));
-        nameValuePairs.add(new BasicNameValuePair("beginDate", beginDate));
-        nameValuePairs.add(new BasicNameValuePair("endDate", endDate));
-        nameValuePairs.add(new BasicNameValuePair("spots",spots));
-
-        try{
-            APIConnection.SetAsyncCaller(this, getApplicationContext());
-            APIConnection.createTrip(nameValuePairs);
-
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
+            try{
+                APIConnection.SetAsyncCaller(this, getApplicationContext());
+                APIConnection.createTrip(nameValuePairs);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
         String  response = result.toString();
-//        JSONTokener tokener = new JSONTokener(response);
 
         try {
-//            JSONObject finalResult = new JSONObject(tokener);
+            JSONTokener tokener = new JSONTokener(response);
+            JSONObject finalResult = new JSONObject(tokener);
+            String message = finalResult.getString("success");
+            if(message.equals("true")){
+                onCreateSpotSuccess();
+            }
             Log.e("Trip Post result------>", response);
-            Toast.makeText(getApplicationContext(), "create spots success", Toast.LENGTH_LONG).show();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    //check Input
+    private boolean validateInput(EditText etText) {
+        String text = etText.getText().toString();
+        if (text.isEmpty()){
+            etText.setError("Input must not be empty!");
+            return false;
+        }
+        return true;
+    }
+
+    private void onCreateSpotSuccess() {
+        finish();
     }
 }

@@ -31,7 +31,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
- * Created by angelagao on 5/4/16.
+ * Upload an Image to when Creating new Spot
  */
 public class UploadImageActivity extends ActionBarActivity {
     private static int RESULT_LOAD_IMG = 1;
