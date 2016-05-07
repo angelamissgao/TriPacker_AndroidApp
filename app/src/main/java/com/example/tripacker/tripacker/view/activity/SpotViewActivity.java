@@ -293,7 +293,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
                     "New Location \n Longitude: %1$s \n Latitude: %2$s",
                     location.getLongitude(), location.getLatitude()
             );
-            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+//            Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         }
 
         @Override

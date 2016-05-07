@@ -2,7 +2,10 @@ package com.example.tripacker.tripacker.view.activity;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -18,8 +21,8 @@ import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,6 +35,9 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
     EditText tripNameInput;
     EditText beginDateInput;
     EditText endDateInput;
+    private Button play,stop,record;
+    private MediaRecorder myAudioRecorder;
+    private String outputFile = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,6 +52,15 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
 
+        //Set View Widget
+        setView();
+
+        //Audio Recorder
+        stop.setEnabled(false);
+        play.setEnabled(false);
+        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";;
+        TripAudioRecord();
+
 //        // Post request to add a spot
 //        Button button_addSpot = (Button) findViewById(R.id.addTrip);
 //        button_addSpot.setOnClickListener(new View.OnClickListener() {
@@ -54,6 +69,86 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
 //                sendContent();
 //            }
 //        });
+    }
+
+    private void setView() {
+        tripNameInput = (EditText) findViewById(R.id.tripNameInput);
+        beginDateInput = (EditText) findViewById(R.id.startDate);
+        endDateInput = (EditText) findViewById(R.id.endDate);
+        play=(Button)findViewById(R.id.Play);
+        stop=(Button)findViewById(R.id.Stop);
+        record=(Button)findViewById(R.id.Record);
+    }
+
+    private void TripAudioRecord() {
+        myAudioRecorder=new MediaRecorder();
+        myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
+        myAudioRecorder.setOutputFile(outputFile);
+
+        record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    myAudioRecorder.prepare();
+                    myAudioRecorder.start();
+                }
+
+                catch (IllegalStateException e) {
+                    e.printStackTrace();
+                }
+
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                record.setEnabled(false);
+                stop.setEnabled(true);
+
+                Toast.makeText(getApplicationContext(), "Recording started", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        stop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myAudioRecorder.stop();
+                myAudioRecorder.release();
+                myAudioRecorder  = null;
+
+                stop.setEnabled(false);
+                play.setEnabled(true);
+
+                Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_LONG).show();
+            }
+        });
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) throws IllegalArgumentException,SecurityException,IllegalStateException {
+                MediaPlayer m = new MediaPlayer();
+
+                try {
+                    m.setDataSource(outputFile);
+                }
+
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    m.prepare();
+                }
+
+                catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                m.start();
+                Toast.makeText(getApplicationContext(), "Playing audio", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 
     @Override
@@ -69,8 +164,6 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
@@ -89,15 +182,17 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
     }
 
     private void sendContent() {
-        tripNameInput = (EditText) findViewById(R.id.tripNameInput);
-        beginDateInput = (EditText) findViewById(R.id.startDate);
-        endDateInput = (EditText) findViewById(R.id.endDate);
-
         String tripName = tripNameInput.getText().toString();
         String beginDate = beginDateInput.getText().toString();
         String endDate = endDateInput.getText().toString();
         String spots = "19,27,32,20";
 
+//        if (tripName.isEmpty() || tripName.length() < 3) {
+//            tripNameInput.setError("Trip Name should be at least 1. ");
+////            valid = false;
+//        } else {
+//            tripNameInput.setError(null);
+//        }
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("tripName", tripName));

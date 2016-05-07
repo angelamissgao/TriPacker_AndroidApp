@@ -40,7 +40,9 @@ import com.example.tripacker.tripacker.view.fragment.SpotFragment;
 import com.example.tripacker.tripacker.view.fragment.TripFragment;
 
 import java.util.ArrayList;
-
+/*
+    Main Activity with functions defining the Main Navigation
+ */
 public class MainActivity extends ActionBarActivity {
     // Runner IO for calling external APIs
     private String TAG = "Main Activity";
@@ -62,7 +64,6 @@ public class MainActivity extends ActionBarActivity {
             R.drawable.ic_profile_selected_24dp};
 
 
-
     //menu drawer
     String navTitles[];
     TypedArray navIcons;
@@ -71,7 +72,6 @@ public class MainActivity extends ActionBarActivity {
     RecyclerView.Adapter mAdapter;
     ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-
 
 
     private static SharedPreferences pref;
@@ -95,15 +95,13 @@ public class MainActivity extends ActionBarActivity {
 
         WebServices.setURL(TEST_URL);
 
+
         //From session
         Log.e(TAG + " sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("username"));
         Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
         Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("cookies"));
 
-
-
-//      start login activity
-        Intent intent = new Intent(this, LoginActivity.class);
+       Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
    //   UserSessionManager.getSingleInstance(this).checkLogin();
 

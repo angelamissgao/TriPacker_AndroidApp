@@ -62,11 +62,11 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             R.drawable.sf_museum
     };
 
-
-    public static SpotFragment newInstance() {
-        SpotFragment f = new SpotFragment();
-        return f;
-    }
+//
+//    public static SpotFragment newInstance() {
+//        SpotFragment f = new SpotFragment();
+//        return f;
+//    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,7 +79,6 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         final View view = inflater.inflate(R.layout.spot_main, container, false);
         gridView = (GridView) view.findViewById(R.id.gridView_spot);
 
-
         //HTTP GET requests
         getContent();
 
@@ -91,9 +90,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 
                 // bundle data to the spot view activity
                 ArrayList<String> spot_info = new ArrayList<String>();
-
                 SpotEntity spot = (SpotEntity) gridView.getAdapter().getItem(position);
-
                 spot_info.add(spot.getSpotId());
 
                 Bundle bundle = new Bundle();
@@ -111,13 +108,11 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             public void onClick(View v) {
                 Intent mainInten = new Intent(getActivity(), SpotCreateActivity.class);
 
-                // bundle data to the spot view activity
+                // Create New Spot Activity
                 ArrayList<String> spot_info = new ArrayList<String>();
-                //Todo: added spot json
                 spot_info.add("user_id");
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("user_id", spot_info);
-
                 mainInten.putExtras(bundle);
                 startActivity(mainInten);
 
