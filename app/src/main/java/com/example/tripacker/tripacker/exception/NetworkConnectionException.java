@@ -34,6 +34,7 @@ public class NetworkConnectionException extends Exception {
     public NetworkConnectionException(Context context, final Throwable cause) {
         super(cause);
     }
+
     public AlertDialog.Builder displayMessageBox() {
         String message = "Sorry there was an error getting data from the Internet. Network Unavailable!";
         Log.d("EXCEPTION: " + exceptionTitle, message);

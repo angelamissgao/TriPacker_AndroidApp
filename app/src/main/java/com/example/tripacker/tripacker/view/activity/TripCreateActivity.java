@@ -35,7 +35,7 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
 
     //View Element
     private EditText tripNameInput, beginDateInput, endDateInput;
-    private Button play,stop,record;
+    private Button play, stop, record;
     private MediaRecorder myAudioRecorder;
     private String outputFile = null;
 
@@ -58,7 +58,8 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         //Audio Recorder
         stop.setEnabled(false);
         play.setEnabled(false);
-        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";;
+        outputFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/recording.3gp";
+        ;
         TripAudioRecord();
     }
 
@@ -66,13 +67,13 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         tripNameInput = (EditText) findViewById(R.id.tripNameInput);
         beginDateInput = (EditText) findViewById(R.id.startDate);
         endDateInput = (EditText) findViewById(R.id.endDate);
-        play=(Button)findViewById(R.id.Play);
-        stop=(Button)findViewById(R.id.Stop);
-        record=(Button)findViewById(R.id.Record);
+        play = (Button) findViewById(R.id.Play);
+        stop = (Button) findViewById(R.id.Stop);
+        record = (Button) findViewById(R.id.Record);
     }
 
     private void TripAudioRecord() {
-        myAudioRecorder=new MediaRecorder();
+        myAudioRecorder = new MediaRecorder();
         myAudioRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         myAudioRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         myAudioRecorder.setAudioEncoder(MediaRecorder.OutputFormat.AMR_NB);
@@ -84,13 +85,9 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
                 try {
                     myAudioRecorder.prepare();
                     myAudioRecorder.start();
-                }
-
-                catch (IllegalStateException e) {
+                } catch (IllegalStateException e) {
                     e.printStackTrace();
-                }
-
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -106,33 +103,29 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
             public void onClick(View v) {
                 myAudioRecorder.stop();
                 myAudioRecorder.release();
-                myAudioRecorder  = null;
+                myAudioRecorder = null;
 
                 stop.setEnabled(false);
                 play.setEnabled(true);
 
-                Toast.makeText(getApplicationContext(), "Audio recorded successfully",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Audio recorded successfully", Toast.LENGTH_LONG).show();
             }
         });
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) throws IllegalArgumentException,SecurityException,IllegalStateException {
+            public void onClick(View v) throws IllegalArgumentException, SecurityException, IllegalStateException {
                 MediaPlayer m = new MediaPlayer();
 
                 try {
                     m.setDataSource(outputFile);
-                }
-
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
                 try {
                     m.prepare();
-                }
-
-                catch (IOException e) {
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
 
@@ -173,19 +166,17 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
         String endDate = endDateInput.getText().toString();
         String spots = "19,27,32,20";
 
-        if(validateInput(tripNameInput) && validateInput(beginDateInput) && validateInput(endDateInput)){
+        if (validateInput(tripNameInput) && validateInput(beginDateInput) && validateInput(endDateInput)) {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("tripName", tripName));
             nameValuePairs.add(new BasicNameValuePair("beginDate", beginDate));
             nameValuePairs.add(new BasicNameValuePair("endDate", endDate));
-            nameValuePairs.add(new BasicNameValuePair("spots",spots));
+            nameValuePairs.add(new BasicNameValuePair("spots", spots));
 
-            try{
+            try {
                 APIConnection.SetAsyncCaller(this, getApplicationContext());
                 APIConnection.createTrip(nameValuePairs);
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -193,13 +184,13 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
-        String  response = result.toString();
+        String response = result.toString();
 
         try {
             JSONTokener tokener = new JSONTokener(response);
             JSONObject finalResult = new JSONObject(tokener);
             String message = finalResult.getString("success");
-            if(message.equals("true")){
+            if (message.equals("true")) {
                 onCreateSpotSuccess();
             }
             Log.e("Trip Post result------>", response);
@@ -212,7 +203,7 @@ public class TripCreateActivity extends AppCompatActivity implements AsyncCaller
     //check Input
     private boolean validateInput(EditText etText) {
         String text = etText.getText().toString();
-        if (text.isEmpty()){
+        if (text.isEmpty()) {
             etText.setError("Input must not be empty!");
             return false;
         }

@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewStub;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -22,57 +21,41 @@ import android.widget.Toast;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.entity.TripEntity;
-import com.example.tripacker.tripacker.entity.UserEntity;
-import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.SpotListView;
 import com.example.tripacker.tripacker.view.activity.SpotViewActivity;
-import com.example.tripacker.tripacker.view.activity.TripCreateActivity;
 import com.example.tripacker.tripacker.view.activity.TripEditSpotActivity;
 import com.example.tripacker.tripacker.view.adapter.TripSpotTimelineAdapter;
-import com.example.tripacker.tripacker.ws.remote.APIConnection;
-import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
-import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONTokener;
-
-import java.io.Serializable;
-import java.nio.Buffer;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
 public class TripListPageFragment extends Fragment implements SpotListView {
-    private static final String TAG = "TripListPageFragment";
-    private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static final String TAG = "TripListPageFragment";
     private static final int REQUEST_EDIT = 0;
     private static final int RESULT_OK = 200;
     private static final int RESULT_NOTSAVED = 400;
     private static SharedPreferences pref;
-
+    ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
+    private Context thiscontext;
     private ProgressDialog progressDialog;
-
     private ImageView profile_pic;
     private TextView username_view;
     private ListView trip_spotlistView;
     private ImageView editProfileButton;
-
     //TripEntity
     private TripEntity tripEntity;
-    ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thiscontext = container.getContext();
@@ -117,7 +100,6 @@ public class TripListPageFragment extends Fragment implements SpotListView {
         Log.e(TAG + " sess", "->" + pref.getString("uid", null));
 
 
-
         // Or even append an entire new collection
         // Fetching some data, data has now returned
         // If data was JSON, convert to ArrayList of User objects.
@@ -131,7 +113,7 @@ public class TripListPageFragment extends Fragment implements SpotListView {
         FloatingActionButton ButtonAddTrip = (FloatingActionButton) view.findViewById(R.id.AddSpotInTrip);
 
         // Set Visibility of THe menu;
-        if(Integer.parseInt(pref.getString("uid", null)) == tripEntity.getOwnerId()){
+        if (Integer.parseInt(pref.getString("uid", null)) == tripEntity.getOwnerId()) {
             TripModifiation.setVisibility(View.VISIBLE);
         } else {
             TripModifiation.setVisibility(View.INVISIBLE);
@@ -160,7 +142,7 @@ public class TripListPageFragment extends Fragment implements SpotListView {
         return view;
     }
 
-    private void setUpViewById(View view){
+    private void setUpViewById(View view) {
         trip_spotlistView = (ListView) view.findViewById(R.id.tripspotlistview);
     }
 
@@ -170,7 +152,7 @@ public class TripListPageFragment extends Fragment implements SpotListView {
         if (requestCode == REQUEST_EDIT) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 Toast.makeText(thiscontext, "Cancel Update", Toast.LENGTH_LONG).show();
             }
         }
@@ -200,7 +182,6 @@ public class TripListPageFragment extends Fragment implements SpotListView {
     }
 
 
-
     @Override
     public void showLoading() {
         progressDialog = new ProgressDialog(thiscontext,
@@ -212,7 +193,7 @@ public class TripListPageFragment extends Fragment implements SpotListView {
 
     @Override
     public void hideLoading() {
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }

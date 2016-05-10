@@ -1,11 +1,10 @@
 package com.example.tripacker.tripacker.navigation.slidingtab;
 
-/** Author: Eileen (Hao-Chi Wei)
- *
- *
+/**
+ * Author: Eileen (Hao-Chi Wei)
+ * <p>
+ * <p>
  * This is a class for SlidingTabLayout which handles the view of SlidingTabLayout for the application.
- *
- *
  **/
 
 import android.content.Context;
@@ -23,43 +22,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.example.tripacker.tripacker.R;
 
 public class SlidingTabLayout extends HorizontalScrollView {
-    /**
-     * Allows complete control over the colors drawn in the tab layout. Set with
-     * {@link #setCustomTabColorizer(TabColorizer)}.
-     */
-    public interface TabColorizer {
-
-        /**
-         * @return return the color of the indicator used when {@code position} is selected.
-         */
-        int getIndicatorColor(int position);
-
-    }
-
     private static final int TITLE_OFFSET_DIPS = 24;
     private static final int TAB_VIEW_PADDING_DIPS = 16;
     private static final int TAB_VIEW_TEXT_SIZE_SP = 12;
-
-    private int mTitleOffset;
-
-    private int mTabViewLayoutId;
-    private int mTabViewTextViewId;
-    private int mTabViewImageViewId;
-    private boolean mDistributeEvenly;
-
-    private ViewPager mViewPager;
-    private SparseArray<String> mContentDescriptions = new SparseArray<String>();
-    private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
-
-    private final SlidingTabStrip mTabStrip;
-
-    private Context thiscontext;
-
-
     // navigation
     private static final int[] mTabsIcons = {
             R.drawable.ic_main_selector,
@@ -67,11 +35,9 @@ public class SlidingTabLayout extends HorizontalScrollView {
             R.drawable.ic_trip_selector,
             R.drawable.ic_place_selector,
             R.drawable.ic_profile_selector};
-
     private static final int[] mTabsIcons_trip = {
             R.drawable.ic_map_selector,
             R.drawable.ic_list_selector};
-
     private static final int[] mTabsSelectedIcons = {
             R.drawable.ic_main_selected_24dp,
             R.drawable.ic_favorite_selected_24dp,
@@ -80,12 +46,22 @@ public class SlidingTabLayout extends HorizontalScrollView {
             R.drawable.ic_profile_selected_24dp,
             R.drawable.ic_map_white_24dp,
             R.drawable.ic_list_white_24dp};
-
+    private final SlidingTabStrip mTabStrip;
+    private int mTitleOffset;
+    private int mTabViewLayoutId;
+    private int mTabViewTextViewId;
+    private int mTabViewImageViewId;
+    private boolean mDistributeEvenly;
+    private ViewPager mViewPager;
+    private SparseArray<String> mContentDescriptions = new SparseArray<String>();
+    private ViewPager.OnPageChangeListener mViewPagerPageChangeListener;
+    private Context thiscontext;
 
     public SlidingTabLayout(Context context) {
         this(context, null);
         thiscontext = context;
     }
+
 
     public SlidingTabLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -198,7 +174,6 @@ public class SlidingTabLayout extends HorizontalScrollView {
         textView.setPadding(padding, padding, padding, padding);*/
 
 
-
         TextView title = (TextView) view.findViewById(R.id.title);
         title.setLayoutParams(new LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -218,7 +193,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             ImageView tabIconView = null;
 
             if (mTabViewLayoutId != 0) {
-                if(mTabViewLayoutId == R.layout.custom_tab) {
+                if (mTabViewLayoutId == R.layout.custom_tab) {
                     // If there is a custom tab view layout id set, try and inflate it
                     tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                             false);
@@ -228,7 +203,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
                     tabIconView.setImageResource(mTabsIcons[i]);
 
                     Log.e("Custom Layout: ", "!!!");
-                } else if(mTabViewLayoutId == R.layout.custom_tab_tripiew){
+                } else if (mTabViewLayoutId == R.layout.custom_tab_tripiew) {
                     tabView = LayoutInflater.from(getContext()).inflate(mTabViewLayoutId, mTabStrip,
                             false);
                     tabIconView = (ImageView) tabView.findViewById(mTabViewImageViewId);
@@ -297,6 +272,19 @@ public class SlidingTabLayout extends HorizontalScrollView {
         }
     }
 
+    /**
+     * Allows complete control over the colors drawn in the tab layout. Set with
+     * {@link #setCustomTabColorizer(TabColorizer)}.
+     */
+    public interface TabColorizer {
+
+        /**
+         * @return return the color of the indicator used when {@code position} is selected.
+         */
+        int getIndicatorColor(int position);
+
+    }
+
     private class InternalViewPagerListener implements ViewPager.OnPageChangeListener {
         private int mScrollState;
 
@@ -353,7 +341,7 @@ public class SlidingTabLayout extends HorizontalScrollView {
             for (int i = 0; i < mTabStrip.getChildCount(); i++) {
                 if (v == mTabStrip.getChildAt(i)) {
                     mViewPager.setCurrentItem(i);
-                    Toast.makeText(thiscontext, "PAGE"+i, Toast.LENGTH_LONG).show();
+                    Toast.makeText(thiscontext, "PAGE" + i, Toast.LENGTH_LONG).show();
                     return;
                 }
             }

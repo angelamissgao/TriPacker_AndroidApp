@@ -1,14 +1,10 @@
 package com.example.tripacker.tripacker.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,19 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.TripTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.entity.TripEntity;
-import com.example.tripacker.tripacker.entity.UserEntity;
-import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
 import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
-import com.example.tripacker.tripacker.view.fragment.TripListPageFragment;
-import com.example.tripacker.tripacker.view.fragment.TripMapPageFragment;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
@@ -41,7 +31,7 @@ import org.json.JSONTokener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TripActivity extends ActionBarActivity implements AsyncCaller, AdapterView.OnItemClickListener{
+public class TripActivity extends ActionBarActivity implements AsyncCaller, AdapterView.OnItemClickListener {
     // Runner IO for calling external APIs
     private ListView trip_listView;
     private String TAG = "TripActivity";
@@ -79,6 +69,7 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller, Adap
         trip_listView.setAdapter(adapter);
         trip_listView.setOnItemClickListener(this);
     }
+
     @Override
     public void onItemClick(AdapterView<?> adapter, View arg1, int position, long arg3) {
         TripEntity item = (TripEntity) adapter.getItemAtPosition(position);
@@ -123,12 +114,12 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller, Adap
             return true;
         }
 
-        if( id == android.R.id.home){
+        if (id == android.R.id.home) {
             this.finish();
             return true;
         }
 
-        if( id == R.id.action_search){
+        if (id == R.id.action_search) {
             Log.e("Tripview", "search");
 
             return true;
@@ -138,15 +129,13 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller, Adap
     }
 
     public void getContent(int uid) {
-        try{
+        try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 
             APIConnection.SetAsyncCaller(this, getApplicationContext());
             APIConnection.getTripsByOwner(uid, nameValuePairs);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("GetTripException", e.toString());
         }
     }
@@ -156,12 +145,12 @@ public class TripActivity extends ActionBarActivity implements AsyncCaller, Adap
     public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
         String response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
-        Log.e( TAG + "Get Gall Trips------>", response);
+        Log.e(TAG + "Get Gall Trips------>", response);
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
             JSONArray Trips = finalResult.getJSONArray("tripList");
-            for(int i = 0; i < Trips.length(); i++ ) {
+            for (int i = 0; i < Trips.length(); i++) {
                 JSONObject childJSONObject = Trips.getJSONObject(i);
                 TripEntity tripEntity = new TripEntity(childJSONObject);
 

@@ -44,17 +44,18 @@ import java.util.List;
  * @author Tiger
  * @since March 30, 2016 12:34 PM
  */
-public class TripMapPageFragment extends Fragment implements UserDetailsView{
-    private static final String TAG = "TripMapPageFragment";
-    private Context thiscontext;
+public class TripMapPageFragment extends Fragment implements UserDetailsView {
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static final String TAG = "TripMapPageFragment";
     private static final int REQUEST_EDIT = 0;
     private static final int RESULT_OK = 200;
     private static final int RESULT_NOTSAVED = 400;
+    private static final ArrayList<LatLng> spotsGPS = new ArrayList<>();
     private static SharedPreferences pref;
-
+    // Google Map
+    GoogleMap googleMap;
+    private Context thiscontext;
     private ProgressDialog progressDialog;
-
     private ImageView profile_pic;
     private TextView username_view;
     private ListView trip_listView;
@@ -62,12 +63,6 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
     private TextView durationShow;
     private TextView tripName;
     private TextView spotOfTrip;
-
-    // Google Map
-    GoogleMap googleMap;
-
-    private static final ArrayList<LatLng> spotsGPS = new ArrayList<>();
-
     //Trip and Spots Model
     private TripEntity tripEntity;
     private ArrayList<SpotEntity> spotsOfTrip = new ArrayList<>();
@@ -77,6 +72,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         super.onCreate(savedInstanceState);
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thiscontext = container.getContext();
@@ -85,7 +81,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
         //Get Trip
         tripEntity = (TripEntity) getArguments().getSerializable("trip_info");
-        Log.i( TAG + "Get BUNDEL in map spots--->", String.valueOf(tripEntity.getSpots()));
+        Log.i(TAG + "Get BUNDEL in map spots--->", String.valueOf(tripEntity.getSpots()));
         Log.i(TAG + "Get Bundel trip Name in map--->", tripEntity.getName());
         spotsOfTrip = tripEntity.getSpots();
 
@@ -119,7 +115,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         //Maker
         MarkerOptions options = new MarkerOptions();
         spotsGPS.clear();
-        for(int i = 0; i < spotsOfTrip.size(); i++) {
+        for (int i = 0; i < spotsOfTrip.size(); i++) {
             LatLng spot_GPS = new LatLng(Double.parseDouble(spotsOfTrip.get(i).getGeo_latitude()),
                     Double.parseDouble(spotsOfTrip.get(i).getGeo_longitude()));
             options.position(spot_GPS);
@@ -143,7 +139,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         if (requestCode == REQUEST_EDIT) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 Toast.makeText(thiscontext, "Cancel Update", Toast.LENGTH_LONG).show();
             }
         }
@@ -180,7 +176,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
     @Override
     public void hideLoading() {
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }
@@ -216,33 +212,33 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
         String origin_long = spotsOfTrip.get(0).getGeo_longitude();
         String origin_url = origin_lat + "%2C" + origin_long;
 
-        String destination_lat =  spotsOfTrip.get(spotsOfTrip.size()-1).getGeo_latitude();
-        String destination_long = spotsOfTrip.get(spotsOfTrip.size()-1).getGeo_longitude();
+        String destination_lat = spotsOfTrip.get(spotsOfTrip.size() - 1).getGeo_latitude();
+        String destination_long = spotsOfTrip.get(spotsOfTrip.size() - 1).getGeo_longitude();
         String destination_url = destination_lat + "%2C" + destination_long;
 
         String waypoints_url = new String();
-        for(int i = 1; i < spotsOfTrip.size() - 1; i++ ) {
+        for (int i = 1; i < spotsOfTrip.size() - 1; i++) {
             waypoints_url += "via:";
             waypoints_url += spotsOfTrip.get(i).getGeo_latitude();
             waypoints_url += "%2C";
             waypoints_url += spotsOfTrip.get(i).getGeo_longitude();
-            if(i != spotsOfTrip.size() - 2 ) {
+            if (i != spotsOfTrip.size() - 2) {
                 waypoints_url += "%7C";
             }
         }
 //        String waypoints_url = "via:37.4852152%2C-122.2363548" + "%7C" + "via:37.4852151%2C-122.2363547";
 
         String url = base_url + output + "?" +
-                "origin="+ origin_url + "&" +
-                "destination="+ destination_url +
-                "&"+"waypoints=" + waypoints_url +
+                "origin=" + origin_url + "&" +
+                "destination=" + destination_url +
+                "&" + "waypoints=" + waypoints_url +
                 "&" + "key=" + key;
         return url;
     }
 
     private void addMarkers() {
         if (googleMap != null) {
-            for(int i = 0; i < spotsGPS.size(); i++){
+            for (int i = 0; i < spotsGPS.size(); i++) {
                 googleMap.addMarker(new MarkerOptions().position(spotsGPS.get(i))
                         .title(spotsOfTrip.get(i).getName()));
             }
@@ -284,7 +280,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
 
                 // Get estimated time duration
                 JSONArray legs = ((JSONObject) (jObject.getJSONArray("routes").get(0))).getJSONArray("legs");
-                String time = ((JSONObject)legs.get(0)).getJSONObject("duration").getString("text");
+                String time = ((JSONObject) legs.get(0)).getJSONObject("duration").getString("text");
                 tripEntity.setEstimateDuration(time);
 
                 PathJSONParser parser = new PathJSONParser();
@@ -327,7 +323,7 @@ public class TripMapPageFragment extends Fragment implements UserDetailsView{
             durationShow.setText(tripEntity.getDuration());
 
             googleMap.addPolyline(polyLineOptions);
-            Log.i( TAG +"PolylnAddedToMap --->",polyLineOptions.toString());
+            Log.i(TAG + "PolylnAddedToMap --->", polyLineOptions.toString());
         }
     }
 

@@ -1,56 +1,40 @@
 package com.example.tripacker.tripacker.view.activity;
 
-import android.content.BroadcastReceiver;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.IntentFilter;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.app.ProgressDialog;
-
 import android.util.Log;
-
-import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.RestTask;
 import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
-import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.ws.remote.WebServices;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
-//import butterknife.ButterKnife;
-//import butterknife.InjectView;
-
-import java.io.IOException;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class LoginActivity extends AppCompatActivity implements AsyncCaller{
+import java.util.ArrayList;
+import java.util.List;
+
+//import butterknife.ButterKnife;
+//import butterknife.InjectView;
+
+public class LoginActivity extends AppCompatActivity implements AsyncCaller {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
 
@@ -82,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         setUpClickEvent();
     }
 
-    private void setUpClickEvent(){
+    private void setUpClickEvent() {
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -102,14 +86,14 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         });
     }
 
-    private void setUpViewById(){
+    private void setUpViewById() {
         usernameText = (EditText) findViewById(R.id.input_username);
         passwordText = (EditText) findViewById(R.id.input_password);
         loginButton = (Button) findViewById(R.id.btn_login);
         signupLink = (TextView) findViewById(R.id.link_signup);
     }
 
-    public void showAlert(AlertDialog.Builder builder){
+    public void showAlert(AlertDialog.Builder builder) {
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -119,10 +103,9 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             }
         });
 
-        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 login();
             }
@@ -132,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         Toast.makeText(this, "Network Unavailable!", Toast.LENGTH_LONG).show();
 
     }
+
     public void login() {
         Log.d(TAG, "Login");
 
@@ -149,7 +133,6 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         progressDialog.show();
 
         getContent();  //starts the RestTask
-
 
 
     }
@@ -210,8 +193,8 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
         return valid;
     }
 
-    private void getContent(){
-        if(isThereInternetConnection()) {
+    private void getContent() {
+        if (isThereInternetConnection()) {
 
             String username = usernameText.getText().toString();
             String password = passwordText.getText().toString();
@@ -226,7 +209,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             try {
                 throw new NetworkConnectionException(this);
             } catch (NetworkConnectionException e) {
@@ -240,12 +223,10 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
     }
 
 
-
-
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
         // clear the progress indicator
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
         String response = result.toString();
@@ -255,7 +236,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             JSONObject finalResult = new JSONObject(tokener);
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-            if(finalResult.getString("success").equals("true")){
+            if (finalResult.getString("success").equals("true")) {
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
 
@@ -264,7 +245,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
                 user_id = finalResult.getString("uid");
                 onLoginSuccess();
 
-            }else{
+            } else {
                 onLoginFailed(finalResult.getString("message"));
             }
 
@@ -272,6 +253,7 @@ public class LoginActivity extends AppCompatActivity implements AsyncCaller{
             e.printStackTrace();
         }
     }
+
     private boolean isThereInternetConnection() {
         boolean isConnected;
 

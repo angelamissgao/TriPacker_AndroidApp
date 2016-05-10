@@ -1,45 +1,27 @@
 package com.example.tripacker.tripacker.view.activity;
 
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
-import com.example.tripacker.tripacker.PageAdapter;
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.TripTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.entity.SpotEntity;
 import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
-import com.example.tripacker.tripacker.view.fragment.ExploreFragment;
-import com.example.tripacker.tripacker.view.fragment.FavoritesFragment;
-import com.example.tripacker.tripacker.view.fragment.ProfilePageFragment;
-import com.example.tripacker.tripacker.view.fragment.SpotFragment;
-import com.example.tripacker.tripacker.view.fragment.TripFragment;
+import com.example.tripacker.tripacker.view.adapter.TripTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.view.fragment.TripListPageFragment;
 import com.example.tripacker.tripacker.view.fragment.TripMapPageFragment;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
-import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
@@ -53,15 +35,14 @@ import java.util.List;
 public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
     // Runner IO for calling external APIs
 
+    TripMapPageFragment map_frag = new TripMapPageFragment();
+    TripListPageFragment list_frag = new TripListPageFragment();
     //new added
     private String TAG = "TripViewActivity";
     private SlidingTabLayout slidingTabLayout;
     private ViewPager viewPager;
     private ArrayList<Fragment> fragments = new ArrayList<Fragment>();
     private TripTabsViewPagerAdapter myViewPageAdapter;
-
-    TripMapPageFragment map_frag = new TripMapPageFragment();
-    TripListPageFragment list_frag = new TripListPageFragment();
     private TripEntity trip_info = new TripEntity();
 
 
@@ -72,11 +53,11 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
 
         Bundle bundle = getIntent().getExtras();
         ArrayList<Integer> stuff = bundle.getIntegerArrayList("tripId");
-        Log.e(TAG +"tripID-->", stuff.get(0).toString());
+        Log.e(TAG + "tripID-->", stuff.get(0).toString());
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 
-       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_keyboard_backspace_white_24dp);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
@@ -93,17 +74,15 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
 
     }
 
-    private void getContent(int tripId){
+    private void getContent(int tripId) {
         // the request
-        try{
+        try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 
             APIConnection.SetAsyncCaller(this, getApplicationContext());
             APIConnection.getTripDetail(tripId, nameValuePairs);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("GetTripException", e.getMessage());
         }
 
@@ -119,7 +98,6 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
     }
-
 
 
     @Override
@@ -141,23 +119,18 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
             return true;
         }
 
-        if( id == android.R.id.home){
+        if (id == android.R.id.home) {
             this.finish();
             return true;
         }
 
-        if( id == R.id.action_search){
+        if (id == R.id.action_search) {
             Log.e("Tripview", "search");
 
             return true;
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    private class TabViewHolder {
-        public ImageView mIcon;
-
     }
 
     @Override
@@ -192,7 +165,7 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
             trip_info.setSpots(spotsOfTrip);
             trip_info.setOwnername(trip_ownerNickname);
 
-            Log.e("Get Trip detail------>",response);
+            Log.e("Get Trip detail------>", response);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -208,12 +181,17 @@ public class TripViewActivity extends ActionBarActivity implements AsyncCaller {
 
         // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
         // and ViewPager (different pages of fragment) together.
-        myViewPageAdapter =new TripTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
+        myViewPageAdapter = new TripTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(myViewPageAdapter);
         slidingTabLayout.setCustomTabView(R.layout.custom_tab_tripiew, R.id.title, R.id.icon);
         // make sure the tabs are equally spaced.
         slidingTabLayout.setDistributeEvenly(true);
         slidingTabLayout.setViewPager(viewPager);
+
+    }
+
+    private class TabViewHolder {
+        public ImageView mIcon;
 
     }
 

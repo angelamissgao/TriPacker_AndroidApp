@@ -27,7 +27,7 @@ public class SessionEntity {
     }
 
     // Parse model from JSON
-    public SessionEntity(JSONObject object){
+    public SessionEntity(JSONObject object) {
         super();
 
         try {
@@ -44,31 +44,40 @@ public class SessionEntity {
     public String getUsername() {
         return user_name;
     }
+
+    public void setUsername(String user_name) {
+        this.user_name = user_name;
+    }
+
     public String getUserEmail() {
         return user_email;
     }
+
+    public void setUserEmail(String user_email) {
+        this.user_email = user_email;
+    }
+
     public String getUserId() {
         return user_id;
     }
-    public String getCookie() {
-        return cookie;
-    }
-    public String getGmt_create() {
-        return gmt_create;
-    }
+
     // Setters
     public void setUserId(String id) {
         this.user_id = user_id;
     }
-    public void setUsername(String user_name) {
-        this.user_name = user_name;
+
+    public String getCookie() {
+        return cookie;
     }
-    public void setUserEmail(String user_email) {
-        this.user_email = user_email;
-    }
+
     public void setCookie(String cookie) {
         this.cookie = cookie;
     }
+
+    public String getGmt_create() {
+        return gmt_create;
+    }
+
     public void setGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;
     }

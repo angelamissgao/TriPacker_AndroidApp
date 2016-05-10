@@ -10,8 +10,6 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -77,7 +75,6 @@ public class TripEditActivity extends AppCompatActivity implements AsyncCaller {
         int id = item.getItemId();
 
 
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
             sendContent();
@@ -90,7 +87,7 @@ public class TripEditActivity extends AppCompatActivity implements AsyncCaller {
             finish();
         }
 
-        if( id == R.id.action_search){
+        if (id == R.id.action_search) {
             Log.e("Trip Edit", "search");
             onSearchRequested();
             return true;
@@ -99,6 +96,7 @@ public class TripEditActivity extends AppCompatActivity implements AsyncCaller {
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onSearchRequested() {
         Bundle appData = new Bundle();
@@ -106,6 +104,7 @@ public class TripEditActivity extends AppCompatActivity implements AsyncCaller {
         startSearch(null, false, appData, false);
         return true;
     }
+
     private void sendContent() {
         tripNameInput = (EditText) findViewById(R.id.tripNameInput);
         beginDateInput = (EditText) findViewById(R.id.startDate);
@@ -121,22 +120,20 @@ public class TripEditActivity extends AppCompatActivity implements AsyncCaller {
         nameValuePairs.add(new BasicNameValuePair("tripName", tripName));
         nameValuePairs.add(new BasicNameValuePair("beginDate", beginDate));
         nameValuePairs.add(new BasicNameValuePair("endDate", endDate));
-        nameValuePairs.add(new BasicNameValuePair("spots",spots));
+        nameValuePairs.add(new BasicNameValuePair("spots", spots));
 
-        try{
+        try {
             APIConnection.SetAsyncCaller(this, getApplicationContext());
             APIConnection.createTrip(nameValuePairs);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
-        String  response = result.toString();
+        String response = result.toString();
 //        JSONTokener tokener = new JSONTokener(response);
 
         try {

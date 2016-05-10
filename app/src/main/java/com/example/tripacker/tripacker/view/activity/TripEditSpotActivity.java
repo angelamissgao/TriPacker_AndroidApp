@@ -1,18 +1,15 @@
 package com.example.tripacker.tripacker.view.activity;
 
-import android.app.SearchManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -108,7 +105,6 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
         int id = item.getItemId();
 
 
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_done) {
             updateContent(tripEntity.getTrip_id(), selectedSpotID);
@@ -121,7 +117,7 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
             finish();
         }
 
-        if( id == R.id.action_search){
+        if (id == R.id.action_search) {
             Log.e("Trip Add Spot", "search");
             onSearchRequested();
             return true;
@@ -130,6 +126,7 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
 
         return super.onOptionsItemSelected(item);
     }
+
     @Override
     public boolean onSearchRequested() {
         Bundle appData = new Bundle();
@@ -148,7 +145,7 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
         nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
         nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
 
-        try{
+        try {
             APIConnection.SetAsyncCaller(this, getApplicationContext());
 
             APIConnection.getSpotsList(cityId, nameValuePairs);
@@ -162,26 +159,26 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
         arrayOfSpots.clear();
-        String  response = result.toString();
+        String response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
-        Log.e( TAG + "RequestCode ----->", String.valueOf(requestCode));
-        Log.e( TAG + "Get All Spots to Add to Trip ----->", response);
+        Log.e(TAG + "RequestCode ----->", String.valueOf(requestCode));
+        Log.e(TAG + "Get All Spots to Add to Trip ----->", response);
 
         try {
             JSONObject finalResult = new JSONObject(tokener);
             JSONArray Spots = new JSONArray();
-            if(finalResult.has("spotList")){
+            if (finalResult.has("spotList")) {
                 Spots = finalResult.getJSONArray("spotList");
             }
             for (int i = 0; i < Spots.length(); i++) {  // **line 2**
                 JSONObject childJSONObject = Spots.getJSONObject(i);
-                if(childJSONObject.getString("spotName").length() == 0) {
+                if (childJSONObject.getString("spotName").length() == 0) {
                     continue;
                 }
                 SpotEntity spotEntity = new SpotEntity(childJSONObject);
 
                 //get image
-                int postion = (int)(Math.random() * imagesource.length);
+                int postion = (int) (Math.random() * imagesource.length);
                 int img_main = imagesource[postion];
                 spotEntity.setImage_source_local(img_main);
 
@@ -245,17 +242,17 @@ public class TripEditSpotActivity extends AppCompatActivity implements SpotListV
     }
 
 
-    public void updateContent(int tripID, ArrayList<String> spotsAdded){
+    public void updateContent(int tripID, ArrayList<String> spotsAdded) {
         String spotsAdded_url = new String();
 
-        for(int i = 0; i < spotsAdded.size(); i++) {
+        for (int i = 0; i < spotsAdded.size(); i++) {
             spotsAdded_url += spotsAdded.get(i);
-            if(i != spotsAdded.size()-1 ) {
+            if (i != spotsAdded.size() - 1) {
                 spotsAdded_url += ",";
             }
         }
 
-        Log.e(TAG + "spotsAdded_url *** is:",spotsAdded_url);
+        Log.e(TAG + "spotsAdded_url *** is:", spotsAdded_url);
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("spots", spotsAdded_url));

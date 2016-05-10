@@ -13,8 +13,8 @@ import com.example.tripacker.tripacker.R;
  * Created by angelagao on 4/12/16.
  */
 public class FavoritesFragment extends Fragment {
-    private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+    private Context thiscontext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

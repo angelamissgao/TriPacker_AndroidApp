@@ -4,7 +4,6 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,7 +21,6 @@ import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +146,7 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
         String geoLatitude = spotEntity.getGeo_latitude();
         String geoLongitude = spotEntity.getGeo_longitude();
         String description = NewspotDescription.getText().toString();
-        String img="/res/drawable/tie";
+        String img = "/res/drawable/tie";
 
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
         nameValuePairs.add(new BasicNameValuePair("spotName", name));
@@ -167,7 +165,7 @@ public class SpotEditActivity extends ActionBarActivity implements AsyncCaller {
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
-        String  response = result.toString();
+        String response = result.toString();
 
         try {
             Log.e("SpotEdit Put result------>", response);

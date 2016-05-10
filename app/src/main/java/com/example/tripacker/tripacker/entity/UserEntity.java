@@ -1,6 +1,7 @@
 package com.example.tripacker.tripacker.entity;
 
 import com.google.gson.annotations.SerializedName;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -43,15 +44,16 @@ public class UserEntity implements Serializable {
     public UserEntity() {
         //empty
     }
+
     //follower
-    public UserEntity(String uid, String username, String nickname ) {
+    public UserEntity(String uid, String username, String nickname) {
         this.uid = uid;
         this.username = username;
         this.nickname = nickname;
     }
 
     // Parse model from JSON
-    public UserEntity(JSONObject object){
+    public UserEntity(JSONObject object) {
         super();
 
         try {
@@ -76,68 +78,104 @@ public class UserEntity implements Serializable {
     public String getUserId() {
         return uid;
     }
-    public String getNickname() {
-        return nickname;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public String getEmail() {
-        return email;
-    }
-    public String getTel() {
-        return tel;
-    }
-    public String getBirthday() {return birthday;}
-    public String getGender() {return gender;}
-    public String getStatus() {
-        return status;
-    }
-    public String getIntroduction(){ return  introduction;}
-    public String getGrade() {
-        return grade;
-    }
-    public String getGmt_create() {
-        return gmt_create;
-    }
-    public String getGmt_modified() {
-        return gmt_modified;
-    }
-    public String getGmt_last_login() {
-        return gmt_last_login;
-    }
 
     // Setters
     public void setUserId(String id) {
         this.uid = id;
     }
-    public void setUsername(String username) {
-        this.username = username;
+
+    public String getNickname() {
+        return nickname;
     }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
-    public void setBirthday(String birthday) {this.birthday = birthday;}
-    public void setIntroduction(String introduction) {this.introduction = introduction;}
-    public void setGender(String gender){ this.gender = gender; }
+
+    public String getTel() {
+        return tel;
+    }
+
     public void setTel(String tel) {
         this.tel = tel;
     }
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getIntroduction() {
+        return introduction;
+    }
+
+    public void setIntroduction(String introduction) {
+        this.introduction = introduction;
+    }
+
+    public String getGrade() {
+        return grade;
+    }
+
     public void setGrade(String grade) {
         this.grade = grade;
     }
+
+    public String getGmt_create() {
+        return gmt_create;
+    }
+
     public void setGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;
     }
+
+    public String getGmt_modified() {
+        return gmt_modified;
+    }
+
     public void setGmt_modified(String gmt_modified) {
         this.gmt_modified = gmt_modified;
     }
+
+    public String getGmt_last_login() {
+        return gmt_last_login;
+    }
+
     public void setGmt_last_login(String gmt_last_login) {
         this.gmt_last_login = gmt_last_login;
     }

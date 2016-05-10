@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Created by angelagao on 4/14/16.
  */
-public interface SpotListView extends LoadDataView{
+public interface SpotListView extends LoadDataView {
 
     void renderSpotList(ArrayList<SpotEntity> Spot);
 }

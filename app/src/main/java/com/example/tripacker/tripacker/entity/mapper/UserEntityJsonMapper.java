@@ -2,14 +2,13 @@ package com.example.tripacker.tripacker.entity.mapper;
 
 import android.util.Log;
 
+import com.example.tripacker.tripacker.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+
 import java.lang.reflect.Type;
 import java.util.List;
-
-
-import com.example.tripacker.tripacker.entity.UserEntity;
 
 /**
  * Class used to transform from Strings representing json to valid objects.
@@ -55,7 +54,8 @@ public class UserEntityJsonMapper {
 
         List<UserEntity> userEntityCollection;
         try {
-            Type listOfUserEntityType = new TypeToken<List<UserEntity>>() {}.getType();
+            Type listOfUserEntityType = new TypeToken<List<UserEntity>>() {
+            }.getType();
             userEntityCollection = this.gson.fromJson(userListJsonResponse, listOfUserEntityType);
 
             return userEntityCollection;

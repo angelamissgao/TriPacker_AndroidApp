@@ -33,6 +33,7 @@ public class UserProfileEntity {
     public UserProfileEntity() {
         //empty
     }
+
     //follower
     public UserProfileEntity(String uid, String username, String nickname) {
         this.uid = uid;
@@ -41,7 +42,7 @@ public class UserProfileEntity {
     }
 
     // Parse model from JSON
-    public UserProfileEntity(JSONObject object){
+    public UserProfileEntity(JSONObject object) {
         super();
 
         try {
@@ -58,48 +59,59 @@ public class UserProfileEntity {
     public String getUserId() {
         return uid;
     }
-    public String getNickname() {
-        return nickname;
-    }
-    public String getUsername() {
-        return username;
-    }
-    public String getTotalTrips(){
-        return totalTrips;
-    }
-    public String getTotalFollowers(){
-        return totalFollowers;
-    }
-    public String getTotalFollowings(){
-        return totalFollowings;
-    }
-    public String getGmt_create() {
-        return gmt_create;
-    }
 
     // Setters
     public void setUserId(String id) {
         this.uid = id;
     }
-    public void setUsername(String username) {
-        this.username = username;
+
+    public String getNickname() {
+        return nickname;
     }
+
     public void setNickname(String nickname) {
         this.nickname = nickname;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getTotalTrips() {
+        return totalTrips;
+    }
+
     public void setTotalTrips(String totalTrips) {
         this.totalTrips = totalTrips;
     }
+
+    public String getTotalFollowers() {
+        return totalFollowers;
+    }
+
     public void setTotalFollowers(String totalFollowers) {
         this.totalFollowers = totalFollowers;
     }
+
+    public String getTotalFollowings() {
+        return totalFollowings;
+    }
+
     public void setTotalFollowings(String totalFollowings) {
         this.totalFollowings = totalFollowings;
     }
+
+    public String getGmt_create() {
+        return gmt_create;
+    }
+
     public void setGmt_create(String gmt_create) {
         this.gmt_create = gmt_create;
     }
-
 
 
     @Override

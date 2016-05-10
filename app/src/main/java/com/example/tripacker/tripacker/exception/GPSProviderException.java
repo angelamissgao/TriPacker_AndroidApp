@@ -34,6 +34,7 @@ public class GPSProviderException extends Exception {
     public GPSProviderException(Context context, final Throwable cause) {
         super(cause);
     }
+
     public AlertDialog.Builder displayMessageBox() {
         String message = "GPS providing get Error!";
         Log.d("EXCEPTION: " + exceptionTitle, message);

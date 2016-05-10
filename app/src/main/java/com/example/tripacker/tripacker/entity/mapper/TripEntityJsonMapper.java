@@ -1,7 +1,5 @@
 package com.example.tripacker.tripacker.entity.mapper;
 
-import android.util.Log;
-
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -51,7 +49,8 @@ public class TripEntityJsonMapper {
 
         List<UserEntity> userEntityCollection;
         try {
-            Type listOfUserEntityType = new TypeToken<List<UserEntity>>() {}.getType();
+            Type listOfUserEntityType = new TypeToken<List<UserEntity>>() {
+            }.getType();
             userEntityCollection = this.gson.fromJson(userListJsonResponse, listOfUserEntityType);
 
             return userEntityCollection;

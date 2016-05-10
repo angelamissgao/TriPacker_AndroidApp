@@ -1,11 +1,10 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.adapter;
 
-/** Author: Eileen (Hao-Chi Wei)
- *
- *
+/**
+ * Author: Eileen (Hao-Chi Wei)
+ * <p>
+ * <p>
  * This is a class for ActionTabsViewPagerAdapter which handles the tabs actions for the application.
- *
- *
  **/
 
 import android.support.v4.app.Fragment;
@@ -16,28 +15,24 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class TripTabsViewPagerAdapter extends FragmentPagerAdapter {
-    private ArrayList<Fragment> fragments;
-
     public static final int LIST = 1;
     public static final int MAP = 0;
-
-
     public static final String UI_TAB_LIST = "Spot List";
     public static final String UI_TAB_MAP = "Map";
+    private ArrayList<Fragment> fragments;
 
 
-
-    public TripTabsViewPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments){
+    public TripTabsViewPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
         super(fm);
         this.fragments = fragments;
     }
 
-    public Fragment getItem(int pos){
-        Log.e("TripTabsVPAdapter", " #"+pos);
+    public Fragment getItem(int pos) {
+        Log.e("TripTabsVPAdapter", " #" + pos);
         return fragments.get(pos);
     }
 
-    public int getCount(){
+    public int getCount() {
         return fragments.size();
     }
 

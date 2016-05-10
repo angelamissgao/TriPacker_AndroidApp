@@ -20,23 +20,13 @@ import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.exception.NetworkConnectionException;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
-import com.example.tripacker.tripacker.ws.remote.AsyncJsonPostTask;
-import com.example.tripacker.tripacker.ws.remote.WebServices;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.IOException;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,7 +65,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
 
     }
 
-    private void setUpClickEvent(){
+    private void setUpClickEvent() {
         signupButton.setOnClickListener(this);
         loginLink.setOnClickListener(this);
     }
@@ -93,7 +83,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
         }
     }
 
-    private void setUpViewById(){
+    private void setUpViewById() {
         usernameText = (EditText) findViewById(R.id.input_username);
         nameText = (EditText) findViewById(R.id.input_name);
         passwordText = (EditText) findViewById(R.id.input_password);
@@ -126,7 +116,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
 
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
-        session.createUserLoginSession(user_username,user_nickname, user_id, session.getCookies());
+        session.createUserLoginSession(user_username, user_nickname, user_id, session.getCookies());
         setResult(RESULT_OK, null);
         finish();
     }
@@ -175,12 +165,12 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
         return valid;
     }
 
-    private void getContent(){
+    private void getContent() {
         String username = usernameText.getText().toString();
         String name = nameText.getText().toString();
         String password = passwordText.getText().toString();
 
-        if(isThereInternetConnection()) {
+        if (isThereInternetConnection()) {
 
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             nameValuePairs.add(new BasicNameValuePair("username", username));
@@ -188,14 +178,14 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
             nameValuePairs.add(new BasicNameValuePair("password", password));
 
             // the request
-            try{
+            try {
                 APIConnection.SetAsyncCaller(this, getApplicationContext());
                 APIConnection.registerUser(nameValuePairs);
 
-            } catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             try {
                 throw new NetworkConnectionException(this);
             } catch (NetworkConnectionException e) {
@@ -208,7 +198,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
 
     }
 
-    public void showAlert(AlertDialog.Builder builder){
+    public void showAlert(AlertDialog.Builder builder) {
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -218,10 +208,9 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
             }
         });
 
-        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 signup();
             }
@@ -236,7 +225,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
     public void onBackgroundTaskCompleted(int requestCode, Object result) {
 
         // clear the progress indicator
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
         String response = result.toString();
@@ -247,7 +236,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
 
-            if(finalResult.getString("success").equals("true")){
+            if (finalResult.getString("success").equals("true")) {
 
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse session json object
@@ -256,7 +245,7 @@ public class SignupActivity extends AppCompatActivity implements AsyncCaller, Vi
                 user_id = finalResult.getString("uid");
                 onSignupSuccess();
 
-            }else{
+            } else {
                 onSignupFailed(finalResult.getString("message"));
             }
 

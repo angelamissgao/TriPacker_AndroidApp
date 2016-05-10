@@ -11,6 +11,7 @@ import android.util.Log;
 public class UserNotFoundException extends Exception {
     private Context context;
     private String exceptionTitle;
+
     public UserNotFoundException() {
         super();
     }
@@ -26,6 +27,7 @@ public class UserNotFoundException extends Exception {
     public UserNotFoundException(Context context, final Throwable cause) {
         super(cause);
     }
+
     public void displayMessageBox(String exceptionTitle, String message) {
         Log.d("EXCEPTION: " + exceptionTitle, message);
 

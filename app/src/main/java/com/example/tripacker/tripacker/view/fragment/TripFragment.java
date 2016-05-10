@@ -38,13 +38,13 @@ import java.util.List;
  */
 public class TripFragment extends Fragment implements AsyncCaller {
 
-    private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
-    private StaggeredGridLayoutManager gaggeredGridLayoutManager;
     private static SharedPreferences pref;
-    private ArrayList<TripEntity> arrayOfTrips = new ArrayList<>();
     RecyclerView recyclerView;
     TripRecyclerViewAdapter rcAdapter;
+    private Context thiscontext;
+    private StaggeredGridLayoutManager gaggeredGridLayoutManager;
+    private ArrayList<TripEntity> arrayOfTrips = new ArrayList<>();
     private Integer[] imagesource = {
             R.drawable.new_zealand,
             R.drawable.thai_temple,
@@ -65,7 +65,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
         //get user ID
         pref = thiscontext.getSharedPreferences("TripackerPref", Context.MODE_PRIVATE);
 
-        recyclerView = (RecyclerView)view.findViewById(R.id.recycler_trip_view);
+        recyclerView = (RecyclerView) view.findViewById(R.id.recycler_trip_view);
         recyclerView.setHasFixedSize(true);
 
         gaggeredGridLayoutManager = new StaggeredGridLayoutManager(2, 1);
@@ -121,7 +121,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
         return view;
     }
 
-    private List<TripEntity> getListItemData(){
+    private List<TripEntity> getListItemData() {
 
         //
         List<TripEntity> listViewItems = new ArrayList<TripEntity>();
@@ -136,9 +136,9 @@ public class TripFragment extends Fragment implements AsyncCaller {
         return listViewItems;
     }
 
-    private void getContent(){
+    private void getContent() {
         // the request
-        try{
+        try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
             String pageId = "1";
             String pageSize = "30";
@@ -149,9 +149,7 @@ public class TripFragment extends Fragment implements AsyncCaller {
             APIConnection.SetAsyncCaller(this, getContext());
             APIConnection.getTripsByRate(nameValuePairs);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e("GetTripException", e.toString());
         }
 
@@ -167,12 +165,12 @@ public class TripFragment extends Fragment implements AsyncCaller {
         try {
             JSONObject finalResult = new JSONObject(tokener);
             JSONArray Trips = finalResult.getJSONArray("tripList");
-            for(int i = 0; i < Trips.length(); i++ ) {
+            for (int i = 0; i < Trips.length(); i++) {
                 JSONObject childJSONObject = Trips.getJSONObject(i);
                 TripEntity tripEntity = new TripEntity(childJSONObject);
 
                 //get image
-                int postion = (int)(Math.random() * imagesource.length);
+                int postion = (int) (Math.random() * imagesource.length);
                 int img_main = imagesource[postion];
                 tripEntity.setImage_local(img_main);
 
@@ -190,7 +188,6 @@ public class TripFragment extends Fragment implements AsyncCaller {
         recyclerView.setAdapter(rcAdapter);
 
     }
-
 
 
 }

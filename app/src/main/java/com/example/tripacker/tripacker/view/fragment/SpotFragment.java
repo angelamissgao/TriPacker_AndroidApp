@@ -36,24 +36,22 @@ import org.json.JSONTokener;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.inject.Inject;
 
 /**
  * Created by angelagao on 4/10/16.
  */
-public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
-    private static final String TEST_URL                   = "http://47.88.12.177/api/spot/getspots";
-    private static final String ACTION_FOR_INTENT_CALLBACK = "Spots_test_receiver";
-
-    String TAG = "SpotFragment";
-    private Context thiscontext;
+public class SpotFragment extends Fragment implements AsyncCaller, SpotListView {
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static final String TEST_URL = "http://47.88.12.177/api/spot/getspots";
+    private static final String ACTION_FOR_INTENT_CALLBACK = "Spots_test_receiver";
+    String TAG = "SpotFragment";
     GridView gridView;
-
     @Inject
     SpotListPresenter spotListPresenter;
     ArrayList<SpotEntity> arrayOfSpots = new ArrayList<>();
-
+    private Context thiscontext;
     private Integer[] imagesource = {
             R.drawable.paris,
             R.drawable.thai_temple,
@@ -67,11 +65,20 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
 //        SpotFragment f = new SpotFragment();
 //        return f;
 //    }
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String response = intent.getStringExtra(RestTask.HTTP_RESPONSE);
+            Log.e("receive---->", response);
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thiscontext = container.getContext();
@@ -139,7 +146,6 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         return view;
     }
 
-
     private void getContent() {
         // Http Call
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
@@ -150,7 +156,7 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         nameValuePairs.add(new BasicNameValuePair("pageId", pageId));
         nameValuePairs.add(new BasicNameValuePair("pageSize", pageSize));
 
-        try{
+        try {
             APIConnection.SetAsyncCaller(this, getActivity().getApplicationContext());
 
             APIConnection.getSpotsList(cityId, nameValuePairs);
@@ -161,14 +167,13 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
         }
     }
 
-
     @Override
     /**
      * Get Spot List request response result;
      */
     public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
         arrayOfSpots.clear();
-        String  response = result.toString();
+        String response = result.toString();
         JSONTokener tokener = new JSONTokener(response);
         Log.e("Get All Spots----->", response);
 
@@ -177,13 +182,13 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
             JSONArray Spots = finalResult.getJSONArray("spotList");
             for (int i = 0; i < Spots.length(); i++) {  // **line 2**
                 JSONObject childJSONObject = Spots.getJSONObject(i);
-                if(childJSONObject.getString("spotName").length() == 0) {
+                if (childJSONObject.getString("spotName").length() == 0) {
                     continue;
                 }
                 SpotEntity spotEntity = new SpotEntity(childJSONObject);
 
                 //get image
-                int postion = (int)(Math.random() * imagesource.length);
+                int postion = (int) (Math.random() * imagesource.length);
                 int img_main = imagesource[postion];
                 spotEntity.setImage_source_local(img_main);
 
@@ -201,27 +206,17 @@ public class SpotFragment extends Fragment implements AsyncCaller, SpotListView{
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         getActivity().registerReceiver(receiver, new IntentFilter(ACTION_FOR_INTENT_CALLBACK));
 
     }
 
     @Override
-    public void onPause(){
+    public void onPause() {
         super.onPause();
         getActivity().unregisterReceiver(receiver);
     }
-
-    private BroadcastReceiver receiver = new BroadcastReceiver(){
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String response = intent.getStringExtra(RestTask.HTTP_RESPONSE);
-            Log.e("receive---->", response);
-        }
-    };
-
 
     @Override
     public void renderSpotList(ArrayList<SpotEntity> Spots) {

@@ -5,17 +5,13 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -51,22 +47,18 @@ import java.util.Locale;
 public class EditProfileActivity extends ActionBarActivity implements View.OnClickListener, AsyncCaller, UserEditProfileDetailsView {
 
     private static final String TAG = "EditProfileActivity";
-
-    private  EditText usernameEtxt;
-    private  EditText locationEtxt;
-    private  EditText emailEtxt;
-    private  EditText birthdayEtxt;
-    private  EditText phoneEtxt;
-    private  EditText introductionEtxt;
+    private static SharedPreferences pref;
+    private EditText usernameEtxt;
+    private EditText locationEtxt;
+    private EditText emailEtxt;
+    private EditText birthdayEtxt;
+    private EditText phoneEtxt;
+    private EditText introductionEtxt;
     private Spinner gender_spinner;
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
-
     private ProgressDialog progressDialog;
     private AlertDialog errorDialog;
-
-    private static SharedPreferences pref;
-
     private ArrayAdapter<CharSequence> gender_arr_adapter;
 
 
@@ -86,7 +78,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     }
 
-    public void setToolBar(){
+    public void setToolBar() {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Edit Profile");
         setSupportActionBar(toolbar);
@@ -97,13 +89,15 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.parseColor("#D98A67")));
         getSupportActionBar().setElevation(0);
     }
-    public void initializeDialog(){
+
+    public void initializeDialog() {
         progressDialog = new ProgressDialog(EditProfileActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Loading...");
     }
-    private void setUpViewById(){
+
+    private void setUpViewById() {
         dateFormatter = new SimpleDateFormat("MM-dd-yyyy", Locale.US);
 
         usernameEtxt = (EditText) findViewById(R.id.row1editText);
@@ -164,26 +158,24 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
                 birthdayEtxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    private void getProfile(){
+    private void getProfile() {
         Log.e("Get User Profile Edit", "-> Get Content");
-        if(isThereInternetConnection()) {
+        if (isThereInternetConnection()) {
             // the request
-            try{
+            try {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
                 nameValuePairs.add(new BasicNameValuePair("user_id", UserSessionManager.getSingleInstance(this).getUserDetails().get("uid")));
                 APIConnection.SetAsyncCaller(this, getApplicationContext());
-                Log.e(TAG, "id-> "+UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
+                Log.e(TAG, "id-> " + UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
                 APIConnection.getUserProfile(Integer.parseInt(UserSessionManager.getSingleInstance(this).getUserDetails().get("uid")), nameValuePairs);
 
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
-        }else{
+        } else {
             try {
                 throw new NetworkConnectionException(this);
             } catch (NetworkConnectionException e) {
@@ -196,16 +188,16 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     }
 
-    private void updateProfile(){
+    private void updateProfile() {
         Log.e("Update User Profile", "-> Update Profile");
 
-        if(isThereInternetConnection()) {
+        if (isThereInternetConnection()) {
 
             // the request
-            try{
+            try {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(7);
                 nameValuePairs.add(new BasicNameValuePair("uid", UserSessionManager.getSingleInstance(this).getUserDetails().get("uid")));
-                nameValuePairs.add(new BasicNameValuePair("gender", gender_spinner.getSelectedItemPosition()+""));
+                nameValuePairs.add(new BasicNameValuePair("gender", gender_spinner.getSelectedItemPosition() + ""));
                 nameValuePairs.add(new BasicNameValuePair("tel", phoneEtxt.getText().toString()));
                 nameValuePairs.add(new BasicNameValuePair("birthday", birthdayEtxt.getText().toString()));
                 nameValuePairs.add(new BasicNameValuePair("nickname", usernameEtxt.getText().toString()));
@@ -218,7 +210,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
             } catch (Exception e) {
                 Log.e(TAG, e.toString());
             }
-        }else{
+        } else {
             try {
                 throw new NetworkConnectionException(this);
             } catch (NetworkConnectionException e) {
@@ -230,10 +222,9 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
         }
 
 
-
     }
 
-    public void showAlert(android.support.v7.app.AlertDialog.Builder builder){
+    public void showAlert(android.support.v7.app.AlertDialog.Builder builder) {
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -243,10 +234,9 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
             }
         });
 
-        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 getProfile();
             }
@@ -258,7 +248,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void onClick(View view) {
-        if(view == birthdayEtxt) {
+        if (view == birthdayEtxt) {
             datePickerDialog.show();
         }
     }
@@ -274,18 +264,18 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
             Log.i(TAG, "RESPONSE BODY= " + response);
 
-            if(finalResult.getString("success").equals("true")){
-                if(finalResult.getString("code").equals("150")){
+            if (finalResult.getString("success").equals("true")) {
+                if (finalResult.getString("code").equals("150")) {
                     hideLoading();
                     // Parse user json object
                     UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
                     Log.i(TAG, "User Info= " + user.toString());
                     renderUser(user); //Render user
-                }else if(finalResult.getString("code").equals("140")){
+                } else if (finalResult.getString("code").equals("140")) {
                     Log.i(TAG, finalResult.getString("message"));
                 }
 
-            }else{
+            } else {
 
             }
 
@@ -314,7 +304,7 @@ public class EditProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void hideLoading() {
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }

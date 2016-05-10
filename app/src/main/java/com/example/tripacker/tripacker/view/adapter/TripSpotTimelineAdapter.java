@@ -1,7 +1,6 @@
 package com.example.tripacker.tripacker.view.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +9,6 @@ import android.widget.TextView;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.SpotEntity;
-import com.example.tripacker.tripacker.entity.TripEntity;
 
 import java.util.ArrayList;
 

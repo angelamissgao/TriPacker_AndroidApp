@@ -1,4 +1,4 @@
-package com.example.tripacker.tripacker;
+package com.example.tripacker.tripacker.view.adapter;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -10,7 +10,7 @@ import com.example.tripacker.tripacker.view.fragment.TripMapPageFragment;
 public class PageAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs;
 
-    public PageAdapter(FragmentManager fm,int numTabs) {
+    public PageAdapter(FragmentManager fm, int numTabs) {
         super(fm);
         this.mNumOfTabs = numTabs;
     }

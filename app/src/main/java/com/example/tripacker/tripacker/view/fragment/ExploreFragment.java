@@ -15,8 +15,8 @@ import com.example.tripacker.tripacker.R;
 
 
 public class ExploreFragment extends Fragment {
-    private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+    private Context thiscontext;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

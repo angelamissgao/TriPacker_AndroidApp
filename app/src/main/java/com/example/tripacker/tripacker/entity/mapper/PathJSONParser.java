@@ -62,7 +62,7 @@ public class PathJSONParser {
     /**
      * Method Courtesy :
      * /decoding-polylines-from-google-maps-direction-api-with-java
-     * */
+     */
     private List<LatLng> decodePoly(String encoded) {
 
         List<LatLng> poly = new ArrayList<LatLng>();

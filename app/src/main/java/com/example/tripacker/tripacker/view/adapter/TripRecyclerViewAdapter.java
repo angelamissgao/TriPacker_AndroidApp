@@ -20,7 +20,7 @@ import com.example.tripacker.tripacker.view.activity.TripViewActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TripRecyclerViewAdapter  extends RecyclerView.Adapter<TripRecyclerViewAdapter.TripViewHolders> {
+public class TripRecyclerViewAdapter extends RecyclerView.Adapter<TripRecyclerViewAdapter.TripViewHolders> {
 
     private List<TripEntity> tripList;
     private Context context;
@@ -42,9 +42,9 @@ public class TripRecyclerViewAdapter  extends RecyclerView.Adapter<TripRecyclerV
     @Override
     public void onBindViewHolder(TripViewHolders holder, int position) {
 
-     //   StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams)holder.itemView.getLayoutParams();
-     //   if(position == 0)
-     //       layoutParams.setFullSpan(true);
+        //   StaggeredGridLayoutManager.LayoutParams layoutParams = (StaggeredGridLayoutManager.LayoutParams)holder.itemView.getLayoutParams();
+        //   if(position == 0)
+        //       layoutParams.setFullSpan(true);
 
         holder.tripName.setText(tripList.get(position).getName());
         holder.tripCoverPhoto.setImageResource(tripList.get(position).getImage_local());
@@ -58,11 +58,10 @@ public class TripRecyclerViewAdapter  extends RecyclerView.Adapter<TripRecyclerV
 
 
     public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
-        private String TAG = "TripViewHolders";
+        private final Context context;
         public TextView tripName;
         public ImageView tripCoverPhoto;
-        private final Context context;
-
+        private String TAG = "TripViewHolders";
 
 
         public TripViewHolders(View itemView) {
@@ -76,7 +75,7 @@ public class TripRecyclerViewAdapter  extends RecyclerView.Adapter<TripRecyclerV
         @Override
         public void onClick(View view) {
 
-           // Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
+            // Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();
             Toast.makeText(view.getContext(), "Clicked Position = " + tripList.get(getPosition()).toString(), Toast.LENGTH_SHORT).show();
             Log.e(TAG + "tripinfo in Recycler Adapter-->", tripList.get(getPosition()).toString());
 
@@ -96,7 +95,6 @@ public class TripRecyclerViewAdapter  extends RecyclerView.Adapter<TripRecyclerV
         }
 
     }
-
 
 
 }

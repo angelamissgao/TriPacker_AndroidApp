@@ -25,37 +25,6 @@ public class SpotsListAdapter extends ArrayAdapter<SpotEntity> {
         super(context, 0, spots);
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        // Get the data item for this position
-        SpotEntity spot = (SpotEntity) getItem(position);
-        // Check if an existing view is being reused, otherwise inflate the view
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spot_list_item, parent, false);
-        }
-        // Lookup view for data population
-        TextView tripspotDate = (TextView) convertView.findViewById(R.id.tripspot_date);
-        TextView tripspotLocation = (TextView) convertView.findViewById(R.id.tripspot_location);
-        TextView tripspotName = (TextView) convertView.findViewById(R.id.tripspot_name);
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.spot_pic);
-
-        //    // Populate the data into the template view using the data object
-//        tripspotDate.setText(spot.getGmt_create());
-        Log.i("TripSpotTimeline", spot.toString());
-//        tripspotLocation.setText(spot.getCity_id());
-        tripspotName.setText(spot.getName());
-//        imageView.setBackgroundResource(spot.getImage_local());
-
-        //Handle Out of Memory Error
-        imageView.setImageBitmap(decodeSampledBitmapFromResource(
-                getContext().getResources(), spot.getImage_local(),
-                imageView.getWidth(), imageView.getHeight()));
-
-
-        return convertView;
-    }
-
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
                                                          int reqWidth, int reqHeight) {
 
@@ -93,5 +62,36 @@ public class SpotsListAdapter extends ArrayAdapter<SpotEntity> {
         }
 
         return inSampleSize;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        // Get the data item for this position
+        SpotEntity spot = (SpotEntity) getItem(position);
+        // Check if an existing view is being reused, otherwise inflate the view
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.spot_list_item, parent, false);
+        }
+        // Lookup view for data population
+        TextView tripspotDate = (TextView) convertView.findViewById(R.id.tripspot_date);
+        TextView tripspotLocation = (TextView) convertView.findViewById(R.id.tripspot_location);
+        TextView tripspotName = (TextView) convertView.findViewById(R.id.tripspot_name);
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.spot_pic);
+
+        //    // Populate the data into the template view using the data object
+//        tripspotDate.setText(spot.getGmt_create());
+        Log.i("TripSpotTimeline", spot.toString());
+//        tripspotLocation.setText(spot.getCity_id());
+        tripspotName.setText(spot.getName());
+//        imageView.setBackgroundResource(spot.getImage_local());
+
+        //Handle Out of Memory Error
+        imageView.setImageBitmap(decodeSampledBitmapFromResource(
+                getContext().getResources(), spot.getImage_local(),
+                imageView.getWidth(), imageView.getHeight()));
+
+
+        return convertView;
     }
 }

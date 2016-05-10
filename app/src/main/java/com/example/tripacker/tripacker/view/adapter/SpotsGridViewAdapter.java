@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,28 +23,6 @@ public class SpotsGridViewAdapter extends ArrayAdapter<SpotEntity> {
 
     public SpotsGridViewAdapter(Context context, ArrayList<SpotEntity> spots) {
         super(context, 0, spots);
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-
-        SpotEntity spot = (SpotEntity) getItem(position);
-
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_layout, parent, false);
-        }
-
-        ImageView imageView = (ImageView) convertView.findViewById(R.id.spot_item_img);
-        TextView textView = (TextView) convertView.findViewById(R.id.spot_item_text);
-
-        // image view set background
-        imageView.setBackgroundResource(spot.getImage_local());
-//        imageView.setImageBitmap(decodeSampledBitmapFromResource(
-//                getContext().getResources(), spot.getImage_local(),
-//                imageView.getWidth(), imageView.getHeight()));
-
-        textView.setText(spot.getName());
-        return convertView;
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,
@@ -85,5 +62,27 @@ public class SpotsGridViewAdapter extends ArrayAdapter<SpotEntity> {
         }
 
         return inSampleSize;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+
+        SpotEntity spot = (SpotEntity) getItem(position);
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.grid_item_layout, parent, false);
+        }
+
+        ImageView imageView = (ImageView) convertView.findViewById(R.id.spot_item_img);
+        TextView textView = (TextView) convertView.findViewById(R.id.spot_item_text);
+
+        // image view set background
+        imageView.setBackgroundResource(spot.getImage_local());
+//        imageView.setImageBitmap(decodeSampledBitmapFromResource(
+//                getContext().getResources(), spot.getImage_local(),
+//                imageView.getWidth(), imageView.getHeight()));
+
+        textView.setText(spot.getName());
+        return convertView;
     }
 }

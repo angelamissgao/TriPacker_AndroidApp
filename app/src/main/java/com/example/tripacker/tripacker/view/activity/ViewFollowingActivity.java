@@ -1,7 +1,6 @@
 package com.example.tripacker.tripacker.view.activity;
 
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -17,20 +16,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
-import com.example.tripacker.tripacker.entity.TripEntity;
 import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.view.UserEditProfileDetailsView;
 import com.example.tripacker.tripacker.view.adapter.FollowerListAdapter;
-import com.example.tripacker.tripacker.view.adapter.TripsTimelineAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 
@@ -40,27 +33,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 public class ViewFollowingActivity extends ActionBarActivity implements View.OnClickListener, AsyncCaller, UserEditProfileDetailsView, AdapterView.OnItemClickListener {
 
     private static final String TAG = "ViewFollowingActivity";
-
-
-
+    private static SharedPreferences pref;
     private ProgressDialog progressDialog;
     private AlertDialog errorDialog;
-
-    private static SharedPreferences pref;
-
     private ListView following_listView;
     private int profile_id;
-
-
 
 
     @Override
@@ -86,14 +69,9 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
 
         Intent intent = getIntent();
 
-        profile_id  = Integer.parseInt(intent.getStringExtra("profile_id"));
-
-
-
+        profile_id = Integer.parseInt(intent.getStringExtra("profile_id"));
 
         setUpViewById();
-
-
 
         ArrayList<UserEntity> arrayOfFollowers = new ArrayList<UserEntity>();
         // Create the adapter to convert the array to views
@@ -127,7 +105,8 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
         userIntent.putExtra("profile_id", item.getUserId());
         startActivity(userIntent);
     }
-    public void initializeDialog(){
+
+    public void initializeDialog() {
         progressDialog = new ProgressDialog(ViewFollowingActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
@@ -147,7 +126,8 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
             }
         });
     }
-    private void setUpViewById(){
+
+    private void setUpViewById() {
         following_listView = (ListView) findViewById(R.id.followinglistview);
     }
 
@@ -166,39 +146,30 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if( id == android.R.id.home){
+        if (id == android.R.id.home) {
             this.finish();
             return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }
 
 
-
-    private void getProfile(){
+    private void getProfile() {
         Log.e("Get User Profile Edit", "-> Get Content");
-
-
         // the request
-        try{
+        try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
             nameValuePairs.add(new BasicNameValuePair("user_id", pref.getString("user_id", null)));
             APIConnection.SetAsyncCaller(this, getApplicationContext());
 
             APIConnection.getUserProfile(Integer.parseInt(pref.getString("uid", null).trim()), nameValuePairs);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
 
     }
-
-
-
 
     @Override
     public void onClick(View view) {
@@ -214,14 +185,14 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
             JSONObject finalResult = new JSONObject(tokener);
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-            if(finalResult.getString("success").equals("true")){
+            if (finalResult.getString("success").equals("true")) {
                 hideLoading();
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse user json object
                 UserEntity user = (new UserEntityJsonMapper()).transformUserEntity(response);
                 Log.i(TAG, "User Info= " + user.toString());
                 renderUser(user); //Render user
-            }else{
+            } else {
 
             }
 
@@ -244,7 +215,7 @@ public class ViewFollowingActivity extends ActionBarActivity implements View.OnC
 
     @Override
     public void hideLoading() {
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }

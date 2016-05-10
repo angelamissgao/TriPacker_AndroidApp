@@ -10,5 +10,6 @@ import java.util.ArrayList;
  */
 public interface UserDetailsView extends LoadDataView {
     void renderUser(UserEntity user);
+
     void renderTrip(ArrayList<TripEntity> TripEntities);
 }

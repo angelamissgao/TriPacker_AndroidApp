@@ -1,4 +1,5 @@
 package com.example.tripacker.tripacker.ws.remote;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -18,80 +19,81 @@ import java.io.IOException;
  * the class of Java object that the result is to be converted to (optional).
  * The result is parsed from Json and returned to the calling activity through the onBackgroundTaskCompleted()
  * method defined in the AsyncCaller interface.
- *
  */
 public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
-	
-	final static String TAG = "AsyncJsonPostTask";
-	private AsyncCaller activity;
-	private int requestCode = 0;
-	private boolean startingCallback;
-		
-	/**
-	 * Perform a POST to a server and optionally convert response from Json string into a Java object
-	 * <b>Note:</b> Retrieving Java objects works only with ASP.net services currently
-	 * @param activity
-	 */
-	public AsyncJsonPostTask (AsyncCaller activity) {
-		this.activity = activity;
-		startingCallback = AsyncStarting.class.isInstance((Object) activity);
-	}
-	
-	/**
-	 * Perform a POST to a server and optionally convert response from Json string into a Java object
-	 * <b>Note:</b> Retrieving Java objects works only with ASP.net services currently
-	 * @param activity
-	 */
-	public AsyncJsonPostTask (AsyncCaller activity, int requestCode) {
-		this.activity = activity;
-		this.requestCode = requestCode;
-	}
-	
-	@Override
-	protected void onPreExecute() {
-		if (startingCallback) {
-			((AsyncStarting) activity).onBackgroundTaskStarted();
-		}
-	}
-	
-	@Override
-	protected Object doInBackground(Object... params) {
 
-		HttpResponse response = WebServices.httpPost((HttpUriRequest) params[0], (String) params[1]);
+    final static String TAG = "AsyncJsonPostTask";
+    private AsyncCaller activity;
+    private int requestCode = 0;
+    private boolean startingCallback;
 
-		int code = response.getStatusLine().getStatusCode();
-		String responseBody = "";
+    /**
+     * Perform a POST to a server and optionally convert response from Json string into a Java object
+     * <b>Note:</b> Retrieving Java objects works only with ASP.net services currently
+     *
+     * @param activity
+     */
+    public AsyncJsonPostTask(AsyncCaller activity) {
+        this.activity = activity;
+        startingCallback = AsyncStarting.class.isInstance((Object) activity);
+    }
 
-		Log.i(TAG, "RESPONSE CODE= " + code);
+    /**
+     * Perform a POST to a server and optionally convert response from Json string into a Java object
+     * <b>Note:</b> Retrieving Java objects works only with ASP.net services currently
+     *
+     * @param activity
+     */
+    public AsyncJsonPostTask(AsyncCaller activity, int requestCode) {
+        this.activity = activity;
+        this.requestCode = requestCode;
+    }
 
-		if(code == 200) {
+    @Override
+    protected void onPreExecute() {
+        if (startingCallback) {
+            ((AsyncStarting) activity).onBackgroundTaskStarted();
+        }
+    }
 
-			// Get cookie
-			Header[] cookie = response.getHeaders("Set-Cookie");
-			for (int i = 0; i < cookie.length; i++) {
-				Header h = cookie[i];
-				Log.i(TAG, "Cookie Header names: " + h.getName());
-				Log.i(TAG, "Cookie Header Value: " + h.getValue());
-				APIConnection.setCookie(h.getValue());//set cookies
+    @Override
+    protected Object doInBackground(Object... params) {
 
-			}
-			ResponseHandler<String> responseHandler = new BasicResponseHandler();
+        HttpResponse response = WebServices.httpPost((HttpUriRequest) params[0], (String) params[1]);
 
-			// Response Body
-			try {
-				responseBody = responseHandler.handleResponse(response);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+        int code = response.getStatusLine().getStatusCode();
+        String responseBody = "";
 
-			Log.i(TAG, "RESPONSE BODY= " + responseBody);
-			// Parse user json object
-		}else{
-			Log.i(TAG, "Some Error");
-		}
+        Log.i(TAG, "RESPONSE CODE= " + code);
 
-		return responseBody;
-		/*
+        if (code == 200) {
+
+            // Get cookie
+            Header[] cookie = response.getHeaders("Set-Cookie");
+            for (int i = 0; i < cookie.length; i++) {
+                Header h = cookie[i];
+                Log.i(TAG, "Cookie Header names: " + h.getName());
+                Log.i(TAG, "Cookie Header Value: " + h.getValue());
+                APIConnection.setCookie(h.getValue());//set cookies
+
+            }
+            ResponseHandler<String> responseHandler = new BasicResponseHandler();
+
+            // Response Body
+            try {
+                responseBody = responseHandler.handleResponse(response);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Log.i(TAG, "RESPONSE BODY= " + responseBody);
+            // Parse user json object
+        } else {
+            Log.i(TAG, "Some Error");
+        }
+
+        return responseBody;
+        /*
 		if (params.length ==3) {
 			JsonParser parser = new JsonParser();
 			JsonObject jsonObject = (JsonObject) parser.parse(response);
@@ -103,15 +105,15 @@ public class AsyncJsonPostTask extends AsyncTask<Object, Void, Object> {
 		} else {
 			return response;
 		}*/
-		
-	}
-	
-	@Override
-	protected void onPostExecute(Object result) {
-		try {
-			activity.onBackgroundTaskCompleted(requestCode, result);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-	}
+
+    }
+
+    @Override
+    protected void onPostExecute(Object result) {
+        try {
+            activity.onBackgroundTaskCompleted(requestCode, result);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

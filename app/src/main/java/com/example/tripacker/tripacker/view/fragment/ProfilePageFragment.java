@@ -26,12 +26,9 @@ import android.widget.Toast;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.UserSessionManager;
 import com.example.tripacker.tripacker.entity.TripEntity;
-import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.UserProfileEntity;
-import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.entity.mapper.UserProfileEntityJsonMapper;
 import com.example.tripacker.tripacker.exception.NetworkConnectionException;
-import com.example.tripacker.tripacker.view.UserDetailsView;
 import com.example.tripacker.tripacker.view.UserProfileView;
 import com.example.tripacker.tripacker.view.activity.EditProfileActivity;
 import com.example.tripacker.tripacker.view.activity.SpotCreateActivity;
@@ -46,7 +43,6 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,14 +56,13 @@ import java.util.List;
  * @since March 30, 2016 12:34 PM
  */
 public class ProfilePageFragment extends Fragment implements AsyncCaller, UserProfileView, AdapterView.OnItemClickListener {
-    private static final String TAG = "PofilePageFragment";
-    private Context thiscontext;
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static final String TAG = "PofilePageFragment";
     private static final int REQUEST_EDIT = 0;
     private static final int RESULT_OK = 200;
     private static final int RESULT_NOTSAVED = 400;
     private static SharedPreferences pref;
-
+    private Context thiscontext;
     private ProgressDialog progressDialog;
 
     private ImageView profile_pic;
@@ -90,6 +85,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thiscontext = container.getContext();
@@ -106,9 +102,9 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
 
         //From session
-        Log.e(TAG+" sess", "->" + pref.getString("username", null));
-        Log.e(TAG+" sess", "->" + pref.getString("uid", null));
-        Log.e(TAG+" sess", "->" + pref.getString("cookies", null));
+        Log.e(TAG + " sess", "->" + pref.getString("username", null));
+        Log.e(TAG + " sess", "->" + pref.getString("uid", null));
+        Log.e(TAG + " sess", "->" + pref.getString("cookies", null));
 
         getContent();
         getTripContent(Integer.parseInt(user_id));
@@ -189,7 +185,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         return view;
     }
 
-    private void setUpViewById(View view){
+    private void setUpViewById(View view) {
         profile_pic = (ImageView) view.findViewById(R.id.profile_image);
         username_view = (TextView) view.findViewById(R.id.user_name);
         trip_listView = (ListView) view.findViewById(R.id.triplistview);
@@ -211,27 +207,25 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         viewFollowingBtn.setOnClickListener(button_click);
     }
 
-    private void getContent(){
+    private void getContent() {
         showLoading();
         Log.e(TAG, "-------> Call API");
 
 
         // the request
-        try{
+        try {
 
             APIConnection.SetAsyncCaller(this, thiscontext);
             APIConnection.getUserPublicProfile(Integer.parseInt(pref.getString("uid", null).trim()), null);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(TAG, e.toString());
         }
 
     }
 
     public void getTripContent(int uid) {
-        if(isThereInternetConnection()) {
+        if (isThereInternetConnection()) {
             try {
                 List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 
@@ -241,7 +235,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
             } catch (Exception e) {
                 Log.e("GetTripException", e.toString());
             }
-        }else{
+        } else {
             try {
                 throw new NetworkConnectionException(thiscontext);
             } catch (NetworkConnectionException e) {
@@ -253,7 +247,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
         }
     }
 
-    public void showAlert(AlertDialog.Builder builder){
+    public void showAlert(AlertDialog.Builder builder) {
 
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
@@ -263,10 +257,9 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
             }
         });
 
-        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener(){
+        builder.setPositiveButton("Retry", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which)
-            {
+            public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
                 getContent();
                 getTripContent(Integer.parseInt(user_id));
@@ -290,13 +283,13 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
 
-            if(finalResult.getString("success").equals("true")){
+            if (finalResult.getString("success").equals("true")) {
                 hideLoading();
                 Log.i(TAG, "RESPONSE BODY= " + response);
-                if(finalResult.getString("code").equals("320")){
+                if (finalResult.getString("code").equals("320")) {
                     arrayOfTrips = new ArrayList<>();
                     JSONArray Trips = finalResult.getJSONArray("tripList");
-                    for(int i = 0; i < Trips.length(); i++ ) {
+                    for (int i = 0; i < Trips.length(); i++) {
                         JSONObject childJSONObject = Trips.getJSONObject(i);
                         TripEntity tripEntity = new TripEntity(childJSONObject);
 
@@ -305,7 +298,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
                     }
                     renderTrip(arrayOfTrips);
 
-                }else{
+                } else {
                     // Parse user json object
                     UserProfileEntity user = (new UserProfileEntityJsonMapper()).transformUserProfileEntity(response);
                     Log.i(TAG, "User Info= " + user.toString());
@@ -313,7 +306,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
                 }
 
 
-            }else{
+            } else {
 
             }
 
@@ -324,11 +317,11 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        Log.e("onActivityResult ", "requestCode= " + requestCode + "resultCode= "+resultCode);
+        Log.e("onActivityResult ", "requestCode= " + requestCode + "resultCode= " + resultCode);
         if (requestCode == REQUEST_EDIT) {
             if (resultCode == RESULT_OK) {
                 Toast.makeText(thiscontext, "Profile Updated Successfully", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
                 Toast.makeText(thiscontext, "Cancel Update", Toast.LENGTH_LONG).show();
             }
         }
@@ -349,7 +342,6 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
     @Override
     public void renderTrip(ArrayList<TripEntity> TripEntities) {
-
 
 
         TripsTimelineAdapter adapter = new TripsTimelineAdapter(thiscontext, arrayOfTrips);
@@ -387,7 +379,7 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
     @Override
     public void hideLoading() {
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }
@@ -415,9 +407,9 @@ public class ProfilePageFragment extends Fragment implements AsyncCaller, UserPr
 
     public void viewFollowing() {
 
-            Intent followingInten = new Intent(getActivity(), ViewFollowingActivity.class);
-            followingInten.putExtra("profile_id", user_id);
-            startActivity(followingInten);
+        Intent followingInten = new Intent(getActivity(), ViewFollowingActivity.class);
+        followingInten.putExtra("profile_id", user_id);
+        startActivity(followingInten);
 
     }
 

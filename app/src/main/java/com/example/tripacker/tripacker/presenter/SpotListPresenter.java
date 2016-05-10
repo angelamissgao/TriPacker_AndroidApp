@@ -9,6 +9,7 @@ import com.example.tripacker.tripacker.view.SpotListView;
  */
 public class SpotListPresenter implements Presenter {
     private SpotListView viewListView;
+
     @Override
     public void resume() {
 

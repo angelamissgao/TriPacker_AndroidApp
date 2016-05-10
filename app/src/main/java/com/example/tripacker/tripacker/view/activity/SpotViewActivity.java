@@ -1,24 +1,14 @@
 package com.example.tripacker.tripacker.view.activity;
 
-import android.Manifest;
-import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.location.Address;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
@@ -39,22 +29,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Check Detailed information about one Spot
  */
-public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,OnMapReadyCallback {
+public class SpotViewActivity extends AppCompatActivity implements AsyncCaller, OnMapReadyCallback {
 
     private static final String TAG = "SpotViewActivity";
     private ProgressDialog progress;
@@ -63,6 +48,24 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
     private Location spotLocation = new Location("SpotLocation");
     private SpotEntity spotEntity = new SpotEntity();
+    /**
+     * Our Broadcast Receiver. We get notified that the data is ready this way.
+     */
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // clear the progress indicator
+            if (progress != null) {
+                progress.dismiss();
+            }
+            String response = intent.getStringExtra(RestTask.HTTP_RESPONSE);
+            Toast.makeText(getApplicationContext(),
+                    "Response is ready: " + response,
+                    Toast.LENGTH_LONG).show();
+            Log.i("get response", "RESPONSE = " + response);
+            showSpot();
+        }
+    };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -121,12 +124,12 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if( id == android.R.id.home){
+        if (id == android.R.id.home) {
             this.finish();
             return true;
         }
 
-        if( id == R.id.action_search){
+        if (id == R.id.action_search) {
             Log.e("Spot view", "search");
             this.finish();
             return true;
@@ -139,7 +142,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
     private void getContent(String spotId) {
         // Http Call
         List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(2);
-        try{
+        try {
             APIConnection.SetAsyncCaller(this, getApplicationContext());
             APIConnection.getSpotDetail(spotId, nameValuePairs);
 
@@ -149,28 +152,6 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
         }
     }
 
-    /**
-     * Our Broadcast Receiver. We get notified that the data is ready this way.
-     */
-    private BroadcastReceiver receiver = new BroadcastReceiver()
-    {
-        @Override
-        public void onReceive(Context context, Intent intent)
-        {
-            // clear the progress indicator
-            if (progress != null)
-            {
-                progress.dismiss();
-            }
-            String response = intent.getStringExtra(RestTask.HTTP_RESPONSE);
-            Toast.makeText(getApplicationContext(),
-                    "Response is ready: " + response,
-                    Toast.LENGTH_LONG).show();
-            Log.i("get response", "RESPONSE = " + response);
-            showSpot();
-        }
-    };
-
     private void showSpot() {
         TextView spotName_show = (TextView) findViewById(R.id.spotName_show);
     }
@@ -178,7 +159,7 @@ public class SpotViewActivity extends AppCompatActivity implements AsyncCaller,O
 
     @Override
     public void onBackgroundTaskCompleted(int requestCode, Object result) throws JSONException {
-        String  response = result.toString();
+        String response = result.toString();
         Log.e("Spot Get Detail result------>", response);
 
         JSONTokener tokener = new JSONTokener(response);

@@ -1,7 +1,5 @@
 package com.example.tripacker.tripacker;
 
-import java.util.HashMap;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,49 +7,40 @@ import android.content.SharedPreferences.Editor;
 
 import com.example.tripacker.tripacker.view.activity.LoginActivity;
 
+import java.util.HashMap;
+
 public class UserSessionManager {
-
-    private static UserSessionManager singleInstance;
-    // Shared Preferences reference
-    SharedPreferences pref;
-
-    // Editor reference for Shared preferences
-    Editor editor;
-
-    // Context
-    Context _context;
-
-    // Shared pref mode
-    int PRIVATE_MODE = 0;
-
-    // Sharedpref file name
-    private static final String PREFER_NAME = "TripackerPref";
-
-    // All Shared Preferences Keys
-    private static final String IS_USER_LOGIN = "IsUserLoggedIn";
 
     // User name (make variable public to access from outside)
     public static final String KEY_USERNAME = "username";
-
     // User name (make variable public to access from outside)
     public static final String KEY_NICKNAME = "nickname";
-
     // User id (make variable public to access from outside)
     public static final String KEY_UID = "uid";
-
-
-
     // Email address (make variable public to access from outside)
     public static final String KEY_COOKIES = "cookies";
+    // Sharedpref file name
+    private static final String PREFER_NAME = "TripackerPref";
+    // All Shared Preferences Keys
+    private static final String IS_USER_LOGIN = "IsUserLoggedIn";
+    private static UserSessionManager singleInstance;
+    // Shared Preferences reference
+    SharedPreferences pref;
+    // Editor reference for Shared preferences
+    Editor editor;
+    // Context
+    Context _context;
+    // Shared pref mode
+    int PRIVATE_MODE = 0;
 
     // Constructor
-    public UserSessionManager(Context context){
+    public UserSessionManager(Context context) {
         this._context = context;
         pref = _context.getSharedPreferences(PREFER_NAME, PRIVATE_MODE);
         editor = pref.edit();
     }
 
-    public UserSessionManager(Context context, SharedPreferences pref){
+    public UserSessionManager(Context context, SharedPreferences pref) {
         this._context = context;
         this.pref = pref;
         editor = pref.edit();
@@ -64,16 +53,17 @@ public class UserSessionManager {
         return singleInstance;
     }
 
-    public void setCookies(String cookies){
-        editor.putString(KEY_COOKIES, cookies);
-        editor.commit();
-    }
-    public String getCookies(){
+    public String getCookies() {
         return pref.getString(KEY_COOKIES, null);
     }
 
+    public void setCookies(String cookies) {
+        editor.putString(KEY_COOKIES, cookies);
+        editor.commit();
+    }
+
     //Create login session
-    public void createUserLoginSession(String username, String nickname, String uid, String cookies){
+    public void createUserLoginSession(String username, String nickname, String uid, String cookies) {
         // Storing login value as TRUE
         editor.putBoolean(IS_USER_LOGIN, true);
 
@@ -87,7 +77,6 @@ public class UserSessionManager {
         editor.putString(KEY_UID, uid);
 
 
-
         // Storing cookies in pref
         editor.putString(KEY_COOKIES, cookies);
 
@@ -96,15 +85,14 @@ public class UserSessionManager {
     }
 
 
-
     /**
      * Check login method will check user login status
      * If false it will redirect user to login page
      * Else do anything
-     * */
-    public boolean checkLogin(){
+     */
+    public boolean checkLogin() {
         // Check login status
-        if(!this.isUserLoggedIn()){
+        if (!this.isUserLoggedIn()) {
 
             // user is not logged in redirect him to Login Activity
             Intent i = new Intent(_context, LoginActivity.class);
@@ -124,11 +112,10 @@ public class UserSessionManager {
     }
 
 
-
     /**
      * Get stored session data
-     * */
-    public HashMap<String, String> getUserDetails(){
+     */
+    public HashMap<String, String> getUserDetails() {
 
         //Use hashmap to store user credentials
         HashMap<String, String> user = new HashMap<String, String>();
@@ -151,8 +138,8 @@ public class UserSessionManager {
 
     /**
      * Clear session details
-     * */
-    public void logoutUser(){
+     */
+    public void logoutUser() {
 
         // Clearing all user data from Shared Preferences
         editor.clear();
@@ -173,7 +160,7 @@ public class UserSessionManager {
 
 
     // Check for login
-    public boolean isUserLoggedIn(){
+    public boolean isUserLoggedIn() {
         return pref.getBoolean(IS_USER_LOGIN, false);
     }
 }

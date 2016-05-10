@@ -13,10 +13,10 @@ import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.view.activity.TripViewActivity;
 
 public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnClickListener {
-    private String TAG = "TripViewHolders";
+    private final Context context;
     public TextView tripName;
     public ImageView tripCoverPhoto;
-    private final Context context;
+    private String TAG = "TripViewHolders";
 
 
     public TripViewHolders(View itemView) {
@@ -34,7 +34,7 @@ public class TripViewHolders extends RecyclerView.ViewHolder implements View.OnC
         Intent mainInten = new Intent(context, TripViewActivity.class);
 
         this.getItemId();
-        Log.e(TAG,  String.valueOf(this.getItemId()) );
+        Log.e(TAG, String.valueOf(this.getItemId()));
 
         context.startActivity(mainInten);
         Toast.makeText(view.getContext(), "Clicked Position = " + getPosition(), Toast.LENGTH_SHORT).show();

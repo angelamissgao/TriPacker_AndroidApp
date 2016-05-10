@@ -1,53 +1,58 @@
 package com.example.tripacker.tripacker.view.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import android.support.v4.app.Fragment;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.ListView;
 
-import com.example.tripacker.tripacker.ActionTabsViewPagerAdapter;
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.UserSessionManager;
-import com.example.tripacker.tripacker.view.adapter.DrawerItemCustomAdapter;
-import com.example.tripacker.tripacker.ws.remote.WebServices;
-
 import com.example.tripacker.tripacker.navigation.slidingtab.SlidingTabLayout;
-
+import com.example.tripacker.tripacker.view.adapter.ActionTabsViewPagerAdapter;
+import com.example.tripacker.tripacker.view.adapter.DrawerItemCustomAdapter;
 import com.example.tripacker.tripacker.view.fragment.ExploreFragment;
 import com.example.tripacker.tripacker.view.fragment.FavoritesFragment;
 import com.example.tripacker.tripacker.view.fragment.ProfilePageFragment;
 import com.example.tripacker.tripacker.view.fragment.SpotFragment;
 import com.example.tripacker.tripacker.view.fragment.TripFragment;
+import com.example.tripacker.tripacker.ws.remote.WebServices;
 
 import java.util.ArrayList;
+
 /*
     Main Activity with functions defining the Main Navigation
  */
 public class MainActivity extends ActionBarActivity {
+    // Configuration for calling a REST service
+    private static final String TEST_URL = "http://47.88.12.177/api/v1";
+    private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
+    private static SharedPreferences pref;
+    public DrawerLayout mDrawerLayout;
+    //menu drawer
+    String navTitles[];
+    TypedArray navIcons;
+    RecyclerView mDrawerListView;
+    RecyclerView.Adapter mAdapter;
+    ActionBarDrawerToggle mDrawerToggle;
     // Runner IO for calling external APIs
     private String TAG = "Main Activity";
     private TabLayout mTabLayout;
-
     //top navigation
     private int[] mTabsIcons = {
             R.drawable.ic_main_selector,
@@ -55,37 +60,18 @@ public class MainActivity extends ActionBarActivity {
             R.drawable.ic_trip_selector,
             R.drawable.ic_place_selector,
             R.drawable.ic_profile_selector};
-
     private int[] mTabsSelectedIcons = {
             R.drawable.ic_main_selected_24dp,
             R.drawable.ic_favorite_selected_24dp,
             R.drawable.ic_trip_selected_24dp,
             R.drawable.ic_place_selected_24dp,
             R.drawable.ic_profile_selected_24dp};
-
-    //menu drawer
-    String navTitles[];
-    TypedArray navIcons;
-    RecyclerView mDrawerListView;
-    public DrawerLayout mDrawerLayout;
-    RecyclerView.Adapter mAdapter;
-    ActionBarDrawerToggle mDrawerToggle;
     private String mActivityTitle;
-
-
-    private static SharedPreferences pref;
-
     //new added
     private SlidingTabLayout slidingTabLayout;
     private ViewPager viewPager;
     private ArrayList<Fragment> fragments;
     private ActionTabsViewPagerAdapter myViewPageAdapter;
-
-
-    // Configuration for calling a REST service
-    private static final String TEST_URL                   = "http://47.88.12.177/api/v1";
-    private static final String ACTION_FOR_INTENT_CALLBACK = "THIS_IS_A_UNIQUE_KEY_WE_USE_TO_COMMUNICATE";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,15 +80,14 @@ public class MainActivity extends ActionBarActivity {
 
         WebServices.setURL(TEST_URL);
 
-
         //From session
         Log.e(TAG + " sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("username"));
-        Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
-        Log.e(TAG+" sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("cookies"));
+        Log.e(TAG + " sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("uid"));
+        Log.e(TAG + " sess", "->" + UserSessionManager.getSingleInstance(this).getUserDetails().get("cookies"));
 
-       Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
-   //   UserSessionManager.getSingleInstance(this).checkLogin();
+        //   UserSessionManager.getSingleInstance(this).checkLogin();
 
         // Define SlidingTabLayout (shown at top)
         // and ViewPager (shown at bottom) in the layout.
@@ -128,7 +113,7 @@ public class MainActivity extends ActionBarActivity {
 
         // use FragmentPagerAdapter to bind the slidingTabLayout (tabs with different titles)
         // and ViewPager (different pages of fragment) together.
-        myViewPageAdapter =new ActionTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
+        myViewPageAdapter = new ActionTabsViewPagerAdapter(getSupportFragmentManager(), fragments);
         viewPager.setAdapter(myViewPageAdapter);
         slidingTabLayout.setCustomTabView(R.layout.custom_tab, R.id.title, R.id.icon);
         // make sure the tabs are equally spaced.
@@ -137,8 +122,8 @@ public class MainActivity extends ActionBarActivity {
 
 
         // Setup the menu bar
-        mDrawerListView = (RecyclerView)findViewById(R.id.navList);
-        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerListView = (RecyclerView) findViewById(R.id.navList);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mActivityTitle = getTitle().toString();
 
 
@@ -165,7 +150,7 @@ public class MainActivity extends ActionBarActivity {
          *So that , later we can use the fragmentManager of this activity to add/replace fragments.
          */
 
-        mAdapter = new DrawerItemCustomAdapter(navTitles,navIcons,this);
+        mAdapter = new DrawerItemCustomAdapter(navTitles, navIcons, this);
         mDrawerListView.setAdapter(mAdapter);
 
         /**
@@ -203,7 +188,6 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
@@ -216,7 +200,6 @@ public class MainActivity extends ActionBarActivity {
         super.onConfigurationChanged(newConfig);
         mDrawerToggle.onConfigurationChanged(newConfig);
     }
-
 
 
     @Override
@@ -250,9 +233,6 @@ public class MainActivity extends ActionBarActivity {
         public ImageView mIcon;
 
     }
-
-
-
 
 
 }

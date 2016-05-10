@@ -22,13 +22,9 @@ import android.widget.TextView;
 
 import com.example.tripacker.tripacker.R;
 import com.example.tripacker.tripacker.entity.TripEntity;
-import com.example.tripacker.tripacker.entity.UserEntity;
 import com.example.tripacker.tripacker.entity.UserProfileEntity;
-import com.example.tripacker.tripacker.entity.mapper.UserEntityJsonMapper;
 import com.example.tripacker.tripacker.entity.mapper.UserProfileEntityJsonMapper;
-import com.example.tripacker.tripacker.view.UserEditProfileDetailsView;
 import com.example.tripacker.tripacker.view.UserProfileView;
-import com.example.tripacker.tripacker.view.adapter.FollowerListAdapter;
 import com.example.tripacker.tripacker.ws.remote.APIConnection;
 import com.example.tripacker.tripacker.ws.remote.AsyncCaller;
 import com.squareup.picasso.Picasso;
@@ -45,27 +41,17 @@ import java.util.List;
 public class ViewProfileActivity extends ActionBarActivity implements View.OnClickListener, AsyncCaller, UserProfileView {
 
     private static final String TAG = "ViewProfileActivity";
-
-
-
+    private static SharedPreferences pref;
     private ProgressDialog progressDialog;
     private AlertDialog errorDialog;
-
-
     private ImageView profile_pic;
     private TextView username_view;
     private ListView trip_listView;
     private ImageView editProfileButton;
     private LinearLayout viewFollowingBtn;
-
     private TextView tripnum_view;
     private TextView followingnum_view;
     private TextView followernum_view;
-
-
-
-    private static SharedPreferences pref;
-
     private int profile_id;
 
 
@@ -89,7 +75,7 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
 
         Intent intent = getIntent();
 
-        profile_id  = Integer.parseInt(intent.getStringExtra("profile_id"));
+        profile_id = Integer.parseInt(intent.getStringExtra("profile_id"));
 
 
         setUpViewById();
@@ -98,10 +84,11 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
 
     }
 
-    public int getProfile_id(){
+    public int getProfile_id() {
         return profile_id;
     }
-    public void initializeDialog(){
+
+    public void initializeDialog() {
         progressDialog = new ProgressDialog(ViewProfileActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
@@ -121,7 +108,8 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
             }
         });
     }
-    private void setUpViewById(){
+
+    private void setUpViewById() {
 
         profile_pic = (ImageView) findViewById(R.id.profile_image);
         username_view = (TextView) findViewById(R.id.user_name);
@@ -148,7 +136,7 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-       // getMenuInflater().inflate(R.menu.action_menu, menu);
+        // getMenuInflater().inflate(R.menu.action_menu, menu);
         return true;
     }
 
@@ -159,7 +147,7 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        if( id == android.R.id.home){
+        if (id == android.R.id.home) {
             this.finish();
             return true;
         }
@@ -169,27 +157,22 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
     }
 
 
-
-    private void getProfile(){
+    private void getProfile() {
         Log.e("Get User Profile Edit", "-> Get Content");
 
         // the request
-        try{
+        try {
             List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
-            nameValuePairs.add(new BasicNameValuePair("user_id", profile_id+""));
+            nameValuePairs.add(new BasicNameValuePair("user_id", profile_id + ""));
             APIConnection.SetAsyncCaller(this, getApplicationContext());
 
             APIConnection.getUserPublicProfile(profile_id, nameValuePairs);
 
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             Log.e(TAG, e.getMessage());
         }
 
     }
-
-
 
 
     @Override
@@ -206,14 +189,14 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
             JSONObject finalResult = new JSONObject(tokener);
             Log.i(TAG, "RESPONSE CODE= " + finalResult.getString("success"));
 
-            if(finalResult.getString("success").equals("true")){
+            if (finalResult.getString("success").equals("true")) {
                 hideLoading();
                 Log.i(TAG, "RESPONSE BODY= " + response);
                 // Parse user json object
                 UserProfileEntity user = (new UserProfileEntityJsonMapper()).transformUserProfileEntity(response);
                 Log.i(TAG, "User Info= " + user.toString());
                 renderUserProfile(user); //Render user
-            }else{
+            } else {
 
             }
 
@@ -249,7 +232,7 @@ public class ViewProfileActivity extends ActionBarActivity implements View.OnCli
 
     @Override
     public void hideLoading() {
-        if (progressDialog != null){
+        if (progressDialog != null) {
             progressDialog.dismiss();
         }
     }

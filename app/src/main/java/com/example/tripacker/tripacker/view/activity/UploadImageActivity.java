@@ -1,6 +1,5 @@
 package com.example.tripacker.tripacker.view.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
@@ -20,7 +19,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.example.tripacker.tripacker.R;
 
@@ -40,6 +38,7 @@ public class UploadImageActivity extends ActionBarActivity {
     ImageView ivImage;
     int REQUEST_CAMERA = 1337;
     int SELECT_FILE = 0;
+    Bitmap bm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +64,7 @@ public class UploadImageActivity extends ActionBarActivity {
 
     //Image Upload
     private void selectImage() {
-        final CharSequence[] items = { "Take Photo", "Choose from Library", "Cancel" };
+        final CharSequence[] items = {"Take Photo", "Choose from Library", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(UploadImageActivity.this);
         builder.setTitle("Add Photo!");
         builder.setItems(items, new DialogInterface.OnClickListener() {
@@ -114,14 +113,13 @@ public class UploadImageActivity extends ActionBarActivity {
                 ivImage.setImageBitmap(thumbnail);
             } else if (requestCode == SELECT_FILE) {
                 Uri selectedImageUri = data.getData();
-                String[] projection = { MediaStore.MediaColumns.DATA };
-                CursorLoader cursorLoader = new CursorLoader(this,selectedImageUri, projection, null, null,
+                String[] projection = {MediaStore.MediaColumns.DATA};
+                CursorLoader cursorLoader = new CursorLoader(this, selectedImageUri, projection, null, null,
                         null);
-                Cursor cursor =cursorLoader.loadInBackground();
+                Cursor cursor = cursorLoader.loadInBackground();
                 int column_index = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA);
                 cursor.moveToFirst();
                 String selectedImagePath = cursor.getString(column_index);
-                Bitmap bm;
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inJustDecodeBounds = true;
                 BitmapFactory.decodeFile(selectedImagePath, options);
